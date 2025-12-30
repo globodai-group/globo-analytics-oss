@@ -1,0 +1,1254 @@
+{
+  "nav": {
+    "audience": "Audience",
+    "behavior": "Comportement",
+    "acquisition": "Acquisition",
+    "conversion": "Conversion",
+    "configure": "Configurer"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "export": "Exporter",
+    "import": "Importer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "confirm": "Confirmer",
+    "success": "Succès",
+    "error": "Erreur",
+    "warning": "Attention",
+    "info": "Information",
+    "noData": "Aucune donnée disponible",
+    "actions": "Actions",
+    "status": "Statut",
+    "date": "Date",
+    "name": "Nom",
+    "email": "Email",
+    "viewAll": "Voir tout"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "register": "Inscription",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "firstName": "Prénom",
+    "firstNamePlaceholder": "Jean",
+    "lastName": "Nom",
+    "lastNamePlaceholder": "Dupont",
+    "email": "Adresse email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "verifyEmail": "Vérifier l'email",
+    "welcomeBack": "Bon retour parmi nous",
+    "createAccount": "Créer un compte",
+    "createAccountDescription": "Entrez vos informations pour créer un compte",
+    "signInDescription": "Entrez vos identifiants pour vous connecter",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "orContinueWith": "Ou continuer avec",
+    "rememberMe": "Se souvenir de moi",
+    "sendResetLink": "Envoyer le lien",
+    "resetLinkSent": "Lien envoyé à votre email",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "passwordUpdated": "Mot de passe mis à jour",
+    "tfaTitle": "Authentification à deux facteurs",
+    "tfaDescription": "Entrez le code envoyé à votre email",
+    "tfaCode": "Code de vérification",
+    "resendCode": "Renvoyer le code",
+    "resendVerificationEmail": "Renvoyer l'email de vérification",
+    "codeSent": "Code envoyé avec succès",
+    "name": "Nom complet",
+    "namePlaceholder": "Jean Dupont",
+    "acceptTerms": "J'accepte les",
+    "termsOfService": "conditions d'utilisation",
+    "and": "et la",
+    "privacyPolicy": "politique de confidentialité",
+    "forgotPasswordDescription": "Entrez votre email pour recevoir un lien de réinitialisation",
+    "resetPasswordDescription": "Entrez votre nouveau mot de passe",
+    "verifyEmailDescription": "Entrez votre email pour recevoir un lien de vérification",
+    "emailVerified": "Email vérifié",
+    "verificationFailed": "La vérification a échoué",
+    "tfaCodeRequired": "Veuillez entrer le code à 6 chiffres",
+    "backToLogin": "Retour à la connexion",
+    "loading": "Chargement...",
+    "confirm": "Confirmer",
+    "errors": {
+      "invalidCredentials": "Email ou mot de passe incorrect",
+      "emailExists": "Cet email est déjà utilisé",
+      "weakPassword": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordMismatch": "Les mots de passe ne correspondent pas",
+      "emailNotVerified": "Veuillez vérifier votre email",
+      "invalidToken": "Token invalide ou expiré",
+      "userNotFound": "Utilisateur non trouvé"
+    }
+  },
+  "dashboard": {
+    "title": "Tableau de bord",
+    "welcome": "Bienvenue, {name}",
+    "overview": "Vue d'ensemble",
+    "recentActivity": "Activité récente",
+    "quickActions": "Actions rapides",
+    "addWebsite": "Ajouter un site",
+    "viewStats": "Voir les stats",
+    "stats": {
+      "visitors": "Visiteurs",
+      "pageviews": "Pages vues",
+      "bounceRate": "Taux de rebond",
+      "avgDuration": "Durée moyenne",
+      "websites": "Sites web",
+      "projects": "Projets",
+      "thisMonth": "Ce mois-ci"
+    },
+    "recentProjects": "Vos projets récents"
+  },
+  "websites": {
+    "title": "Sites web",
+    "addNew": "Ajouter un site",
+    "edit": "Modifier le site",
+    "delete": "Supprimer le site",
+    "url": "URL du site",
+    "domain": "Domaine",
+    "privacy": "Confidentialité",
+    "privacyOptions": {
+      "public": "Public",
+      "private": "Privé",
+      "password": "Protégé par mot de passe"
+    },
+    "settings": "Paramètres",
+    "excludeBots": "Exclure les bots",
+    "excludeIps": "Exclure les IPs",
+    "excludeParams": "Exclure les paramètres",
+    "emailReports": "Rapports par email",
+    "emailReportsOptions": {
+      "none": "Aucun rapport",
+      "weekly": "Hebdomadaire",
+      "monthly": "Mensuel"
+    },
+    "trackingCode": "Code de suivi",
+    "trackingCodeDescription": "Ajoutez ce code avant la balise </head> de votre site",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce site ?",
+    "deleteWarning": "Toutes les données analytics seront supprimées définitivement.",
+    "created": "Site créé avec succès",
+    "updated": "Site mis à jour avec succès",
+    "deleted": "Site supprimé avec succès",
+    "visitSite": "Visiter le site"
+  },
+  "projects": {
+    "title": "Projets",
+    "backToList": "Retour aux projets",
+    "addNew": "Nouveau projet",
+    "addNewDescription": "Créez un nouveau projet pour commencer à tracker vos analytics",
+    "edit": "Modifier le projet",
+    "delete": "Supprimer",
+    "name": "Nom du projet",
+    "platform": "Plateforme",
+    "platformOptions": {
+      "web": "Web",
+      "mobile": "Mobile",
+      "both": "Web & Mobile"
+    },
+    "privacy": "Confidentialité",
+    "privacyOptions": {
+      "public": "Public",
+      "private": "Privé",
+      "password": "Protégé par mot de passe"
+    },
+    "stats": {
+      "title": "Statistiques"
+    },
+    "realtime": {
+      "title": "Temps réel"
+    },
+    "acquisition": {
+      "title": "Acquisition"
+    },
+    "goals": {
+      "title": "Objectifs"
+    },
+    "segments": {
+      "title": "Segments"
+    },
+    "technology": {
+      "title": "Technologie"
+    },
+    "pages": {
+      "title": "Pages"
+    },
+    "funnels": {
+      "title": "Entonnoirs"
+    },
+    "attribution": {
+      "title": "Attribution"
+    },
+    "flow": {
+      "title": "Flux"
+    },
+    "search": {
+      "title": "Recherche"
+    },
+    "ecommerce": {
+      "title": "E-commerce"
+    },
+    "content": {
+      "title": "Contenu"
+    },
+    "videos": {
+      "title": "Vidéos"
+    },
+    "alerts": {
+      "title": "Alertes"
+    },
+    "reports": {
+      "title": "Rapports"
+    },
+    "settings": {
+      "title": "Paramètres"
+    },
+    "excludeBots": "Exclure les bots",
+    "trackingCode": "Code de suivi",
+    "trackingCodeDescription": "Ajoutez ce code à votre application",
+    "trackingId": "ID de tracking",
+    "domains": "Domaines",
+    "domain": "Domaine",
+    "addDomain": "Ajouter un domaine",
+    "domainType": "Type",
+    "domainTypes": {
+      "primary": "Principal",
+      "secondary": "Secondaire"
+    },
+    "configuredDomains": "Domaines configurés",
+    "noDomains": "Aucun domaine",
+    "noProjects": "Aucun projet",
+    "startTracking": "Créez votre premier projet pour commencer à collecter des données",
+    "visitSite": "Visiter le site",
+    "dangerZone": "Zone de danger",
+    "dangerZoneDescription": "Actions irréversibles",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce projet ?",
+    "deleteWarning": "Toutes les données analytics seront supprimées définitivement.",
+    "created": "Projet créé avec succès",
+    "updated": "Projet mis à jour avec succès",
+    "deleted": "Projet supprimé avec succès",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Projet non trouvé",
+      "nameRequired": "Le nom est requis",
+      "createFailed": "Échec de la création",
+      "updateFailed": "Échec de la mise à jour",
+      "deleteFailed": "Échec de la suppression"
+    }
+  },
+  "stats": {
+    "title": "Analytics",
+    "overview": "Vue d'ensemble",
+    "realtime": "Temps réel",
+    "pages": "Pages",
+    "landingPages": "Pages d'entrée",
+    "exitPages": "Pages de sortie",
+    "referrers": "Référents",
+    "trafficSources": "Sources de trafic",
+    "searchEngines": "Moteurs de recherche",
+    "socialNetworks": "Réseaux sociaux",
+    "campaigns": "Campagnes",
+    "continents": "Continents",
+    "countries": "Pays",
+    "cities": "Villes",
+    "languages": "Langues",
+    "browsers": "Navigateurs",
+    "operatingSystems": "Systèmes d'exploitation",
+    "screenResolutions": "Résolutions d'écran",
+    "devices": "Appareils",
+    "events": "Événements",
+    "visitors": "Visiteurs",
+    "sessions": "Sessions",
+    "pageviews": "Pages vues",
+    "uniqueVisitors": "Visiteurs uniques",
+    "bounceRate": "Taux de rebond",
+    "avgSessionDuration": "Durée moy. de session",
+    "averageTimePerSession": "Temps moyen par session",
+    "vsPreviousPeriod": "vs période précédente",
+    "unique": "Unique",
+    "total": "Total",
+    "noDataYet": "Pas encore de données",
+    "noData": "Aucune donnée disponible",
+    "unknown": "Inconnu",
+    "startTracking": "Commencez le suivi en ajoutant le code sur votre site",
+    "export": "Exporter CSV",
+    "trafficCategory": {
+      "title": "Catégories de trafic",
+      "subtitle": "Répartition du trafic humain vs automatisé",
+      "human": "Visiteurs humains",
+      "ai_agent": "Agents IA (ChatGPT, Claude)",
+      "search_engine": "Moteurs de recherche",
+      "social_bot": "Bots sociaux",
+      "seo_tool": "Outils SEO",
+      "malicious": "Bots malveillants",
+      "unknown_bot": "Bots inconnus",
+      "aiNote": "Les agents IA comme ChatGPT et Claude sont comptés comme du trafic légitime"
+    },
+    "dateRange": {
+      "selectRange": "Sélectionner une période",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "last7Days": "7 derniers jours",
+      "last30Days": "30 derniers jours",
+      "thisMonth": "Ce mois-ci",
+      "lastMonth": "Mois dernier",
+      "custom": "Personnalisé"
+    },
+    "table": {
+      "name": "Nom",
+      "count": "Nombre"
+    },
+    "pagination": {
+      "page": "Page {current} sur {total}"
+    }
+  },
+  "account": {
+    "title": "Compte",
+    "profile": {
+      "title": "Profil",
+      "description": "Gérez vos informations personnelles",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "avatar": "Photo de profil",
+      "changeAvatar": "Changer la photo",
+      "updated": "Profil mis à jour"
+    },
+    "security": {
+      "title": "Sécurité",
+      "description": "Gérez la sécurité de votre compte",
+      "changePassword": "Changer le mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "twoFactor": "Double authentification",
+      "twoFactorDescription": "Ajoutez une couche de sécurité supplémentaire",
+      "enable2FA": "Activer la 2FA",
+      "disable2FA": "Désactiver la 2FA",
+      "passwordChanged": "Mot de passe modifié"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "description": "Personnalisez votre expérience",
+      "language": "Langue",
+      "timezone": "Fuseau horaire",
+      "theme": "Thème",
+      "themeOptions": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
+      },
+      "updated": "Préférences mises à jour"
+    },
+    "plan": {
+      "title": "Abonnement",
+      "description": "Gérez votre plan d'abonnement",
+      "currentPlan": "Plan actuel",
+      "freePlan": "Gratuit",
+      "upgrade": "Mettre à niveau",
+      "downgrade": "Rétrograder",
+      "cancel": "Annuler l'abonnement",
+      "reactivate": "Réactiver",
+      "usage": "Utilisation",
+      "renewsOn": "Renouvellement le",
+      "expiresOn": "Expire le",
+      "trialEndsOn": "Essai se termine le"
+    },
+    "api": {
+      "title": "API",
+      "description": "Gérez votre accès API",
+      "token": "Token API",
+      "generateNew": "Générer un nouveau token",
+      "copied": "Token copié",
+      "regenerateWarning": "Régénérer invalidera votre token actuel"
+    },
+    "payments": {
+      "title": "Paiements",
+      "description": "Consultez votre historique de paiements",
+      "invoice": "Facture",
+      "amount": "Montant",
+      "status": "Statut",
+      "date": "Date",
+      "download": "Télécharger",
+      "noPayments": "Aucun paiement"
+    },
+    "delete": {
+      "title": "Supprimer le compte",
+      "description": "Supprimez définitivement votre compte et toutes vos données",
+      "warning": "Cette action est irréversible. Toutes vos données seront supprimées.",
+      "confirmTitle": "Êtes-vous sûr ?",
+      "confirmDescription": "Cette action est irréversible. Tous vos sites, données analytics et informations personnelles seront supprimés définitivement.",
+      "confirmText": "Tapez SUPPRIMER pour confirmer",
+      "button": "Supprimer mon compte"
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "backToDashboard": "Retour au tableau de bord",
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "users": "Utilisateurs",
+      "websites": "Sites web",
+      "licenses": "Licences",
+      "plans": "Plans",
+      "payments": "Paiements",
+      "coupons": "Coupons",
+      "taxRates": "Taux de taxe",
+      "pages": "Pages",
+      "settings": "Paramètres"
+    },
+    "dashboard": {
+      "title": "Tableau de bord",
+      "description": "Vue d'ensemble des statistiques de la plateforme",
+      "totalUsers": "Total utilisateurs",
+      "totalWebsites": "Total sites",
+      "totalPayments": "Total paiements",
+      "totalRevenue": "Revenus totaux",
+      "recentUsers": "Utilisateurs récents",
+      "recentPayments": "Paiements récents",
+      "noUsers": "Aucun utilisateur",
+      "noPayments": "Aucun paiement"
+    },
+    "users": {
+      "title": "Utilisateurs",
+      "description": "Gérez tous les utilisateurs de la plateforme",
+      "create": "Créer un utilisateur",
+      "edit": "Modifier l'utilisateur",
+      "delete": "Supprimer l'utilisateur",
+      "disable": "Désactiver l'utilisateur",
+      "enable": "Activer l'utilisateur",
+      "loginAs": "Se connecter en tant que",
+      "role": "Rôle",
+      "plan": "Plan",
+      "status": "Statut",
+      "lastLogin": "Dernière connexion",
+      "created": "Créé le",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+      "deleteWarning": "Tous les sites et données seront supprimés définitivement."
+    },
+    "licenses": {
+      "title": "Licences OSS",
+      "description": "Gérez les clés de licence pour les instances auto-hébergées",
+      "create": "Créer une licence",
+      "edit": "Modifier la licence",
+      "revoke": "Révoquer la licence",
+      "suspend": "Suspendre la licence",
+      "reactivate": "Réactiver la licence",
+      "licenseKey": "Clé de licence",
+      "type": "Type de licence",
+      "customerEmail": "Email client",
+      "customerName": "Nom du client",
+      "companyName": "Nom de l'entreprise",
+      "status": "Statut",
+      "activations": "Activations",
+      "maxActivations": "Activations max",
+      "maxDomains": "Domaines max",
+      "expiresAt": "Expire le",
+      "issuedAt": "Émise le",
+      "lastActivated": "Dernière activation",
+      "notes": "Notes",
+      "noLicenses": "Aucune licence créée",
+      "generateKey": "Générer la clé",
+      "copyKey": "Copier la clé",
+      "keyCopied": "Clé de licence copiée",
+      "confirmRevoke": "Êtes-vous sûr de vouloir révoquer cette licence ?",
+      "revokeWarning": "Le client ne pourra plus utiliser les fonctionnalités premium.",
+      "types": {
+        "COMMUNITY": "Communauté (Gratuit)",
+        "PRO": "Pro",
+        "ENTERPRISE": "Entreprise"
+      },
+      "statuses": {
+        "ACTIVE": "Active",
+        "EXPIRED": "Expirée",
+        "REVOKED": "Révoquée",
+        "SUSPENDED": "Suspendue"
+      },
+      "activationLogs": "Historique des activations",
+      "domain": "Domaine",
+      "ipAddress": "Adresse IP",
+      "version": "Version",
+      "activatedAt": "Activée le",
+      "lastSeen": "Dernière activité",
+      "lifetime": "À vie",
+      "stats": {
+        "total": "Total licences",
+        "active": "Actives",
+        "pro": "Licences Pro",
+        "enterprise": "Licences Entreprise"
+      }
+    },
+    "plans": {
+      "title": "Plans",
+      "description": "Gérez les plans d'abonnement",
+      "create": "Créer un plan",
+      "edit": "Modifier le plan",
+      "name": "Nom du plan",
+      "price": "Prix",
+      "interval": "Intervalle de facturation",
+      "features": "Fonctionnalités",
+      "limits": "Limites",
+      "visibility": "Visibilité"
+    },
+    "payments": {
+      "title": "Paiements",
+      "description": "Consultez toutes les transactions",
+      "user": "Utilisateur",
+      "amount": "Montant",
+      "status": "Statut",
+      "processor": "Processeur",
+      "date": "Date"
+    },
+    "coupons": {
+      "title": "Coupons",
+      "description": "Gérez les codes de réduction",
+      "create": "Créer un coupon",
+      "edit": "Modifier le coupon",
+      "code": "Code promo",
+      "discount": "Réduction",
+      "type": "Type",
+      "uses": "Utilisations",
+      "expires": "Expire le"
+    },
+    "taxRates": {
+      "title": "Taux de taxe",
+      "description": "Gérez les taxes par région",
+      "create": "Créer un taux de taxe",
+      "edit": "Modifier le taux de taxe",
+      "name": "Nom de la taxe",
+      "percentage": "Pourcentage",
+      "regions": "Régions"
+    },
+    "pages": {
+      "title": "Pages",
+      "description": "Gérez les pages CMS",
+      "create": "Créer une page",
+      "edit": "Modifier la page",
+      "slug": "Slug URL",
+      "content": "Contenu"
+    },
+    "settings": {
+      "title": "Paramètres",
+      "description": "Configurez les paramètres de la plateforme",
+      "general": "Général",
+      "email": "Email",
+      "payments": "Paiements",
+      "captcha": "Captcha",
+      "maintenance": "Maintenance"
+    },
+    "roles": {
+      "user": "Utilisateur",
+      "admin": "Administrateur"
+    }
+  },
+  "billing": {
+    "title": "Facturation",
+    "plans": "Plans",
+    "choosePlan": "Choisissez un plan",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "perMonth": "/mois",
+    "perYear": "/an",
+    "savePercent": "Économisez {percent}%",
+    "currentPlan": "Plan actuel",
+    "subscribe": "S'abonner",
+    "features": "Fonctionnalités",
+    "checkout": {
+      "title": "Paiement",
+      "billingInfo": "Informations de facturation",
+      "paymentMethod": "Méthode de paiement",
+      "orderSummary": "Récapitulatif",
+      "subtotal": "Sous-total",
+      "tax": "Taxe",
+      "total": "Total",
+      "couponCode": "Code promo",
+      "applyCoupon": "Appliquer",
+      "couponApplied": "Code appliqué",
+      "invalidCoupon": "Code invalide",
+      "processing": "Traitement...",
+      "pay": "Payer {amount}",
+      "complete": "Paiement réussi !",
+      "pending": "Paiement en attente",
+      "cancelled": "Paiement annulé"
+    }
+  },
+  "pricing": {
+    "title": "Tarifs",
+    "subtitle": "Choisissez le plan adapté à vos besoins",
+    "free": {
+      "name": "Gratuit",
+      "description": "Pour les projets personnels"
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Pour les entreprises en croissance"
+    },
+    "enterprise": {
+      "name": "Entreprise",
+      "description": "Pour les grandes organisations"
+    },
+    "features": {
+      "websites": "{count} site | {count} sites",
+      "pageviews": "{count} pages vues/mois",
+      "unlimitedPageviews": "Pages vues illimitées",
+      "dataRetention": "{days} jours de rétention",
+      "unlimitedRetention": "Rétention illimitée",
+      "api": "Accès API",
+      "emailReports": "Rapports par email",
+      "exportCsv": "Export CSV",
+      "customEvents": "Événements personnalisés",
+      "realtime": "Analytics temps réel",
+      "prioritySupport": "Support prioritaire",
+      "customIntegrations": "Intégrations personnalisées"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "description": "Une question ou un commentaire ? Nous serions ravis de vous entendre.",
+    "name": "Nom",
+    "namePlaceholder": "Votre nom",
+    "email": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "subject": "Sujet",
+    "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous en plus sur votre demande...",
+    "send": "Envoyer le message",
+    "successTitle": "Message envoyé !",
+    "successMessage": "Merci de nous avoir contactés. Nous vous répondrons bientôt.",
+    "sendAnother": "Envoyer un autre message",
+    "error": "Échec de l'envoi. Veuillez réessayer."
+  },
+  "errors": {
+    "notFound": "Page non trouvée",
+    "notFoundDescription": "La page que vous cherchez n'existe pas.",
+    "unauthorized": "Non autorisé",
+    "unauthorizedDescription": "Vous n'avez pas la permission d'accéder à cette page.",
+    "forbidden": "Accès interdit",
+    "serverError": "Erreur serveur",
+    "serverErrorDescription": "Une erreur s'est produite. Veuillez réessayer.",
+    "networkError": "Erreur réseau",
+    "tryAgain": "Réessayer",
+    "goHome": "Retour à l'accueil"
+  },
+  "footer": {
+    "copyright": "Tous droits réservés.",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "contact": "Contact",
+    "product": "Produit",
+    "selfHosted": "Auto-hébergé",
+    "openSource": "Open Source",
+    "documentation": "Documentation",
+    "releases": "Versions",
+    "community": "Communauté",
+    "discussions": "Discussions",
+    "legal": "Légal"
+  },
+  "developers": {
+    "title": "Documentation API",
+    "subtitle": "Intégrez les analytics GloboAnalytics dans vos applications avec notre API REST",
+    "meta": {
+      "title": "Documentation API - GloboAnalytics",
+      "description": "Documentation complète de l'API de la plateforme analytics GloboAnalytics"
+    }
+  },
+  "goals": {
+    "title": "Objectifs",
+    "subtitle": "Suivez les conversions et mesurez ce qui compte",
+    "addNew": "Créer un objectif",
+    "addNewDescription": "Définir un nouvel objectif de conversion à suivre",
+    "edit": "Modifier l'objectif",
+    "name": "Nom de l'objectif",
+    "description": "Description",
+    "type": "Type d'objectif",
+    "typeOptions": {
+      "URL": "Destination URL",
+      "EVENT": "Déclenchement d'événement",
+      "DURATION": "Durée de session",
+      "PAGES_PER_SESSION": "Pages par session",
+      "ECOMMERCE": "Transaction e-commerce"
+    },
+    "typeDescriptions": {
+      "URL": "Suivre quand les utilisateurs visitent une page spécifique",
+      "EVENT": "Suivre les événements personnalisés comme les clics",
+      "DURATION": "Suivre les sessions d'une durée minimum",
+      "PAGES_PER_SESSION": "Suivre les sessions avec plusieurs pages vues",
+      "ECOMMERCE": "Suivre les achats complétés"
+    },
+    "urlMatch": "URL à matcher",
+    "urlMatchType": "Type de correspondance",
+    "urlMatchTypes": {
+      "EXACT": "Correspondance exacte",
+      "CONTAINS": "Contient",
+      "STARTS_WITH": "Commence par",
+      "REGEX": "Expression régulière"
+    },
+    "eventName": "Nom de l'événement",
+    "eventCategory": "Catégorie",
+    "eventAction": "Action",
+    "eventLabel": "Label",
+    "eventValue": "Valeur minimum",
+    "durationSeconds": "Durée minimum (secondes)",
+    "minPages": "Pages minimum",
+    "revenueTracking": "Suivre le revenu",
+    "revenueTrackingDescription": "Associer une valeur monétaire aux conversions",
+    "defaultRevenue": "Revenu par défaut par conversion",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "conversions": "Conversions",
+    "conversionRate": "Taux de conversion",
+    "revenue": "Revenu",
+    "avgRevenue": "Revenu moyen",
+    "uniqueVisitors": "Visiteurs uniques",
+    "noGoals": "Aucun objectif",
+    "noGoalsDescription": "Créez votre premier objectif pour commencer à suivre les conversions",
+    "confirmDelete": "Voulez-vous vraiment supprimer cet objectif ?",
+    "deleteWarning": "Toutes les données de conversion seront définitivement supprimées.",
+    "created": "Objectif créé avec succès",
+    "updated": "Objectif mis à jour avec succès",
+    "deleted": "Objectif supprimé avec succès",
+    "templates": {
+      "title": "Commencer avec un modèle",
+      "signup": "Inscription utilisateur",
+      "signupDesc": "Suivre les inscriptions complétées",
+      "purchase": "Achat",
+      "purchaseDesc": "Suivre les commandes complétées",
+      "download": "Téléchargement de fichier",
+      "downloadDesc": "Suivre les téléchargements",
+      "contact": "Formulaire de contact",
+      "contactDesc": "Suivre les soumissions de formulaire"
+    },
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Objectif non trouvé",
+      "projectNotFound": "Projet non trouvé",
+      "nameRequired": "Le nom de l'objectif est requis",
+      "createFailed": "Échec de la création de l'objectif",
+      "updateFailed": "Échec de la mise à jour de l'objectif",
+      "deleteFailed": "Échec de la suppression de l'objectif"
+    }
+  },
+  "funnels": {
+    "title": "Entonnoirs",
+    "subtitle": "Visualisez le parcours utilisateur et identifiez les abandons",
+    "addNew": "Créer un entonnoir",
+    "addNewDescription": "Définissez les étapes que les utilisateurs suivent pour convertir",
+    "name": "Nom de l'entonnoir",
+    "namePlaceholder": "ex: Entonnoir de paiement",
+    "description": "Description",
+    "descriptionPlaceholder": "Décrivez ce que cet entonnoir suit",
+    "funnelDetails": "Détails de l'entonnoir",
+    "steps": "étapes",
+    "step": "Étape",
+    "addStep": "Ajouter une étape",
+    "stepName": "Nom de l'étape",
+    "stepNamePlaceholder": "ex: Voir le panier",
+    "stepType": "Type d'étape",
+    "stepTypes": {
+      "URL": "Visite de page",
+      "EVENT": "Événement",
+      "GOAL": "Objectif atteint"
+    },
+    "urlPattern": "Modèle d'URL",
+    "eventName": "Nom de l'événement",
+    "selectGoal": "Sélectionner un objectif",
+    "selectGoalPlaceholder": "Choisir un objectif",
+    "active": "Actif",
+    "activeDescription": "Suivre cet entonnoir",
+    "inactive": "Inactif",
+    "noFunnels": "Aucun entonnoir",
+    "noFunnelsDescription": "Créez votre premier entonnoir pour visualiser les parcours utilisateur",
+    "viewAnalysis": "Voir l'analyse",
+    "funnelVisualization": "Visualisation de l'entonnoir",
+    "funnelVisualizationDescription": "Voyez comment les utilisateurs progressent à chaque étape",
+    "stepDetails": "Détails des étapes",
+    "totalEntrants": "Total des entrants",
+    "totalConversions": "Entonnoir complété",
+    "totalDropOff": "Abandon total",
+    "dropOffRate": "Taux d'abandon",
+    "noData": "Aucune donnée pour cette période",
+    "create": "Créer l'entonnoir",
+    "update": "Mettre à jour l'entonnoir",
+    "cancel": "Annuler",
+    "created": "Entonnoir créé avec succès",
+    "updated": "Entonnoir mis à jour avec succès",
+    "deleted": "Entonnoir supprimé avec succès",
+    "confirmDelete": "Supprimer cet entonnoir ?",
+    "deleteWarning": "Cette action est irréversible.",
+    "visitors": "visiteurs",
+    "dropOff": "Abandon",
+    "conversionRate": "Taux de conversion",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Entonnoir non trouvé",
+      "projectNotFound": "Projet non trouvé",
+      "nameRequired": "Le nom de l'entonnoir est requis",
+      "minSteps": "Au moins 2 étapes sont requises",
+      "createFailed": "Échec de la création de l'entonnoir",
+      "updateFailed": "Échec de la mise à jour de l'entonnoir",
+      "deleteFailed": "Échec de la suppression de l'entonnoir"
+    }
+  },
+  "segments": {
+    "title": "Segments",
+    "subtitle": "Créez des segments d'audience personnalisés pour l'analyse",
+    "addNew": "Créer un segment",
+    "name": "Nom du segment",
+    "description": "Description",
+    "conditions": "Conditions",
+    "addCondition": "Ajouter une condition",
+    "matchAll": "Correspondre à toutes les conditions (ET)",
+    "matchAny": "Correspondre à une condition (OU)",
+    "field": "Champ",
+    "operator": "Opérateur",
+    "value": "Valeur",
+    "fields": {
+      "country": "Pays",
+      "city": "Ville",
+      "browser": "Navigateur",
+      "os": "Système d'exploitation",
+      "device": "Type d'appareil",
+      "referrer": "Référent",
+      "trafficSource": "Source de trafic",
+      "utmSource": "Source UTM",
+      "utmMedium": "Medium UTM",
+      "utmCampaign": "Campagne UTM",
+      "language": "Langue",
+      "newVisitor": "Nouveau visiteur"
+    },
+    "operators": {
+      "equals": "est égal à",
+      "notEquals": "n'est pas égal à",
+      "contains": "contient",
+      "notContains": "ne contient pas",
+      "startsWith": "commence par",
+      "in": "est l'un de",
+      "notIn": "n'est pas l'un de"
+    },
+    "shared": "Partagé avec l'équipe",
+    "noSegments": "Aucun segment",
+    "created": "Segment créé avec succès",
+    "updated": "Segment mis à jour avec succès",
+    "deleted": "Segment supprimé avec succès",
+    "duplicated": "Segment dupliqué avec succès",
+    "preview": "Aperçu",
+    "previewDescription": "Voir combien d'utilisateurs correspondent à ce segment",
+    "matchingUsers": "Utilisateurs correspondants",
+    "matchingSessions": "Sessions correspondantes",
+    "percentageOfUsers": "du total des utilisateurs",
+    "applyToStats": "Appliquer aux stats",
+    "removeSegment": "Retirer le filtre de segment",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Segment non trouvé",
+      "nameRequired": "Le nom du segment est requis",
+      "rulesRequired": "Au moins une règle est requise",
+      "projectNotFound": "Projet non trouvé",
+      "createFailed": "Échec de la création du segment",
+      "updateFailed": "Échec de la mise à jour du segment",
+      "deleteFailed": "Échec de la suppression du segment",
+      "duplicateFailed": "Échec de la duplication du segment"
+    }
+  },
+  "alerts": {
+    "title": "Alertes",
+    "subtitle": "Soyez notifié quand les métriques changent",
+    "addNew": "Créer une alerte",
+    "name": "Nom de l'alerte",
+    "metric": "Métrique",
+    "metrics": {
+      "VISITORS": "Visiteurs",
+      "PAGEVIEWS": "Pages vues",
+      "BOUNCE_RATE": "Taux de rebond",
+      "AVG_SESSION_DURATION": "Durée moyenne de session",
+      "CONVERSIONS": "Conversions",
+      "REVENUE": "Revenu",
+      "ERROR_RATE": "Taux d'erreur"
+    },
+    "condition": "Condition",
+    "conditions": {
+      "GREATER_THAN": "est supérieur à",
+      "LESS_THAN": "est inférieur à",
+      "INCREASE_BY_PERCENT": "augmente de %",
+      "DECREASE_BY_PERCENT": "diminue de %"
+    },
+    "threshold": "Seuil",
+    "compareType": "Comparer à",
+    "compareTypes": {
+      "PREVIOUS_DAY": "Jour précédent",
+      "PREVIOUS_WEEK": "Semaine précédente",
+      "PREVIOUS_MONTH": "Mois précédent",
+      "ABSOLUTE": "Valeur absolue"
+    },
+    "notifications": "Notifications",
+    "emailEnabled": "Envoyer un email",
+    "webhookUrl": "URL Webhook",
+    "slackWebhook": "Webhook Slack",
+    "noAlerts": "Aucune alerte",
+    "active": "Active",
+    "inactive": "Inactive",
+    "triggered": "Déclenchée",
+    "lastTriggered": "Dernier déclenchement",
+    "created": "Alerte créée avec succès",
+    "updated": "Alerte mise à jour avec succès",
+    "deleted": "Alerte supprimée avec succès",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Alerte non trouvée",
+      "projectNotFound": "Projet non trouvé",
+      "nameRequired": "Le nom de l'alerte est requis",
+      "createFailed": "Échec de la création de l'alerte",
+      "updateFailed": "Échec de la mise à jour de l'alerte",
+      "deleteFailed": "Échec de la suppression de l'alerte"
+    }
+  },
+  "reports": {
+    "title": "Rapports programmés",
+    "subtitle": "Automatisez la livraison des rapports dans votre boîte mail",
+    "addNew": "Créer un rapport",
+    "name": "Nom du rapport",
+    "metrics": "Métriques à inclure",
+    "segment": "Appliquer un segment",
+    "dateRange": "Période",
+    "dateRanges": {
+      "YESTERDAY": "Hier",
+      "LAST_7_DAYS": "7 derniers jours",
+      "LAST_30_DAYS": "30 derniers jours",
+      "LAST_MONTH": "Mois dernier"
+    },
+    "frequency": "Fréquence",
+    "frequencies": {
+      "DAILY": "Quotidien",
+      "WEEKLY": "Hebdomadaire",
+      "MONTHLY": "Mensuel"
+    },
+    "dayOfWeek": "Jour de la semaine",
+    "dayOfMonth": "Jour du mois",
+    "hour": "Heure",
+    "timezone": "Fuseau horaire",
+    "recipients": "Destinataires",
+    "addRecipient": "Ajouter un destinataire",
+    "format": "Format",
+    "formats": {
+      "PDF": "PDF",
+      "CSV": "CSV",
+      "EXCEL": "Excel"
+    },
+    "noReports": "Aucun rapport programmé",
+    "lastSent": "Dernier envoi",
+    "nextRun": "Prochain envoi",
+    "created": "Rapport créé avec succès",
+    "updated": "Rapport mis à jour avec succès",
+    "deleted": "Rapport supprimé avec succès",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "notFound": "Rapport non trouvé",
+      "nameRequired": "Le nom du rapport est requis",
+      "recipientsRequired": "Au moins un destinataire est requis"
+    }
+  },
+  "attribution": {
+    "title": "Attribution",
+    "subtitle": "Comprenez quels canaux génèrent des conversions",
+    "model": "Modèle d'attribution",
+    "models": {
+      "LAST_CLICK": "Dernier clic",
+      "FIRST_CLICK": "Premier clic",
+      "LINEAR": "Linéaire",
+      "TIME_DECAY": "Décroissance temporelle",
+      "POSITION_BASED": "Basé sur la position"
+    },
+    "modelDescriptions": {
+      "LAST_CLICK": "100% du crédit au dernier point de contact",
+      "FIRST_CLICK": "100% du crédit au premier point de contact",
+      "LINEAR": "Crédit égal à tous les points de contact",
+      "TIME_DECAY": "Plus de crédit aux points de contact récents",
+      "POSITION_BASED": "40% premier, 40% dernier, 20% milieu"
+    },
+    "channel": "Canal",
+    "conversions": "Conversions",
+    "revenue": "Revenu",
+    "touchpoints": "Points de contact",
+    "avgTouchpoints": "Points de contact moyens par conversion",
+    "noData": "Aucune donnée d'attribution pour cette période",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "projectNotFound": "Projet non trouvé",
+      "analysisFailed": "Échec de l'analyse d'attribution"
+    }
+  },
+  "consent": {
+    "title": "Gestion du consentement",
+    "subtitle": "Configuration conforme au RGPD",
+    "enabled": "Exiger le consentement",
+    "enabledDescription": "Les visiteurs doivent consentir avant le suivi",
+    "mode": "Mode de consentement",
+    "modes": {
+      "EXPLICIT": "Explicite (opt-in requis)",
+      "IMPLICIT": "Implicite (opt-out disponible)",
+      "DISABLED": "Désactivé (pas de consentement requis)"
+    },
+    "banner": "Paramètres de la bannière",
+    "bannerPosition": "Position",
+    "bannerPositions": {
+      "bottom": "Bas",
+      "top": "Haut",
+      "center": "Modal centré"
+    },
+    "bannerText": "Texte de la bannière",
+    "privacyUrl": "URL de la politique de confidentialité",
+    "consentDuration": "Durée du consentement (jours)",
+    "preview": "Aperçu",
+    "saved": "Paramètres de consentement enregistrés"
+  },
+  "dimensions": {
+    "title": "Dimensions personnalisées",
+    "subtitle": "Enrichissez vos analytics avec des données personnalisées",
+    "addNew": "Ajouter une dimension",
+    "addNewDescription": "Créez une dimension personnalisée pour suivre des données supplémentaires",
+    "configured": "Dimensions configurées",
+    "noDimensions": "Aucune dimension personnalisée configurée",
+    "noDimensionsDescription": "Ajoutez des dimensions personnalisées pour enrichir vos données analytics",
+    "dimensionsCount": "{count} dimension(s) configurée(s)",
+    "usage": "Utilisation",
+    "slotsUsed": "{used} sur {max} slots utilisés",
+    "available": "disponible(s)",
+    "slot": "Slot",
+    "selectSlot": "Sélectionner un slot",
+    "moreSlots": "{count} slots supplémentaires disponibles",
+    "name": "Nom",
+    "namePlaceholder": "ex: Type d'utilisateur, Plan, Catégorie",
+    "scope": "Portée",
+    "scopeTooltip": "La portée détermine combien de temps la valeur de la dimension persiste",
+    "scopes": {
+      "HIT": "Hit",
+      "SESSION": "Session",
+      "VISITOR": "Visiteur"
+    },
+    "scopeDescriptions": {
+      "HIT": "Appliqué à un seul pageview/événement",
+      "SESSION": "Appliqué à toute la session",
+      "VISITOR": "Persiste à travers toutes les visites"
+    },
+    "active": "Actif",
+    "inactive": "Inactif",
+    "values": "valeurs",
+    "create": "Créer la dimension",
+    "created": "Dimension créée avec succès",
+    "updated": "Dimension mise à jour avec succès",
+    "deleted": "Dimension supprimée avec succès",
+    "confirmDelete": "Supprimer cette dimension ?",
+    "deleteWarning": "Toutes les données collectées pour cette dimension seront définitivement supprimées.",
+    "integration": {
+      "title": "Guide d'intégration",
+      "description": "Comment envoyer des données de dimension personnalisée depuis votre tracker",
+      "setDimension": "Définir une valeur de dimension",
+      "setExample": "Définir la dimension avant le tracking",
+      "withEvent": "Envoyer avec un événement",
+      "eventExample": "Inclure des dimensions avec les événements"
+    },
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "projectNotFound": "Projet non trouvé",
+      "notFound": "Dimension non trouvée",
+      "nameRequired": "Le nom de la dimension est requis",
+      "invalidSlot": "Numéro de slot invalide (max: {max})",
+      "slotInUse": "Ce slot est déjà utilisé",
+      "createFailed": "Échec de la création de la dimension",
+      "updateFailed": "Échec de la mise à jour de la dimension",
+      "deleteFailed": "Échec de la suppression de la dimension"
+    }
+  },
+  "userFlow": {
+    "title": "Flux utilisateur",
+    "subtitle": "Visualisez le parcours des utilisateurs sur votre site",
+    "totalSessions": "Sessions totales",
+    "uniquePages": "Pages uniques",
+    "transitions": "Transitions",
+    "flowVisualization": "Visualisation du flux",
+    "flowVisualizationDescription": "Voyez comment les utilisateurs naviguent entre les pages",
+    "topEntryPages": "Pages d'entrée principales",
+    "topEntryPagesDescription": "Pages par lesquelles les utilisateurs arrivent",
+    "topExitPages": "Pages de sortie principales",
+    "topExitPagesDescription": "Pages par lesquelles les utilisateurs quittent",
+    "noData": "Aucune donnée pour cette période",
+    "filterByEntry": "Filtrer par page d'entrée",
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "projectNotFound": "Projet non trouvé",
+      "analysisFailed": "Échec de l'analyse du flux"
+    }
+  },
+  "siteSearch": {
+    "title": "Recherche interne",
+    "subtitle": "Analysez ce que vos utilisateurs recherchent sur votre site",
+    "totalSearches": "Total des recherches",
+    "uniqueTerms": "Termes uniques",
+    "avgResults": "Résultats moyens",
+    "noResultsRate": "Taux sans résultats",
+    "searches": "recherches",
+    "results": "résultats",
+    "topSearchTerms": "Termes les plus recherchés",
+    "topSearchTermsDescription": "Les requêtes de recherche les plus populaires",
+    "noResultsSearches": "Recherches sans résultats",
+    "noResultsDescription": "Requêtes qui n'ont retourné aucun résultat",
+    "allSearchesHaveResults": "Toutes les recherches ont des résultats",
+    "noData": "Aucune donnée de recherche pour cette période",
+    "integration": {
+      "title": "Guide d'intégration",
+      "description": "Comment tracker les recherches avec le tracker GloboAnalytics",
+      "trackSearch": "Tracker une recherche"
+    },
+    "errors": {
+      "unauthorized": "Non autorisé",
+      "projectNotFound": "Projet non trouvé",
+      "analysisFailed": "Échec de l'analyse des recherches"
+    }
+  },
+  "ai": {
+    "suggestFunnels": "Suggestions IA d'entonnoirs",
+    "suggestSegments": "Suggestions IA de segments",
+    "generateInsights": "Insights IA",
+    "funnelsDescription": "Obtenez des recommandations d'entonnoirs basées sur vos patterns de trafic",
+    "segmentsDescription": "Découvrez des segments d'audience précieux avec l'analyse IA",
+    "insightsDescription": "Obtenez des insights générés par l'IA sur vos données analytiques",
+    "generate": "Générer",
+    "generating": "Analyse...",
+    "regenerate": "Générer de nouvelles suggestions",
+    "apply": "Appliquer",
+    "show": "Afficher",
+    "hide": "Masquer",
+    "noSuggestions": "Aucune suggestion disponible. Réessayez avec plus de données.",
+    "poweredBy": "Propulsé par Claude AI"
+  },
+  "license": {
+    "title": "Licence",
+    "subtitle": "Gérer votre licence GloboAnalytics",
+    "currentTier": "Tier actuel",
+    "tier": "Tier",
+    "tiers": {
+      "community": "Communauté",
+      "pro": "Pro",
+      "enterprise": "Entreprise"
+    },
+    "status": "Statut",
+    "statuses": {
+      "active": "Active",
+      "expired": "Expirée",
+      "suspended": "Suspendue",
+      "pending": "En attente",
+      "invalid": "Invalide"
+    },
+    "organization": "Organisation",
+    "expiresIn": "Expire dans {days} jours",
+    "expiredAgo": "Expirée depuis {days} jours",
+    "expiresOn": "Expire le",
+    "activatedOn": "Activée le",
+    "featureLocked": "Fonctionnalité verrouillée",
+    "requiresTier": "Cette fonctionnalité nécessite le tier {tier} ou supérieur",
+    "upgradeRequired": "Mise à niveau vers {tier} requise",
+    "upgrade": "Mettre à niveau",
+    "viewPlans": "Voir les plans",
+    "activate": "Activer la licence",
+    "activateDescription": "Entrez votre clé de licence pour débloquer les fonctionnalités premium",
+    "licenseKey": "Clé de licence",
+    "licenseKeyPlaceholder": "GLOB-PRO-xxxx...",
+    "activating": "Activation...",
+    "activated": "Licence activée avec succès",
+    "activationFailed": "Échec de l'activation de la licence",
+    "invalidKey": "Clé de licence invalide",
+    "features": "Fonctionnalités incluses",
+    "limits": "Limites d'utilisation",
+    "domains": "Domaines",
+    "pageviews": "Pages vues/mois",
+    "users": "Membres d'équipe",
+    "unlimited": "Illimité",
+    "usage": {
+      "title": "Utilisation",
+      "domains": "{current} sur {max} domaines",
+      "pageviews": "{current} sur {max} pages vues",
+      "users": "{current} sur {max} utilisateurs"
+    },
+    "selfHosted": "Auto-hébergé",
+    "openSource": "Open Source",
+    "buyLicense": "Acheter une licence",
+    "contactSales": "Contacter les ventes",
+    "comparePlans": "Comparer les plans"
+  },
+  "setup": {
+    "title": "Bienvenue sur GloboAnalytics",
+    "back": "Retour",
+    "license": {
+      "description": "Configurez votre licence pour débloquer les fonctionnalités premium",
+      "label": "Clé de licence",
+      "hint": "Laissez vide pour utiliser l'édition Community gratuite",
+      "validate": "Valider et continuer",
+      "skipCommunity": "Continuer avec l'édition Community",
+      "invalid": "Clé de licence invalide",
+      "communityTitle": "L'édition Community inclut :",
+      "communityTier": "Édition Community",
+      "websites": "sites web",
+      "pageviews": "pages vues/mois",
+      "basicFeatures": "Fonctionnalités d'analyse de base"
+    },
+    "account": {
+      "description": "Créez votre compte administrateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "passwordHint": "Minimum 8 caractères",
+      "submit": "Créer le compte"
+    },
+    "success": {
+      "title": "Configuration terminée !",
+      "description": "Votre compte administrateur a été créé. Redirection vers la connexion..."
+    }
+  },
+  "search": {
+    "title": "Recherche",
+    "description": "Recherchez dans vos projets, pages, événements et plus encore",
+    "placeholder": "Rechercher partout...",
+    "placeholderProject": "Rechercher dans {name}...",
+    "search": "Rechercher",
+    "openSearch": "Ouvrir la recherche",
+    "noResults": "Aucun résultat trouvé",
+    "searchingIn": "Recherche dans",
+    "resultCount": "{count, plural, =0 {Aucun résultat} =1 {1 résultat} other {# résultats}}",
+    "steps": "étapes",
+    "categories": {
+      "projects": "Projets",
+      "pages": "Pages",
+      "events": "Événements",
+      "segments": "Segments",
+      "goals": "Objectifs",
+      "funnels": "Entonnoirs"
+    },
+    "quickActions": {
+      "title": "Actions rapides",
+      "dashboard": "Aller au tableau de bord",
+      "projects": "Voir les projets",
+      "account": "Paramètres du compte",
+      "viewStats": "Voir les statistiques",
+      "realtime": "Temps réel",
+      "goals": "Gérer les objectifs",
+      "settings": "Paramètres du projet"
+    },
+    "hints": {
+      "navigate": "Naviguer",
+      "select": "Sélectionner",
+      "close": "Fermer"
+    }
+  }
+}
