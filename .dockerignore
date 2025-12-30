@@ -1,0 +1,62 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+dist
+build
+coverage
+
+# Development
+.git
+.github
+.vscode
+.idea
+
+# Environment files (secrets)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Docker
+docker-compose*.yml
+Dockerfile*
+.docker
+
+# Tests
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+vitest.config.ts
+coverage
+
+# Documentation (not needed in image)
+*.md
+!README.md
+docs
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+SECURITY.md
+LICENSE
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.eslintcache
+*.tsbuildinfo
+
+# Prisma migrations (handled separately)
+prisma/migrations
+
+# One-click deploy configs
+railway.json
+render.yaml
+app.json
