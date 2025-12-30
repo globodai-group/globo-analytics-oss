@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link, useRouter } from "@/i18n/routing";
 import { signIn } from "next-auth/react";
@@ -19,7 +19,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -39,6 +38,25 @@ export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isOAuthLoading, setIsOAuthLoading] = useState<string | null>(null);
+  const [isCheckingSetup, setIsCheckingSetup] = useState(true);
+
+  // Check if setup is needed on mount
+  useEffect(() => {
+    async function checkSetup() {
+      try {
+        const response = await fetch("/api/setup");
+        const data = await response.json();
+        if (data.needsSetup) {
+          router.replace("/setup");
+          return;
+        }
+      } catch {
+        // If API fails, continue to login
+      }
+      setIsCheckingSetup(false);
+    }
+    checkSetup();
+  }, [router]);
 
   const {
     register,
@@ -91,6 +109,15 @@ export default function LoginPage() {
     setIsOAuthLoading(provider);
     await signIn(provider, { callbackUrl: "/dashboard" });
   };
+
+  // Show loading while checking setup
+  if (isCheckingSetup) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4 py-8 sm:py-12">
@@ -221,15 +248,6 @@ export default function LoginPage() {
             </Button>
           </div>
         </CardContent>
-
-        <CardFooter className="justify-center">
-          <p className="text-sm text-muted-foreground">
-            {t("dontHaveAccount")}{" "}
-            <Link href="/register" className="text-primary hover:underline">
-              {t("register")}
-            </Link>
-          </p>
-        </CardFooter>
       </Card>
     </div>
   );
