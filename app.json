@@ -1,0 +1,45 @@
+{
+  "name": "GloboAnalytics",
+  "description": "Privacy-focused, open-source web analytics platform",
+  "repository": "https://github.com/globodai-group/globo-analytics-oss",
+  "logo": "https://raw.githubusercontent.com/globodai-group/globo-analytics-oss/main/.github/assets/logo.png",
+  "keywords": ["analytics", "privacy", "web-analytics", "open-source"],
+  "website": "https://globoanalytics.com",
+  "stack": "container",
+  "env": {
+    "NEXTAUTH_SECRET": {
+      "description": "Secret for NextAuth.js session encryption (min 64 chars)",
+      "generator": "secret"
+    },
+    "NEXTAUTH_URL": {
+      "description": "Your application URL",
+      "value": ""
+    },
+    "LICENSE_KEY": {
+      "description": "Optional license key for premium features",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0"
+    },
+    {
+      "plan": "heroku-redis:mini"
+    }
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "pnpm db:migrate"
+  }
+}
