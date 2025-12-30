@@ -1,0 +1,79 @@
+                    GNU AFFERO GENERAL PUBLIC LICENSE
+                       Version 3, 19 November 2007
+
+ Copyright (C) 2025 GloboDai Group
+ https://globoanalytics.com
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published
+ by the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+                            ADDITIONAL TERMS
+
+ In addition to the terms of the GNU Affero General Public License, the
+ following additional terms apply to this software:
+
+ 1. TRADEMARK: "GloboAnalytics" and the GloboAnalytics logo are trademarks
+    of GloboDai Group. You may not use these trademarks without prior
+    written permission, except as required for reasonable and customary
+    use in describing the origin of the work.
+
+ 2. CLOUD API: The GloboCloud API (api.globoanalytics.com) is a separate
+    commercial service. Use of the Cloud API requires a valid license key
+    and is subject to the GloboAnalytics Terms of Service.
+
+ 3. ATTRIBUTION: If you modify this software and make it available as a
+    network service, you must:
+    (a) Display a notice that the service is powered by GloboAnalytics OSS
+    (b) Provide a link to the original source code repository
+    (c) Make your modifications available under the AGPL-3.0 license
+
+ 4. COMMERCIAL LICENSE: For commercial use without AGPL obligations,
+    contact enterprise@globoanalytics.com for a commercial license.
+
+                     GNU AFFERO GENERAL PUBLIC LICENSE
+                        TERMS AND CONDITIONS
+
+ 0. Definitions.
+
+ "This License" refers to version 3 of the GNU Affero General Public License.
+
+ "Copyright" also means copyright-like laws that apply to other kinds of
+ works, such as semiconductor masks.
+
+ "The Program" refers to any copyrightable work licensed under this
+ License.  Each licensee is addressed as "you".  "Licensees" and
+ "recipients" may be individuals or organizations.
+
+ To "modify" a work means to copy from or adapt all or part of the work
+ in a fashion requiring copyright permission, other than the making of an
+ exact copy.  The resulting work is called a "modified version" of the
+ earlier work or a work "based on" the earlier work.
+
+ A "covered work" means either the unmodified Program or a work based
+ on the Program.
+
+ To "propagate" a work means to do anything with it that, without
+ permission, would make you directly or secondarily liable for
+ infringement under applicable copyright law, except executing it on a
+ computer or modifying a private copy.  Propagation includes copying,
+ distribution (with or without modification), making available to the
+ public, and in some countries other activities as well.
+
+ To "convey" a work means any kind of propagation that enables other
+ parties to make or receive copies.  Mere interaction with a user through
+ a computer network, with no transfer of a copy, is not conveying.
+
+ [Full AGPL-3.0 license text continues...]
+
+ For the complete license text, see:
+ https://www.gnu.org/licenses/agpl-3.0.txt

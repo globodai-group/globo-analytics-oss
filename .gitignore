@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Playwright
+test-results/
+playwright-report/
+
+# Turbo
+.turbo/
+
+# Prisma
+prisma/*.db
+prisma/*.db-journal
+
+# Cache
+.cache/
+*.tsbuildinfo
+
+# Docker
+.docker/
