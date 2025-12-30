@@ -28,6 +28,7 @@ export default defineConfig({
         "**/*.d.ts",
       ],
       thresholds: {
+        // Start with achievable thresholds, gradually increase
         lines: 50,
         functions: 60,
         branches: 35,

@@ -32,7 +32,6 @@ export async function authenticateApiRequest(request: NextRequest) {
       lastName: true,
       email: true,
       role: true,
-      licenseKey: true,
     },
   });
 

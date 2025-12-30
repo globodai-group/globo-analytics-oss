@@ -52,12 +52,10 @@ model User {
   pendingEmail           String?
   pendingEmailToken      String?
 
-  // OSS License (optional - for pro features)
-  licenseKey             String?
-
   // Tracking
   hasWebsites            Boolean   @default(false)
   canTrack               Boolean   @default(true)
+  emailAccountLimit      Boolean   @default(true)
 
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
@@ -1294,7 +1292,7 @@ model License {
 enum LicenseType {
   COMMUNITY   // Free (no key needed)
   PRO         // Paid
-  ENTERPRISE  // Enterprise
+  ENTERPRISE  // Paid
 }
 
 enum LicenseStatus {

@@ -55,6 +55,9 @@ const envSchema = z.object({
   LICENSE_API_URL: z.string().url().optional(),
   LICENSE_API_KEY: z.string().optional(),
 
+  // AI (Anthropic)
+  ANTHROPIC_API_KEY: z.string().optional(),
+
   // Feature Flags
   FEATURE_RATE_LIMITING: z
     .string()
@@ -152,6 +155,9 @@ export const features = {
   },
   get hasLicenseAPI() {
     return !!getEnv().LICENSE_API_URL && !!getEnv().LICENSE_API_KEY;
+  },
+  get hasAI() {
+    return !!getEnv().ANTHROPIC_API_KEY;
   },
 };
 

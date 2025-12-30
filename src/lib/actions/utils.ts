@@ -43,7 +43,7 @@ export async function requireAuth(locale: string = "en") {
  */
 export class AuthError extends Error {
   constructor(locale: string = "en") {
-    super(locale === "fr" ? "Non autorise" : "Unauthorized");
+    super(locale === "fr" ? "Non autorisé" : "Unauthorized");
     this.name = "AuthError";
   }
 }
@@ -54,13 +54,13 @@ export class AuthError extends Error {
 export class NotFoundError extends Error {
   constructor(resource: string, locale: string = "en") {
     const messages: Record<string, Record<string, string>> = {
-      project: { fr: "Projet non trouve", en: "Project not found" },
-      website: { fr: "Site web non trouve", en: "Website not found" },
-      goal: { fr: "Objectif non trouve", en: "Goal not found" },
-      funnel: { fr: "Entonnoir non trouve", en: "Funnel not found" },
-      segment: { fr: "Segment non trouve", en: "Segment not found" },
-      alert: { fr: "Alerte non trouvee", en: "Alert not found" },
-      report: { fr: "Rapport non trouve", en: "Report not found" },
+      project: { fr: "Projet non trouvé", en: "Project not found" },
+      website: { fr: "Site web non trouvé", en: "Website not found" },
+      goal: { fr: "Objectif non trouvé", en: "Goal not found" },
+      funnel: { fr: "Entonnoir non trouvé", en: "Funnel not found" },
+      segment: { fr: "Segment non trouvé", en: "Segment not found" },
+      alert: { fr: "Alerte non trouvée", en: "Alert not found" },
+      report: { fr: "Rapport non trouvé", en: "Report not found" },
     };
     super(messages[resource]?.[locale] || messages[resource]?.["en"] || `${resource} not found`);
     this.name = "NotFoundError";
@@ -78,7 +78,7 @@ export async function getWebsiteWithAuth(websiteId: number, locale: string = "en
   });
 
   if (!website) {
-    throw new Error(locale === "fr" ? "Site non trouve" : "Website not found");
+    throw new Error(locale === "fr" ? "Site non trouvé" : "Website not found");
   }
 
   return { session, website };
@@ -89,23 +89,23 @@ export async function getWebsiteWithAuth(websiteId: number, locale: string = "en
  */
 const messages: Record<string, Record<string, string>> = {
   unauthorized: {
-    fr: "Non autorise",
+    fr: "Non autorisé",
     en: "Unauthorized",
   },
   notFound: {
-    fr: "Non trouve",
+    fr: "Non trouvé",
     en: "Not found",
   },
   userNotFound: {
-    fr: "Utilisateur non trouve",
+    fr: "Utilisateur non trouvé",
     en: "User not found",
   },
   websiteNotFound: {
-    fr: "Site web non trouve",
+    fr: "Site web non trouvé",
     en: "Website not found",
   },
   invalidInput: {
-    fr: "Donnees invalides",
+    fr: "Données invalides",
     en: "Invalid input",
   },
   serverError: {
@@ -113,7 +113,7 @@ const messages: Record<string, Record<string, string>> = {
     en: "An error occurred",
   },
   emailExists: {
-    fr: "Cet email est deja utilise",
+    fr: "Cet email est déjà utilisé",
     en: "This email is already in use",
   },
   invalidCredentials: {
@@ -121,43 +121,43 @@ const messages: Record<string, Record<string, string>> = {
     en: "Invalid email or password",
   },
   passwordUpdated: {
-    fr: "Mot de passe mis a jour",
+    fr: "Mot de passe mis à jour",
     en: "Password updated successfully",
   },
   profileUpdated: {
-    fr: "Profil mis a jour",
+    fr: "Profil mis à jour",
     en: "Profile updated successfully",
   },
   websiteCreated: {
-    fr: "Site web cree avec succes",
+    fr: "Site web créé avec succès",
     en: "Website created successfully",
   },
   websiteUpdated: {
-    fr: "Site web mis a jour avec succes",
+    fr: "Site web mis à jour avec succès",
     en: "Website updated successfully",
   },
   websiteDeleted: {
-    fr: "Site web supprime avec succes",
+    fr: "Site web supprimé avec succès",
     en: "Website deleted successfully",
   },
   tokenGenerated: {
-    fr: "Token API genere",
+    fr: "Token API généré",
     en: "API token generated",
   },
   preferencesUpdated: {
-    fr: "Preferences mises a jour",
+    fr: "Préférences mises à jour",
     en: "Preferences updated successfully",
   },
   accountDeleted: {
-    fr: "Compte supprime",
+    fr: "Compte supprimé",
     en: "Account deleted successfully",
   },
   tfaEnabled: {
-    fr: "Double authentification activee",
+    fr: "Double authentification activée",
     en: "Two-factor authentication enabled",
   },
   tfaDisabled: {
-    fr: "Double authentification desactivee",
+    fr: "Double authentification désactivée",
     en: "Two-factor authentication disabled",
   },
   invalidCode: {
@@ -165,7 +165,7 @@ const messages: Record<string, Record<string, string>> = {
     en: "Invalid code",
   },
   codeExpired: {
-    fr: "Code expire",
+    fr: "Code expiré",
     en: "Code expired",
   },
 };
