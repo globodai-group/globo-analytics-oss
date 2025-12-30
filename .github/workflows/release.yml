@@ -9,6 +9,9 @@ permissions:
   pull-requests: read
 
 jobs:
+  # ==========================================================================
+  # Release - Version bump, Tag, GitHub Release, Docker Push
+  # ==========================================================================
   release:
     name: Create Release
     runs-on: ubuntu-latest
@@ -101,10 +104,54 @@ jobs:
           prerelease: false
           generate_release_notes: false
 
-      - name: Update Docker tags
+      # ==========================================================================
+      # Docker Build & Push
+      # ==========================================================================
+      - name: Set up Docker Buildx
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          tags: |
+            artik0din/globo-analytics-oss:latest
+            artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Release Summary
         if: steps.tag_check.outputs.exists == 'false'
         run: |
-          echo "Release ${{ steps.version.outputs.tag }} created successfully"
-          echo "Docker image will be tagged as:"
-          echo "  - artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}"
-          echo "  - artik0din/globo-analytics-oss:latest"
+          echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Version: ${{ steps.version.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Docker Images:**" >> $GITHUB_STEP_SUMMARY
+          echo "- \`artik0din/globo-analytics-oss:latest\`" >> $GITHUB_STEP_SUMMARY
+          echo "- \`artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Deploy with:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "docker pull artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Skip notification
+        if: steps.tag_check.outputs.exists == 'true'
+        run: |
+          echo "## Release Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Tag ${{ steps.version.outputs.tag }} already exists." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To create a new release, bump the version in \`package.json\`." >> $GITHUB_STEP_SUMMARY
