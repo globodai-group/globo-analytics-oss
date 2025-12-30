@@ -12,8 +12,8 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    # Only run on merge commits from rec branch
-    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'rec')
+    # Only run on merge commits from dev branch
+    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'dev')
 
     steps:
       - uses: actions/checkout@v4
@@ -106,5 +106,5 @@ jobs:
         run: |
           echo "Release ${{ steps.version.outputs.tag }} created successfully"
           echo "Docker image will be tagged as:"
-          echo "  - globoanalytics/globo-analytics-oss:${{ steps.version.outputs.version }}"
-          echo "  - globoanalytics/globo-analytics-oss:latest"
+          echo "  - artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}"
+          echo "  - artik0din/globo-analytics-oss:latest"

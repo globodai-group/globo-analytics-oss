@@ -187,9 +187,9 @@ jobs:
           file: docker/Dockerfile
           push: true
           tags: |
-            globoanalytics/globo-analytics-oss:latest
-            globoanalytics/globo-analytics-oss:${{ steps.version.outputs.version }}
-            globoanalytics/globo-analytics-oss:${{ github.sha }}
+            artik0din/globo-analytics-oss:latest
+            artik0din/globo-analytics-oss:${{ steps.version.outputs.version }}
+            artik0din/globo-analytics-oss:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
