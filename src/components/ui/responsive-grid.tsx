@@ -160,7 +160,7 @@ export function TwoColumn({
         "flex gap-6 lg:gap-8",
         stackClass[stackBelow],
         sidebarPosition === "right" && "flex-row-reverse",
-        className
+        className,
       )}
     >
       {children}

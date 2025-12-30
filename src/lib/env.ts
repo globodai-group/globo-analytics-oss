@@ -13,7 +13,9 @@ import { logger } from "./logger";
  */
 const envSchema = z.object({
   // Core App
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
   NEXT_PUBLIC_APP_NAME: z.string().default("GloboAnalytics"),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 
@@ -24,13 +26,19 @@ const envSchema = z.object({
   NEXTAUTH_URL: z.string().url().optional(),
   NEXTAUTH_SECRET: z
     .string()
-    .min(32, "NEXTAUTH_SECRET must be at least 32 characters for production security"),
+    .min(
+      32,
+      "NEXTAUTH_SECRET must be at least 32 characters for production security",
+    ),
 
   // Redis (optional but recommended for production)
   REDIS_URL: z.string().url().optional(),
 
   // Cron
-  CRON_SECRET: z.string().min(16, "CRON_SECRET must be at least 16 characters").optional(),
+  CRON_SECRET: z
+    .string()
+    .min(16, "CRON_SECRET must be at least 16 characters")
+    .optional(),
 
   // Email
   SMTP_HOST: z.string().optional(),
@@ -98,7 +106,12 @@ export function getEnv(): Env {
     const errorDetails: Record<string, string> = {};
 
     Object.entries(errors).forEach(([key, value]) => {
-      if (key !== "_errors" && value && typeof value === "object" && "_errors" in value) {
+      if (
+        key !== "_errors" &&
+        value &&
+        typeof value === "object" &&
+        "_errors" in value
+      ) {
         const errorMessages = (value as { _errors: string[] })._errors;
         if (errorMessages.length > 0) {
           errorDetails[key] = errorMessages.join(", ");
@@ -106,7 +119,11 @@ export function getEnv(): Env {
       }
     });
 
-    logger.error({ type: "env", event: "validation_failed", errors: errorDetails });
+    logger.error({
+      type: "env",
+      event: "validation_failed",
+      errors: errorDetails,
+    });
 
     // In development, continue with defaults
     if (process.env.NODE_ENV === "development") {
@@ -117,9 +134,12 @@ export function getEnv(): Env {
       });
       cachedEnv = envSchema.parse({
         ...process.env,
-        DATABASE_URL: process.env.DATABASE_URL || "postgresql://localhost:5432/globoanalytics",
+        DATABASE_URL:
+          process.env.DATABASE_URL ||
+          "postgresql://localhost:5432/globoanalytics",
         NEXTAUTH_SECRET:
-          process.env.NEXTAUTH_SECRET || "development-secret-key-min-32-chars-for-security",
+          process.env.NEXTAUTH_SECRET ||
+          "development-secret-key-min-32-chars-for-security",
       });
       return cachedEnv;
     }

@@ -13,7 +13,13 @@ import {
 } from "@/lib/actions/tfa";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Smartphone, Key, Mail, FileKey } from "lucide-react";
@@ -47,10 +53,15 @@ export default function TfaPage() {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const translations = {
-    title: locale === "fr" ? "Vérification en deux étapes" : "Two-Step Verification",
-    chooseMethod: locale === "fr" ? "Choisir une autre méthode" : "Choose another method",
+    title:
+      locale === "fr" ? "Vérification en deux étapes" : "Two-Step Verification",
+    chooseMethod:
+      locale === "fr" ? "Choisir une autre méthode" : "Choose another method",
     totp: {
-      title: locale === "fr" ? "Application d'authentification" : "Authenticator App",
+      title:
+        locale === "fr"
+          ? "Application d'authentification"
+          : "Authenticator App",
       description:
         locale === "fr"
           ? "Entrez le code à 6 chiffres de votre application"
@@ -62,7 +73,8 @@ export default function TfaPage() {
         locale === "fr"
           ? "Utilisez votre clé de sécurité ou empreinte digitale"
           : "Use your security key or fingerprint",
-      button: locale === "fr" ? "Utiliser la clé de sécurité" : "Use security key",
+      button:
+        locale === "fr" ? "Utiliser la clé de sécurité" : "Use security key",
     },
     email: {
       title: locale === "fr" ? "Code par email" : "Email Code",
@@ -113,7 +125,10 @@ export default function TfaPage() {
     }
   }
 
-  function handleKeyDown(index: number, e: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyDown(
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>,
+  ) {
     if (e.key === "Backspace" && !code[index] && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
@@ -121,7 +136,10 @@ export default function TfaPage() {
 
   function handlePaste(e: React.ClipboardEvent) {
     e.preventDefault();
-    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    const pastedData = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, 6);
 
     if (pastedData.length === 6) {
       const newCode = pastedData.split("");
@@ -180,7 +198,9 @@ export default function TfaPage() {
   async function handleSubmitRecoveryCode() {
     if (!recoveryCode.trim()) {
       setError(
-        locale === "fr" ? "Veuillez entrer un code de récupération" : "Please enter a recovery code"
+        locale === "fr"
+          ? "Veuillez entrer un code de récupération"
+          : "Please enter a recovery code",
       );
       return;
     }
@@ -188,7 +208,11 @@ export default function TfaPage() {
     setIsLoading(true);
     setError("");
 
-    const result = await verifyRecoveryCodeAction(userId, recoveryCode.trim(), locale);
+    const result = await verifyRecoveryCodeAction(
+      userId,
+      recoveryCode.trim(),
+      locale,
+    );
 
     if (result.success) {
       const signInResult = await signIn("credentials", {
@@ -226,7 +250,12 @@ export default function TfaPage() {
         optionsJSON: options as PublicKeyCredentialRequestOptionsJSON,
       });
 
-      const verifyResult = await verifyPasskeyAuthAction(authentication, challenge, userId, locale);
+      const verifyResult = await verifyPasskeyAuthAction(
+        authentication,
+        challenge,
+        userId,
+        locale,
+      );
 
       if (!verifyResult.success) {
         throw new Error(verifyResult.error || "Verification failed");
@@ -250,7 +279,7 @@ export default function TfaPage() {
           ? err.message
           : locale === "fr"
             ? "Échec de l'authentification"
-            : "Authentication failed"
+            : "Authentication failed",
       );
     }
 
@@ -350,7 +379,9 @@ export default function TfaPage() {
                 ))}
               </div>
 
-              {error && <p className="text-center text-sm text-red-600">{error}</p>}
+              {error && (
+                <p className="text-center text-sm text-red-600">{error}</p>
+              )}
 
               {method === "email" && resendMessage && (
                 <p
@@ -360,7 +391,11 @@ export default function TfaPage() {
                 </p>
               )}
 
-              <Button type="submit" className="w-full" disabled={isLoading || code.some((d) => !d)}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || code.some((d) => !d)}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -399,9 +434,15 @@ export default function TfaPage() {
           {/* Passkey */}
           {method === "passkey" && (
             <div className="space-y-6">
-              {error && <p className="text-center text-sm text-red-600">{error}</p>}
+              {error && (
+                <p className="text-center text-sm text-red-600">{error}</p>
+              )}
 
-              <Button onClick={handlePasskeyAuth} className="w-full" disabled={isLoading}>
+              <Button
+                onClick={handlePasskeyAuth}
+                className="w-full"
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -435,9 +476,15 @@ export default function TfaPage() {
                 disabled={isLoading}
               />
 
-              {error && <p className="text-center text-sm text-red-600">{error}</p>}
+              {error && (
+                <p className="text-center text-sm text-red-600">{error}</p>
+              )}
 
-              <Button type="submit" className="w-full" disabled={isLoading || !recoveryCode.trim()}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading || !recoveryCode.trim()}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -459,25 +506,41 @@ export default function TfaPage() {
             </p>
             <div className="grid grid-cols-2 gap-2">
               {method !== "totp" && hasTotp && (
-                <Button variant="outline" size="sm" onClick={() => switchMethod("totp")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => switchMethod("totp")}
+                >
                   <Smartphone className="h-4 w-4 mr-2" />
                   App
                 </Button>
               )}
               {method !== "passkey" && hasPasskey && (
-                <Button variant="outline" size="sm" onClick={() => switchMethod("passkey")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => switchMethod("passkey")}
+                >
                   <Key className="h-4 w-4 mr-2" />
                   Passkey
                 </Button>
               )}
               {method !== "email" && (
-                <Button variant="outline" size="sm" onClick={() => switchMethod("email")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => switchMethod("email")}
+                >
                   <Mail className="h-4 w-4 mr-2" />
                   Email
                 </Button>
               )}
               {method !== "recovery" && (
-                <Button variant="outline" size="sm" onClick={() => switchMethod("recovery")}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => switchMethod("recovery")}
+                >
                   <FileKey className="h-4 w-4 mr-2" />
                   Recovery
                 </Button>

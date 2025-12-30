@@ -18,7 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { createCustomDimensionAction } from "@/lib/actions/custom-dimensions";
 import { toast } from "sonner";
 
@@ -116,14 +121,22 @@ export function DimensionForm({
               )}
             </SelectContent>
           </Select>
-          {errors.slot && <p className="text-sm text-destructive">{errors.slot.message}</p>}
+          {errors.slot && (
+            <p className="text-sm text-destructive">{errors.slot.message}</p>
+          )}
         </div>
 
         {/* Name */}
         <div className="space-y-2">
           <Label htmlFor="name">{t("name")}</Label>
-          <Input id="name" placeholder={t("namePlaceholder")} {...register("name")} />
-          {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+          <Input
+            id="name"
+            placeholder={t("namePlaceholder")}
+            {...register("name")}
+          />
+          {errors.name && (
+            <p className="text-sm text-destructive">{errors.name.message}</p>
+          )}
         </div>
 
         {/* Scope */}
@@ -143,7 +156,9 @@ export function DimensionForm({
           </div>
           <Select
             value={currentScope}
-            onValueChange={(value) => setValue("scope", value as DimensionScope)}
+            onValueChange={(value) =>
+              setValue("scope", value as DimensionScope)
+            }
           >
             <SelectTrigger>
               <SelectValue />

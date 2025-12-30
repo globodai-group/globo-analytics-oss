@@ -4,7 +4,13 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Search, AlertCircle, TrendingUp, Hash } from "lucide-react";
 import { getSiteSearchAnalyticsAction } from "@/lib/actions/site-search";
 import { ProjectDateRangePicker } from "@/components/analytics/project-date-range-picker";
@@ -32,7 +38,10 @@ interface SearchAnalytics {
   avgResultsPerSearch: number;
 }
 
-export default async function SiteSearchPage({ params, searchParams }: PageProps) {
+export default async function SiteSearchPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id } = await params;
   const { from, to } = await searchParams;
   const projectId = parseInt(id);
@@ -62,7 +71,11 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
     to: to ? new Date(to) : now,
   };
 
-  const result = await getSiteSearchAnalyticsAction(projectId, dateRange, locale);
+  const result = await getSiteSearchAnalyticsAction(
+    projectId,
+    dateRange,
+    locale,
+  );
   const data = result.success ? (result.data as SearchAnalytics) : null;
 
   const noResultsRate =
@@ -81,8 +94,12 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
             </Button>
           </Link>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold truncate">{t("title")}</h1>
-            <p className="text-xs sm:text-sm text-muted-foreground">{t("subtitle")}</p>
+            <h1 className="text-lg sm:text-2xl font-bold truncate">
+              {t("title")}
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("subtitle")}
+            </p>
           </div>
         </div>
         <div className="flex justify-end">
@@ -95,34 +112,48 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
         <div className="grid gap-4 md:grid-cols-4 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("totalSearches")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("totalSearches")}
+              </CardTitle>
               <Search className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data.totalSearches.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {data.totalSearches.toLocaleString()}
+              </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("uniqueTerms")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("uniqueTerms")}
+              </CardTitle>
               <Hash className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data.uniqueSearchTerms.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {data.uniqueSearchTerms.toLocaleString()}
+              </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("avgResults")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("avgResults")}
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data.avgResultsPerSearch}</div>
+              <div className="text-2xl font-bold">
+                {data.avgResultsPerSearch}
+              </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("noResultsRate")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("noResultsRate")}
+              </CardTitle>
               <AlertCircle className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -151,7 +182,10 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
                 {data.topSearchTerms.map((term, i) => (
                   <div key={i} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium truncate max-w-[200px]" title={term.term}>
+                      <span
+                        className="font-medium truncate max-w-[200px]"
+                        title={term.term}
+                      >
                         &quot;{term.term}&quot;
                       </span>
                       <div className="flex items-center gap-2">
@@ -166,7 +200,9 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">{t("noData")}</div>
+              <div className="text-center py-8 text-muted-foreground">
+                {t("noData")}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -194,7 +230,10 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
                       </span>
                       <span className="font-medium">{term.count}</span>
                     </div>
-                    <Progress value={term.percentage} className="h-2 [&>div]:bg-destructive" />
+                    <Progress
+                      value={term.percentage}
+                      className="h-2 [&>div]:bg-destructive"
+                    />
                   </div>
                 ))}
               </div>
@@ -215,7 +254,9 @@ export default async function SiteSearchPage({ params, searchParams }: PageProps
         </CardHeader>
         <CardContent>
           <div className="rounded-lg bg-muted p-4">
-            <p className="text-sm font-medium mb-2">{t("integration.trackSearch")}</p>
+            <p className="text-sm font-medium mb-2">
+              {t("integration.trackSearch")}
+            </p>
             <pre className="text-xs bg-background p-3 rounded border overflow-x-auto">
               {`// Track a search
 gr('event', 'search', {

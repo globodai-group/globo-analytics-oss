@@ -14,7 +14,11 @@
  */
 
 // Configuration
-export { algoliaConfig, validateAlgoliaConfig, isAlgoliaAdminConfigured } from "./config";
+export {
+  algoliaConfig,
+  validateAlgoliaConfig,
+  isAlgoliaAdminConfigured,
+} from "./config";
 export type { AlgoliaIndex } from "./config";
 
 // Types

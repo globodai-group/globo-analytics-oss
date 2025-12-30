@@ -51,7 +51,11 @@ interface PreferencesFormProps {
   currentLocale: string;
 }
 
-export function PreferencesForm({ userLocale, userTimezone, currentLocale }: PreferencesFormProps) {
+export function PreferencesForm({
+  userLocale,
+  userTimezone,
+  currentLocale,
+}: PreferencesFormProps) {
   const t = useTranslations("account.preferences");
   const tCommon = useTranslations("common");
   const router = useRouter();
@@ -79,7 +83,10 @@ export function PreferencesForm({ userLocale, userTimezone, currentLocale }: Pre
 
         // If locale changed, redirect to the new locale
         if (data.locale !== currentLocale) {
-          const newPath = pathname.replace(`/${currentLocale}`, `/${data.locale}`);
+          const newPath = pathname.replace(
+            `/${currentLocale}`,
+            `/${data.locale}`,
+          );
           router.push(newPath);
         }
       } else {

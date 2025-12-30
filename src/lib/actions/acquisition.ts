@@ -26,7 +26,7 @@ export interface ChannelBreakdown {
  */
 export async function getChannelBreakdownAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<ChannelBreakdown[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -55,7 +55,10 @@ export async function getChannelBreakdownAction(
       },
     });
 
-    const total = stats.reduce((sum, stat) => sum + Number(stat._sum?.count ?? 0), 0);
+    const total = stats.reduce(
+      (sum, stat) => sum + Number(stat._sum?.count ?? 0),
+      0,
+    );
 
     // Map to channel icons
     const channelIcons: Record<string, string> = {
@@ -102,8 +105,10 @@ export interface SourceMediumData {
 export async function getSourceMediumAction(
   projectId: number,
   dateRange: DateRange,
-  pagination: { page: number; perPage: number } = { page: 1, perPage: 20 }
-): Promise<ActionResult<{ data: SourceMediumData[]; total: number; totalPages: number }>> {
+  pagination: { page: number; perPage: number } = { page: 1, perPage: 20 },
+): Promise<
+  ActionResult<{ data: SourceMediumData[]; total: number; totalPages: number }>
+> {
   try {
     const isOwner = await hasProjectAccess(projectId);
     if (!isOwner) {
@@ -210,7 +215,7 @@ export interface UtmCampaignData {
  */
 export async function getUtmCampaignsAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<UtmCampaignData[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -273,7 +278,7 @@ export interface LandingPageBySourceData {
  */
 export async function getLandingPagesBySourceAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<LandingPageBySourceData[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -332,7 +337,7 @@ export interface ReferrerData {
  */
 export async function getTopReferrersAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<ReferrerData[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -361,7 +366,10 @@ export async function getTopReferrersAction(
       take: 20,
     });
 
-    const total = stats.reduce((sum, stat) => sum + Number(stat._sum?.count ?? 0), 0);
+    const total = stats.reduce(
+      (sum, stat) => sum + Number(stat._sum?.count ?? 0),
+      0,
+    );
 
     const data = stats.map((stat) => ({
       referrer: stat.value || "(direct)",

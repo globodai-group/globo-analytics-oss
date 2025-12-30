@@ -6,7 +6,13 @@ import { Trash2 } from "lucide-react";
 import { useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -49,7 +55,7 @@ export function DeleteAccountSection({
       toast.error(
         locale === "fr"
           ? `Tapez "${expectedText}" pour confirmer`
-          : `Type "${expectedText}" to confirm`
+          : `Type "${expectedText}" to confirm`,
       );
       return;
     }

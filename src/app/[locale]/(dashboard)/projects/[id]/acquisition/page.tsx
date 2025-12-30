@@ -2,7 +2,13 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ProjectDateRangePicker } from "@/components/analytics/project-date-range-picker";
 import { ChannelBreakdownCard } from "@/components/acquisition/channel-breakdown";
 import { SourceMediumTable } from "@/components/acquisition/source-medium-table";
@@ -15,7 +21,10 @@ interface AcquisitionPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
 }
 
-export default async function AcquisitionPage({ params, searchParams }: AcquisitionPageProps) {
+export default async function AcquisitionPage({
+  params,
+  searchParams,
+}: AcquisitionPageProps) {
   const { id, locale } = await params;
   const { from, to } = await searchParams;
 
@@ -128,13 +137,22 @@ export default async function AcquisitionPage({ params, searchParams }: Acquisit
       </div>
 
       {/* Channel Breakdown */}
-      <ChannelBreakdownCard projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+      <ChannelBreakdownCard
+        projectId={project.id}
+        dateRange={{ from: startDate, to: endDate }}
+      />
 
       {/* Source/Medium Table */}
-      <SourceMediumTable projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+      <SourceMediumTable
+        projectId={project.id}
+        dateRange={{ from: startDate, to: endDate }}
+      />
 
       {/* UTM Campaigns */}
-      <UtmCampaignTable projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+      <UtmCampaignTable
+        projectId={project.id}
+        dateRange={{ from: startDate, to: endDate }}
+      />
     </div>
   );
 }

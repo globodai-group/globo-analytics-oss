@@ -9,7 +9,11 @@ interface FunnelDeleteButtonProps {
   locale: string;
 }
 
-export function FunnelDeleteButton({ funnelId, funnelName, locale }: FunnelDeleteButtonProps) {
+export function FunnelDeleteButton({
+  funnelId,
+  funnelName,
+  locale,
+}: FunnelDeleteButtonProps) {
   return (
     <DeleteResourceDialog
       resourceId={funnelId}

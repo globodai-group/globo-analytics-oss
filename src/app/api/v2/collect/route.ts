@@ -49,7 +49,9 @@ function isValidTrackingUrl(url: string | undefined): boolean {
 
 // SECURITY: Sanitize custom dimensions to prevent XSS and injection
 const MAX_CUSTOM_DIMENSION_LENGTH = 150;
-function sanitizeCustomDimension(value: string | undefined): string | undefined {
+function sanitizeCustomDimension(
+  value: string | undefined,
+): string | undefined {
   if (!value) return undefined;
   // Truncate, strip HTML tags, and normalize whitespace
   return value
@@ -92,10 +94,17 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
     if (isRedisAvailable()) {
-      const rateLimitResult = await checkRateLimit(`tracking:${ip}`, RATE_LIMIT, RATE_WINDOW_MS);
+      const rateLimitResult = await checkRateLimit(
+        `tracking:${ip}`,
+        RATE_LIMIT,
+        RATE_WINDOW_MS,
+      );
 
       if (!rateLimitResult.allowed) {
-        logSecurityEvent("rate_limit", { ip, reason: "Tracking rate limit exceeded" });
+        logSecurityEvent("rate_limit", {
+          ip,
+          reason: "Tracking rate limit exceeded",
+        });
 
         return NextResponse.json(
           { error: "Rate limit exceeded" },
@@ -106,9 +115,11 @@ export async function POST(request: NextRequest) {
               "X-RateLimit-Limit": RATE_LIMIT.toString(),
               "X-RateLimit-Remaining": "0",
               "X-RateLimit-Reset": rateLimitResult.resetAt.toString(),
-              "Retry-After": Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000).toString(),
+              "Retry-After": Math.ceil(
+                (rateLimitResult.resetAt - Date.now()) / 1000,
+              ).toString(),
             },
-          }
+          },
         );
       }
     }
@@ -207,14 +218,14 @@ export async function POST(request: NextRequest) {
     if (!tid) {
       return NextResponse.json(
         { error: "Missing required field: tid (tracking ID)" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
     if (!cid) {
       return NextResponse.json(
         { error: "Missing required field: cid (client ID)" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -222,18 +233,26 @@ export async function POST(request: NextRequest) {
 
     // SECURITY: Validate URLs to prevent injection attacks
     if (!isValidTrackingUrl(dl)) {
-      logSecurityEvent("invalid_url", { ip, field: "dl", value: dl?.slice(0, 100) });
+      logSecurityEvent("invalid_url", {
+        ip,
+        field: "dl",
+        value: dl?.slice(0, 100),
+      });
       return NextResponse.json(
         { error: "Invalid document location URL" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
     if (!isValidTrackingUrl(dr)) {
-      logSecurityEvent("invalid_url", { ip, field: "dr", value: dr?.slice(0, 100) });
+      logSecurityEvent("invalid_url", {
+        ip,
+        field: "dr",
+        value: dr?.slice(0, 100),
+      });
       return NextResponse.json(
         { error: "Invalid document referrer URL" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -255,12 +274,15 @@ export async function POST(request: NextRequest) {
         0, // Will use tid as identifier
         cid,
         hitType,
-        Date.now()
+        Date.now(),
       );
 
       if (isDuplicate) {
         // Silently accept but don't process duplicates
-        return NextResponse.json({ success: true, deduplicated: true }, { headers: corsHeaders });
+        return NextResponse.json(
+          { success: true, deduplicated: true },
+          { headers: corsHeaders },
+        );
       }
     }
 
@@ -300,14 +322,14 @@ export async function POST(request: NextRequest) {
       if (!dbProject) {
         return NextResponse.json(
           { error: "Project not found" },
-          { status: 404, headers: corsHeaders }
+          { status: 404, headers: corsHeaders },
         );
       }
 
       if (!dbProject.user.canTrack) {
         return NextResponse.json(
           { error: "Tracking disabled" },
-          { status: 403, headers: corsHeaders }
+          { status: 403, headers: corsHeaders },
         );
       }
 
@@ -329,7 +351,7 @@ export async function POST(request: NextRequest) {
       if (!project.canTrack) {
         return NextResponse.json(
           { error: "Tracking disabled" },
-          { status: 403, headers: corsHeaders }
+          { status: 403, headers: corsHeaders },
         );
       }
     }
@@ -339,7 +361,7 @@ export async function POST(request: NextRequest) {
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },
-        { status: 404, headers: corsHeaders }
+        { status: 404, headers: corsHeaders },
       );
     }
 
@@ -354,7 +376,7 @@ export async function POST(request: NextRequest) {
         });
         return NextResponse.json(
           { error: "Signature required" },
-          { status: 403, headers: corsHeaders }
+          { status: 403, headers: corsHeaders },
         );
       }
 
@@ -364,10 +386,14 @@ export async function POST(request: NextRequest) {
       const fiveMinutes = 5 * 60 * 1000;
 
       if (isNaN(requestTs) || Math.abs(now - requestTs) > fiveMinutes) {
-        logSecurityEvent("hmac_replay", { ip, tid, reason: "Timestamp outside valid window" });
+        logSecurityEvent("hmac_replay", {
+          ip,
+          tid,
+          reason: "Timestamp outside valid window",
+        });
         return NextResponse.json(
           { error: "Invalid timestamp" },
-          { status: 403, headers: corsHeaders }
+          { status: 403, headers: corsHeaders },
         );
       }
 
@@ -381,10 +407,14 @@ export async function POST(request: NextRequest) {
       });
 
       if (!verifySignature(canonical, sig, project.secretKey)) {
-        logSecurityEvent("hmac_invalid", { ip, tid, reason: "Signature verification failed" });
+        logSecurityEvent("hmac_invalid", {
+          ip,
+          tid,
+          reason: "Signature verification failed",
+        });
         return NextResponse.json(
           { error: "Invalid signature" },
-          { status: 403, headers: corsHeaders }
+          { status: 403, headers: corsHeaders },
         );
       }
 
@@ -406,8 +436,11 @@ export async function POST(request: NextRequest) {
     // Check bot exclusion (smart categorization)
     if (project.excludeBots && trafficCategorization.shouldExclude) {
       return NextResponse.json(
-        { success: true, message: `${trafficCategorization.category} excluded` },
-        { headers: corsHeaders }
+        {
+          success: true,
+          message: `${trafficCategorization.category} excluded`,
+        },
+        { headers: corsHeaders },
       );
     }
 
@@ -429,7 +462,8 @@ export async function POST(request: NextRequest) {
     const city = geocity || geoData?.city || null;
 
     // User language
-    const language = ul || request.headers.get("accept-language")?.split(",")[0] || null;
+    const language =
+      ul || request.headers.get("accept-language")?.split(",")[0] || null;
 
     // UTM parameters
     const utm = {
@@ -442,7 +476,9 @@ export async function POST(request: NextRequest) {
 
     const trafficSource = classifyTrafficSource(
       dr,
-      Object.keys(utm).some((k) => utm[k as keyof typeof utm]) ? utm : undefined
+      Object.keys(utm).some((k) => utm[k as keyof typeof utm])
+        ? utm
+        : undefined,
     );
 
     // Extract domain from dl (document location)
@@ -471,7 +507,8 @@ export async function POST(request: NextRequest) {
     // This is a SECURE behavioral indicator that cannot be falsified
     if (visitor && trafficCategorization.category !== "human") {
       const hasSignificantEngagement =
-        (visitor.totalPageviews || 0) > 3 || (visitor.totalEngagementTime || 0) > 30;
+        (visitor.totalPageviews || 0) > 3 ||
+        (visitor.totalEngagementTime || 0) > 30;
 
       if (hasSignificantEngagement) {
         trafficCategorization = categorizeUserAgent(userAgent, {
@@ -535,7 +572,7 @@ export async function POST(request: NextRequest) {
         platform,
         country,
         city,
-        parsedUA.device
+        parsedUA.device,
       );
       return NextResponse.json({ success: true }, { headers: corsHeaders });
     }
@@ -601,7 +638,7 @@ export async function POST(request: NextRequest) {
         platform,
         country,
         city,
-        parsedUA.device
+        parsedUA.device,
       );
     } else {
       // Update existing session
@@ -648,7 +685,7 @@ export async function POST(request: NextRequest) {
         platform,
         country,
         city,
-        parsedUA.device
+        parsedUA.device,
       );
     }
 
@@ -678,7 +715,7 @@ export async function POST(request: NextRequest) {
           trafficSource,
           trafficCategory: trafficCategorization.category,
         },
-        today
+        today,
       );
     } else if (hitType === "event" && ec && ea) {
       await trackEventStats(
@@ -691,7 +728,7 @@ export async function POST(request: NextRequest) {
           domain,
           platform,
         },
-        today
+        today,
       );
     } else if (hitType === "engagement") {
       await trackEngagementStats(
@@ -703,11 +740,13 @@ export async function POST(request: NextRequest) {
           path,
           sessionId: session?.id,
         },
-        today
+        today,
       );
     } else if (hitType === "session_end" && session) {
       // Calculate and store session duration
-      const duration = Math.round((Date.now() - session.startedAt.getTime()) / 1000);
+      const duration = Math.round(
+        (Date.now() - session.startedAt.getTime()) / 1000,
+      );
       await prisma.projectSession.update({
         where: { id: session.id },
         data: {
@@ -721,7 +760,7 @@ export async function POST(request: NextRequest) {
         "session_duration",
         getTimeBucket(duration),
         today,
-        domain
+        domain,
       );
     } else if (hitType === "ecommerce" && en) {
       // Handle e-commerce events
@@ -746,7 +785,7 @@ export async function POST(request: NextRequest) {
           domain,
           platform,
         },
-        today
+        today,
       );
     }
 
@@ -770,7 +809,10 @@ export async function POST(request: NextRequest) {
       });
     } catch (goalError) {
       // Non-critical, log and continue
-      logError(goalError, { context: "goal_conversion_check", projectId: project.id });
+      logError(goalError, {
+        context: "goal_conversion_check",
+        projectId: project.id,
+      });
     }
 
     // Log analytics event for debugging/monitoring
@@ -782,11 +824,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (error) {
     logError(error, { context: "v2_tracking", ip });
-    logRequest("POST", "/api/v2/collect", 500, timer.elapsed(), { error: true });
+    logRequest("POST", "/api/v2/collect", 500, timer.elapsed(), {
+      error: true,
+    });
 
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }
@@ -799,7 +843,7 @@ async function upsertProjectStat(
   name: string,
   value: string,
   date: Date,
-  domain?: string | null
+  domain?: string | null,
 ): Promise<void> {
   // Use raw query for upsert since Prisma doesn't handle optional unique fields well
   await prisma.projectStat.upsert({
@@ -842,12 +886,18 @@ async function trackPageviewStats(
     city: string | null;
     language: string | null;
     appVersion: string | null;
-    utm: { source?: string; medium?: string; campaign?: string; content?: string; term?: string };
+    utm: {
+      source?: string;
+      medium?: string;
+      campaign?: string;
+      content?: string;
+      term?: string;
+    };
     dr?: string;
     trafficSource: string;
     trafficCategory: string;
   },
-  today: Date
+  today: Date,
 ): Promise<void> {
   const stats: Array<{ name: string; value: string }> = [
     { name: "pageviews", value: "total" },
@@ -871,7 +921,10 @@ async function trackPageviewStats(
 
   // OS version (like GA)
   if (data.parsedUA.osVersion) {
-    stats.push({ name: "os_version", value: `${data.parsedUA.os} ${data.parsedUA.osVersion}` });
+    stats.push({
+      name: "os_version",
+      value: `${data.parsedUA.os} ${data.parsedUA.osVersion}`,
+    });
   }
 
   // Domain tracking
@@ -929,10 +982,14 @@ async function trackPageviewStats(
   }
 
   // UTM
-  if (data.utm.source) stats.push({ name: "utm_source", value: data.utm.source });
-  if (data.utm.medium) stats.push({ name: "utm_medium", value: data.utm.medium });
-  if (data.utm.campaign) stats.push({ name: "campaign", value: data.utm.campaign });
-  if (data.utm.content) stats.push({ name: "utm_content", value: data.utm.content });
+  if (data.utm.source)
+    stats.push({ name: "utm_source", value: data.utm.source });
+  if (data.utm.medium)
+    stats.push({ name: "utm_medium", value: data.utm.medium });
+  if (data.utm.campaign)
+    stats.push({ name: "campaign", value: data.utm.campaign });
+  if (data.utm.content)
+    stats.push({ name: "utm_content", value: data.utm.content });
   if (data.utm.term) stats.push({ name: "utm_term", value: data.utm.term });
 
   // Referrer
@@ -947,7 +1004,9 @@ async function trackPageviewStats(
 
   // Upsert all stats
   await Promise.all(
-    stats.map((stat) => upsertProjectStat(projectId, stat.name, stat.value, today, data.domain))
+    stats.map((stat) =>
+      upsertProjectStat(projectId, stat.name, stat.value, today, data.domain),
+    ),
   );
 }
 
@@ -964,7 +1023,7 @@ async function trackEventStats(
     domain: string | null;
     platform: string;
   },
-  today: Date
+  today: Date,
 ): Promise<void> {
   // Store in ProjectEvent
   await prisma.projectEvent.create({
@@ -984,7 +1043,7 @@ async function trackEventStats(
     "event",
     `${data.category}:${data.action}`,
     today,
-    data.domain
+    data.domain,
   );
 }
 
@@ -1000,10 +1059,16 @@ async function trackEngagementStats(
     path: string;
     sessionId?: string;
   },
-  today: Date
+  today: Date,
 ): Promise<void> {
   if (data.timeOnPage !== undefined) {
-    await upsertProjectStat(projectId, "time_on_page", getTimeBucket(data.timeOnPage), today, null);
+    await upsertProjectStat(
+      projectId,
+      "time_on_page",
+      getTimeBucket(data.timeOnPage),
+      today,
+      null,
+    );
   }
 
   if (data.scrollDepth !== undefined) {
@@ -1032,11 +1097,23 @@ async function trackEngagementStats(
             : data.engagementTime >= 10
               ? "10-30s"
               : "0-10s";
-    await upsertProjectStat(projectId, "engagement_time", engagementBucket, today, null);
+    await upsertProjectStat(
+      projectId,
+      "engagement_time",
+      engagementBucket,
+      today,
+      null,
+    );
 
     // Mark session as engaged if > 10 seconds
     if (data.engagementTime > 10 && data.sessionId) {
-      await upsertProjectStat(projectId, "engaged_sessions", "total", today, null);
+      await upsertProjectStat(
+        projectId,
+        "engaged_sessions",
+        "total",
+        today,
+        null,
+      );
     }
   }
 }
@@ -1053,7 +1130,7 @@ async function updateRealtimeUser(
   platform: string,
   country: string | null,
   city: string | null,
-  device: string
+  device: string,
 ): Promise<void> {
   try {
     await prisma.realtimeUser.upsert({
@@ -1149,7 +1226,7 @@ async function trackEcommerceEvent(
     domain: string | null;
     platform: string;
   },
-  today: Date
+  today: Date,
 ): Promise<void> {
   const {
     eventType,
@@ -1200,7 +1277,10 @@ async function trackEcommerceEvent(
           shipping,
           coupon,
           affiliation,
-          itemCount: normalizedItems.reduce((sum, item) => sum + item.quantity, 0),
+          itemCount: normalizedItems.reduce(
+            (sum, item) => sum + item.quantity,
+            0,
+          ),
           domain,
           platform,
         },
@@ -1227,23 +1307,53 @@ async function trackEcommerceEvent(
       // Update stats
       await Promise.all([
         upsertProjectStat(projectId, "purchase", "total", today, domain),
-        upsertProjectStat(projectId, "ecommerce_transactions", "total", today, domain),
-        upsertProjectStatWithValue(projectId, "ecommerce_revenue", value, today, domain),
+        upsertProjectStat(
+          projectId,
+          "ecommerce_transactions",
+          "total",
+          today,
+          domain,
+        ),
+        upsertProjectStatWithValue(
+          projectId,
+          "ecommerce_revenue",
+          value,
+          today,
+          domain,
+        ),
         // Track by item
         ...normalizedItems.map((item) =>
-          upsertProjectStat(projectId, "ecommerce_item", item.itemId, today, domain)
+          upsertProjectStat(
+            projectId,
+            "ecommerce_item",
+            item.itemId,
+            today,
+            domain,
+          ),
         ),
         // Track by category
         ...normalizedItems
           .filter((item) => item.itemCategory)
           .map((item) =>
-            upsertProjectStat(projectId, "ecommerce_category", item.itemCategory!, today, domain)
+            upsertProjectStat(
+              projectId,
+              "ecommerce_category",
+              item.itemCategory!,
+              today,
+              domain,
+            ),
           ),
         // Track by brand
         ...normalizedItems
           .filter((item) => item.itemBrand)
           .map((item) =>
-            upsertProjectStat(projectId, "ecommerce_brand", item.itemBrand!, today, domain)
+            upsertProjectStat(
+              projectId,
+              "ecommerce_brand",
+              item.itemBrand!,
+              today,
+              domain,
+            ),
           ),
       ]);
     } catch (error) {
@@ -1283,15 +1393,25 @@ async function trackEcommerceEvent(
     // Update stats based on event type
     const statName = eventType as StatType;
     if (
-      ["view_item", "add_to_cart", "remove_from_cart", "begin_checkout", "refund"].includes(
-        eventType
-      )
+      [
+        "view_item",
+        "add_to_cart",
+        "remove_from_cart",
+        "begin_checkout",
+        "refund",
+      ].includes(eventType)
     ) {
       await upsertProjectStat(projectId, statName, "total", today, domain);
 
       // Track item-level stats for item events
       if (firstItem && ["view_item", "add_to_cart"].includes(eventType)) {
-        await upsertProjectStat(projectId, "ecommerce_item", firstItem.itemId, today, domain);
+        await upsertProjectStat(
+          projectId,
+          "ecommerce_item",
+          firstItem.itemId,
+          today,
+          domain,
+        );
       }
     }
   }
@@ -1305,7 +1425,7 @@ async function upsertProjectStatWithValue(
   name: string,
   value: number,
   date: Date,
-  domain?: string | null
+  domain?: string | null,
 ): Promise<void> {
   // For revenue stats, we store the total in the count field (multiplied by 100 to preserve decimals)
   const valueInCents = Math.round(value * 100);

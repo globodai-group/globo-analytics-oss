@@ -3,11 +3,24 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, CheckCircle, BarChart3, Key, ArrowRight, ArrowLeft } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle,
+  BarChart3,
+  Key,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react";
 
 type Step = "license" | "account";
 
@@ -28,7 +41,11 @@ export default function SetupPage() {
   async function validateLicense() {
     if (!licenseKey.trim()) {
       // Skip license validation - use Community tier
-      setLicenseStatus({ valid: true, tier: "community", organization: "Self-Hosted" });
+      setLicenseStatus({
+        valid: true,
+        tier: "community",
+        organization: "Self-Hosted",
+      });
       setStep("account");
       return;
     }
@@ -107,7 +124,9 @@ export default function SetupPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <CheckCircle className="h-16 w-16 text-green-500" />
               <h2 className="text-2xl font-bold">{t("success.title")}</h2>
-              <p className="text-muted-foreground">{t("success.description")}</p>
+              <p className="text-muted-foreground">
+                {t("success.description")}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -126,7 +145,9 @@ export default function SetupPage() {
           </div>
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>
-            {step === "license" ? t("license.description") : t("account.description")}
+            {step === "license"
+              ? t("license.description")
+              : t("account.description")}
           </CardDescription>
           {/* Step indicator */}
           <div className="flex justify-center gap-2 pt-4">
@@ -153,7 +174,9 @@ export default function SetupPage() {
                   placeholder="GLOB-PRO-xxxxx.xxxxx"
                   disabled={isLoading}
                 />
-                <p className="text-xs text-muted-foreground">{t("license.hint")}</p>
+                <p className="text-xs text-muted-foreground">
+                  {t("license.hint")}
+                </p>
               </div>
 
               {error && (
@@ -163,9 +186,17 @@ export default function SetupPage() {
               )}
 
               <div className="flex flex-col gap-2">
-                <Button onClick={validateLicense} disabled={isLoading} className="w-full">
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {licenseKey.trim() ? t("license.validate") : t("license.skipCommunity")}
+                <Button
+                  onClick={validateLicense}
+                  disabled={isLoading}
+                  className="w-full"
+                >
+                  {isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {licenseKey.trim()
+                    ? t("license.validate")
+                    : t("license.skipCommunity")}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -188,7 +219,9 @@ export default function SetupPage() {
                       ? t("license.communityTier")
                       : `${licenseStatus.tier} Edition`}
                   </p>
-                  <p className="text-xs text-muted-foreground">{licenseStatus.organization}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {licenseStatus.organization}
+                  </p>
                 </div>
               )}
 
@@ -238,7 +271,9 @@ export default function SetupPage() {
                   required
                   disabled={isLoading}
                 />
-                <p className="text-xs text-muted-foreground">{t("account.passwordHint")}</p>
+                <p className="text-xs text-muted-foreground">
+                  {t("account.passwordHint")}
+                </p>
               </div>
 
               {error && (
@@ -258,7 +293,9 @@ export default function SetupPage() {
                   {t("back")}
                 </Button>
                 <Button type="submit" className="flex-1" disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isLoading && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   {t("account.submit")}
                 </Button>
               </div>

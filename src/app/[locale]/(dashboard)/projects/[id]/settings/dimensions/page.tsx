@@ -4,9 +4,23 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Settings, Hash, Users, Eye, EyeOff } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  Settings,
+  Hash,
+  Users,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { DimensionForm } from "@/components/dimensions/dimension-form";
 import { DimensionDeleteButton } from "@/components/dimensions/dimension-delete-button";
 import { DimensionToggleButton } from "@/components/dimensions/dimension-toggle-button";
@@ -79,7 +93,9 @@ export default async function DimensionsSettingsPage({ params }: PageProps) {
     }
   };
 
-  const getScopeBadgeVariant = (scope: string): "default" | "secondary" | "outline" => {
+  const getScopeBadgeVariant = (
+    scope: string,
+  ): "default" | "secondary" | "outline" => {
     switch (scope) {
       case "HIT":
         return "default";
@@ -115,7 +131,9 @@ export default async function DimensionsSettingsPage({ params }: PageProps) {
           <div className="flex items-center gap-4">
             <div className="flex-1">
               <div className="flex justify-between text-sm mb-1">
-                <span>{t("slotsUsed", { used: usedSlots, max: maxSlots })}</span>
+                <span>
+                  {t("slotsUsed", { used: usedSlots, max: maxSlots })}
+                </span>
                 <span className="text-muted-foreground">
                   {availableSlots} {t("available")}
                 </span>
@@ -160,7 +178,9 @@ export default async function DimensionsSettingsPage({ params }: PageProps) {
           <CardDescription>
             {project.customDimensions.length === 0
               ? t("noDimensions")
-              : t("dimensionsCount", { count: project.customDimensions.length })}
+              : t("dimensionsCount", {
+                  count: project.customDimensions.length,
+                })}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -191,7 +211,10 @@ export default async function DimensionsSettingsPage({ params }: PageProps) {
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Badge variant={getScopeBadgeVariant(dimension.scope)} className="gap-1">
+                        <Badge
+                          variant={getScopeBadgeVariant(dimension.scope)}
+                          className="gap-1"
+                        >
                           {getScopeIcon(dimension.scope)}
                           {t(`scopes.${dimension.scope}`)}
                         </Badge>
@@ -229,7 +252,9 @@ export default async function DimensionsSettingsPage({ params }: PageProps) {
         <CardContent>
           <div className="space-y-4">
             <div>
-              <h4 className="font-medium mb-2">{t("integration.setDimension")}</h4>
+              <h4 className="font-medium mb-2">
+                {t("integration.setDimension")}
+              </h4>
               <pre className="bg-muted p-3 rounded-md text-sm overflow-x-auto">
                 <code>{`// ${t("integration.setExample")}
 gr('set', 'dimension1', 'premium_user');

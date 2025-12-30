@@ -21,7 +21,9 @@ export function TrackingCodeCopy({ code }: TrackingCodeCopyProps) {
       toast.success(locale === "fr" ? "Code copié !" : "Code copied!");
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error(locale === "fr" ? "Erreur lors de la copie" : "Error copying code");
+      toast.error(
+        locale === "fr" ? "Erreur lors de la copie" : "Error copying code",
+      );
     }
   }
 

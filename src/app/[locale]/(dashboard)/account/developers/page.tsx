@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Plus, Key, Code, ExternalLink } from "lucide-react";
 import { OAuthClientCard } from "@/components/developers/oauth-client-card";
@@ -84,7 +90,9 @@ export default async function DevelopersPage() {
             <Link href="/developers/docs">
               <Button variant="outline" className="gap-2">
                 <ExternalLink className="h-4 w-4" />
-                {locale === "fr" ? "Voir la documentation" : "View Documentation"}
+                {locale === "fr"
+                  ? "Voir la documentation"
+                  : "View Documentation"}
               </Button>
             </Link>
           </CardContent>
@@ -104,7 +112,8 @@ export default async function DevelopersPage() {
           </CardHeader>
           <CardContent>
             <code className="block p-2 bg-muted rounded text-xs font-mono break-all">
-              {user?.apiToken || (locale === "fr" ? "Aucun token généré" : "No token generated")}
+              {user?.apiToken ||
+                (locale === "fr" ? "Aucun token généré" : "No token generated")}
             </code>
           </CardContent>
         </Card>
@@ -131,7 +140,9 @@ export default async function DevelopersPage() {
               <Link href="/account/developers/new">
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
-                  {locale === "fr" ? "Créer une application" : "Create Application"}
+                  {locale === "fr"
+                    ? "Créer une application"
+                    : "Create Application"}
                 </Button>
               </Link>
             </CardContent>
@@ -171,7 +182,9 @@ export default async function DevelopersPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <div className="space-y-2">
               <Badge>1</Badge>
-              <h4 className="font-medium">{locale === "fr" ? "Autorisation" : "Authorization"}</h4>
+              <h4 className="font-medium">
+                {locale === "fr" ? "Autorisation" : "Authorization"}
+              </h4>
               <p className="text-sm text-muted-foreground">
                 {locale === "fr"
                   ? "Redirigez l'utilisateur vers /api/oauth/authorize"
@@ -191,7 +204,9 @@ export default async function DevelopersPage() {
             </div>
             <div className="space-y-2">
               <Badge>3</Badge>
-              <h4 className="font-medium">{locale === "fr" ? "Appels API" : "API Calls"}</h4>
+              <h4 className="font-medium">
+                {locale === "fr" ? "Appels API" : "API Calls"}
+              </h4>
               <p className="text-sm text-muted-foreground">
                 {locale === "fr"
                   ? "Utilisez le token dans l'en-tête Authorization"

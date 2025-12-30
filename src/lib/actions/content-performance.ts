@@ -50,7 +50,7 @@ interface ContentOverview {
  */
 export async function getContentOverviewAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<ContentOverview>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -122,7 +122,8 @@ export async function getContentOverviewAction(
     });
 
     const totalPageviews = Number(pageviewStats._sum.count || 0);
-    const bounceRate = sessions._count > 0 ? (bounceSessions / sessions._count) * 100 : 0;
+    const bounceRate =
+      sessions._count > 0 ? (bounceSessions / sessions._count) * 100 : 0;
 
     // Calculate avg scroll depth
     let totalScrollEvents = 0;
@@ -133,10 +134,12 @@ export async function getContentOverviewAction(
       weightedScrollSum += depth * count;
       totalScrollEvents += count;
     });
-    const avgScrollDepth = totalScrollEvents > 0 ? weightedScrollSum / totalScrollEvents : 0;
+    const avgScrollDepth =
+      totalScrollEvents > 0 ? weightedScrollSum / totalScrollEvents : 0;
 
     // Count pages read to 100%
-    const pagesRead100 = scrollStats.find((s) => s.value === "100")?._sum.count || BigInt(0);
+    const pagesRead100 =
+      scrollStats.find((s) => s.value === "100")?._sum.count || BigInt(0);
 
     // Calculate engagement score (0-100)
     const engagementScore = Math.min(
@@ -144,8 +147,8 @@ export async function getContentOverviewAction(
       Math.round(
         avgScrollDepth * 0.4 +
           (100 - bounceRate) * 0.4 +
-          (Math.min(Number(timeStats._avg.count || 0), 300) / 300) * 20
-      )
+          (Math.min(Number(timeStats._avg.count || 0), 300) / 300) * 20,
+      ),
     );
 
     return {
@@ -171,7 +174,7 @@ export async function getContentOverviewAction(
 export async function getPagePerformanceAction(
   projectId: number,
   dateRange: DateRange,
-  limit = 20
+  limit = 20,
 ): Promise<ActionResult<PagePerformance[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -251,10 +254,14 @@ export async function getPagePerformanceAction(
     });
 
     // Build page performance data
-    const sessionMap = new Map(sessionStats.map((s) => [s.entryPage, s._count]));
+    const sessionMap = new Map(
+      sessionStats.map((s) => [s.entryPage, s._count]),
+    );
     const bounceMap = new Map(bounceStats.map((s) => [s.entryPage, s._count]));
     const exitMap = new Map(exitStats.map((s) => [s.exitPage, s._count]));
-    const scrollMap = new Map(scrollByPage.map((s) => [s.entryPage, s._avg.maxScrollDepth || 0]));
+    const scrollMap = new Map(
+      scrollByPage.map((s) => [s.entryPage, s._avg.maxScrollDepth || 0]),
+    );
 
     const totalSessions = sessionStats.reduce((acc, s) => acc + s._count, 0);
 
@@ -278,7 +285,8 @@ export async function getPagePerformanceAction(
           "75": avgScroll >= 75 ? 100 : Math.round((avgScroll / 75) * 100),
           "100": avgScroll >= 100 ? 100 : Math.round(avgScroll),
         },
-        exitRate: totalSessions > 0 ? Math.round((exits / totalSessions) * 100) : 0,
+        exitRate:
+          totalSessions > 0 ? Math.round((exits / totalSessions) * 100) : 0,
       };
     });
 
@@ -294,7 +302,7 @@ export async function getPagePerformanceAction(
  */
 export async function getScrollDepthStatsAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<ScrollDepthStats[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -339,7 +347,7 @@ export async function getScrollDepthStatsAction(
  */
 export async function getTimeOnPageStatsAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<TimeOnPageStats[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -384,11 +392,13 @@ export async function getTimeOnPageStatsAction(
 
     const total = Object.values(buckets).reduce((a, b) => a + b, 0);
 
-    const timeStats: TimeOnPageStats[] = Object.entries(buckets).map(([bucket, count]) => ({
-      bucket,
-      count,
-      percentage: total > 0 ? Math.round((count / total) * 100) : 0,
-    }));
+    const timeStats: TimeOnPageStats[] = Object.entries(buckets).map(
+      ([bucket, count]) => ({
+        bucket,
+        count,
+        percentage: total > 0 ? Math.round((count / total) * 100) : 0,
+      }),
+    );
 
     return { success: true, data: timeStats };
   } catch (error) {
@@ -404,7 +414,7 @@ export async function getTopContentAction(
   projectId: number,
   dateRange: DateRange,
   sortBy: "pageviews" | "engagement" | "scroll" = "pageviews",
-  limit = 10
+  limit = 10,
 ): Promise<ActionResult<PagePerformance[]>> {
   try {
     const result = await getPagePerformanceAction(projectId, dateRange, 100);
@@ -421,7 +431,8 @@ export async function getTopContentAction(
       case "scroll":
         sorted.sort(
           (a, b) =>
-            parseInt(b.scrollDepth["100"].toString()) - parseInt(a.scrollDepth["100"].toString())
+            parseInt(b.scrollDepth["100"].toString()) -
+            parseInt(a.scrollDepth["100"].toString()),
         );
         break;
       default:

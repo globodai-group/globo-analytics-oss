@@ -9,7 +9,7 @@ import { Project } from "@prisma/client";
  */
 export async function verifyProjectOwnership(
   projectId: number,
-  userId: string
+  userId: string,
 ): Promise<Project | null> {
   const project = await prisma.project.findFirst({
     where: { id: projectId, userId },
@@ -40,10 +40,17 @@ export interface ProjectOwnershipContext {
  * );
  */
 export function withProjectOwnership<TArgs extends unknown[], TResult>(
-  action: (ctx: ProjectOwnershipContext, projectId: number, ...args: TArgs) => Promise<TResult>,
-  namespace: string
+  action: (
+    ctx: ProjectOwnershipContext,
+    projectId: number,
+    ...args: TArgs
+  ) => Promise<TResult>,
+  namespace: string,
 ) {
-  return async (projectId: number, ...args: TArgs): Promise<TResult | ActionResult<never>> => {
+  return async (
+    projectId: number,
+    ...args: TArgs
+  ): Promise<TResult | ActionResult<never>> => {
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -71,9 +78,10 @@ export function withProjectOwnership<TArgs extends unknown[], TResult>(
  * Use this when you need the project object in your action logic
  */
 export async function checkProjectAccess(
-  projectId: number
+  projectId: number,
 ): Promise<
-  { authorized: true; project: Project; userId: string } | { authorized: false; error: string }
+  | { authorized: true; project: Project; userId: string }
+  | { authorized: false; error: string }
 > {
   const session = await auth();
   if (!session?.user?.id) {
@@ -111,7 +119,7 @@ export function withProjectOwnershipLocalized<TArgs extends unknown[], TResult>(
     locale: string,
     ...args: TArgs
   ) => Promise<TResult>,
-  namespace: string
+  namespace: string,
 ) {
   return async (
     projectId: number,

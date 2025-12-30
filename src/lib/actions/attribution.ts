@@ -27,7 +27,9 @@ interface ChannelAttribution {
  * Calculate attribution for Last Click model
  * 100% credit to the last touchpoint before conversion
  */
-function calculateLastClick(touchpoints: TouchPointData[]): Map<string, number> {
+function calculateLastClick(
+  touchpoints: TouchPointData[],
+): Map<string, number> {
   const attribution = new Map<string, number>();
   if (touchpoints.length === 0) return attribution;
 
@@ -40,7 +42,9 @@ function calculateLastClick(touchpoints: TouchPointData[]): Map<string, number> 
  * Calculate attribution for First Click model
  * 100% credit to the first touchpoint
  */
-function calculateFirstClick(touchpoints: TouchPointData[]): Map<string, number> {
+function calculateFirstClick(
+  touchpoints: TouchPointData[],
+): Map<string, number> {
   const attribution = new Map<string, number>();
   if (touchpoints.length === 0) return attribution;
 
@@ -69,7 +73,9 @@ function calculateLinear(touchpoints: TouchPointData[]): Map<string, number> {
  * Calculate attribution for Time Decay model
  * More credit to recent touchpoints (exponential decay)
  */
-function calculateTimeDecay(touchpoints: TouchPointData[]): Map<string, number> {
+function calculateTimeDecay(
+  touchpoints: TouchPointData[],
+): Map<string, number> {
   const attribution = new Map<string, number>();
   if (touchpoints.length === 0) return attribution;
 
@@ -101,7 +107,9 @@ function calculateTimeDecay(touchpoints: TouchPointData[]): Map<string, number> 
  * Calculate attribution for Position Based model
  * 40% first, 40% last, 20% distributed to middle
  */
-function calculatePositionBased(touchpoints: TouchPointData[]): Map<string, number> {
+function calculatePositionBased(
+  touchpoints: TouchPointData[],
+): Map<string, number> {
   const attribution = new Map<string, number>();
   if (touchpoints.length === 0) return attribution;
 
@@ -148,7 +156,7 @@ export async function getAttributionAnalysisAction(
   projectId: number,
   model: AttributionModel,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     channels: ChannelAttribution[];
@@ -212,20 +220,27 @@ export async function getAttributionAnalysisAction(
     }
 
     // Process conversions using in-memory data
-    const channelCredits = new Map<string, { conversions: number; revenue: number }>();
+    const channelCredits = new Map<
+      string,
+      { conversions: number; revenue: number }
+    >();
     let totalTouchpoints = 0;
     let totalRevenue = 0;
 
     for (const conversion of conversions) {
       // Filter touchpoints that happened before this conversion
-      const visitorTouchpoints = touchpointsByVisitor.get(conversion.visitorId) || [];
+      const visitorTouchpoints =
+        touchpointsByVisitor.get(conversion.visitorId) || [];
       const touchpointsBeforeConversion = visitorTouchpoints.filter(
-        (tp) => tp.createdAt <= conversion.createdAt
+        (tp) => tp.createdAt <= conversion.createdAt,
       );
 
       if (touchpointsBeforeConversion.length === 0) {
         // Attribute to "direct" if no touchpoints
-        const current = channelCredits.get("direct") || { conversions: 0, revenue: 0 };
+        const current = channelCredits.get("direct") || {
+          conversions: 0,
+          revenue: 0,
+        };
         channelCredits.set("direct", {
           conversions: current.conversions + 1,
           revenue: current.revenue + (conversion.revenue || 0),
@@ -261,7 +276,10 @@ export async function getAttributionAnalysisAction(
 
       // Add attribution to channel totals
       for (const [channel, credit] of attribution) {
-        const current = channelCredits.get(channel) || { conversions: 0, revenue: 0 };
+        const current = channelCredits.get(channel) || {
+          conversions: 0,
+          revenue: 0,
+        };
         channelCredits.set(channel, {
           conversions: current.conversions + credit,
           revenue: current.revenue + conversionRevenue * credit,
@@ -276,12 +294,15 @@ export async function getAttributionAnalysisAction(
         channel,
         conversions: Math.round(data.conversions * 100) / 100,
         revenue: Math.round(data.revenue * 100) / 100,
-        percentage: Math.round((data.conversions / totalConversions) * 100 * 100) / 100,
+        percentage:
+          Math.round((data.conversions / totalConversions) * 100 * 100) / 100,
       }))
       .sort((a, b) => b.conversions - a.conversions);
 
     const avgTouchpoints =
-      totalConversions > 0 ? Math.round((totalTouchpoints / totalConversions) * 100) / 100 : 0;
+      totalConversions > 0
+        ? Math.round((totalTouchpoints / totalConversions) * 100) / 100
+        : 0;
 
     return ActionSuccess({
       channels,
@@ -302,7 +323,7 @@ export async function getAttributionAnalysisAction(
 export async function getAttributionComparisonAction(
   projectId: number,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     models: {
@@ -378,16 +399,23 @@ export async function getAttributionComparisonAction(
     ];
 
     const results = models.map((model) => {
-      const channelCredits = new Map<string, { conversions: number; revenue: number }>();
+      const channelCredits = new Map<
+        string,
+        { conversions: number; revenue: number }
+      >();
 
       for (const conversion of conversions) {
-        const visitorTouchpoints = touchpointsByVisitor.get(conversion.visitorId) || [];
+        const visitorTouchpoints =
+          touchpointsByVisitor.get(conversion.visitorId) || [];
         const touchpointsBeforeConversion = visitorTouchpoints.filter(
-          (tp) => tp.createdAt <= conversion.createdAt
+          (tp) => tp.createdAt <= conversion.createdAt,
         );
 
         if (touchpointsBeforeConversion.length === 0) {
-          const current = channelCredits.get("direct") || { conversions: 0, revenue: 0 };
+          const current = channelCredits.get("direct") || {
+            conversions: 0,
+            revenue: 0,
+          };
           channelCredits.set("direct", {
             conversions: current.conversions + 1,
             revenue: current.revenue + (conversion.revenue || 0),
@@ -419,7 +447,10 @@ export async function getAttributionComparisonAction(
         }
 
         for (const [channel, credit] of attribution) {
-          const current = channelCredits.get(channel) || { conversions: 0, revenue: 0 };
+          const current = channelCredits.get(channel) || {
+            conversions: 0,
+            revenue: 0,
+          };
           channelCredits.set(channel, {
             conversions: current.conversions + credit,
             revenue: current.revenue + conversionRevenue * credit,
@@ -428,12 +459,15 @@ export async function getAttributionComparisonAction(
       }
 
       const totalConversions = conversions.length;
-      const channels: ChannelAttribution[] = Array.from(channelCredits.entries())
+      const channels: ChannelAttribution[] = Array.from(
+        channelCredits.entries(),
+      )
         .map(([channel, data]) => ({
           channel,
           conversions: Math.round(data.conversions * 100) / 100,
           revenue: Math.round(data.revenue * 100) / 100,
-          percentage: Math.round((data.conversions / totalConversions) * 100 * 100) / 100,
+          percentage:
+            Math.round((data.conversions / totalConversions) * 100 * 100) / 100,
         }))
         .sort((a, b) => b.conversions - a.conversions);
 
@@ -454,7 +488,7 @@ export async function getChannelDetailsAction(
   projectId: number,
   channel: string,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     sources: { source: string; count: number; percentage: number }[];
@@ -490,7 +524,8 @@ export async function getChannelDetailsAction(
     sources: touchpoints.map((tp) => ({
       source: tp.source || "direct",
       count: tp._count,
-      percentage: total > 0 ? Math.round((tp._count / total) * 100 * 100) / 100 : 0,
+      percentage:
+        total > 0 ? Math.round((tp._count / total) * 100 * 100) / 100 : 0,
     })),
   });
 }

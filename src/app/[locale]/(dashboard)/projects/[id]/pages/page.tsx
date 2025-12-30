@@ -14,7 +14,10 @@ interface PagesPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
 }
 
-export default async function PagesPage({ params, searchParams }: PagesPageProps) {
+export default async function PagesPage({
+  params,
+  searchParams,
+}: PagesPageProps) {
   const { id } = await params;
   const { from, to } = await searchParams;
   const session = await auth();
@@ -74,7 +77,10 @@ export default async function PagesPage({ params, searchParams }: PagesPageProps
       </div>
 
       {/* Page Performance Table */}
-      <PagePerformanceTable projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+      <PagePerformanceTable
+        projectId={project.id}
+        dateRange={{ from: startDate, to: endDate }}
+      />
     </div>
   );
 }

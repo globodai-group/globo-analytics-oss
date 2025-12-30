@@ -66,7 +66,8 @@ export function ProfileForm({ user, locale }: ProfileFormProps) {
     }
   }
 
-  const initials = `${user.firstName[0] || ""}${user.lastName[0] || ""}`.toUpperCase();
+  const initials =
+    `${user.firstName[0] || ""}${user.lastName[0] || ""}`.toUpperCase();
   const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
@@ -93,23 +94,40 @@ export function ProfileForm({ user, locale }: ProfileFormProps) {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="firstName">{t("firstName")}</Label>
-          <Input id="firstName" {...register("firstName")} disabled={isLoading} />
+          <Input
+            id="firstName"
+            {...register("firstName")}
+            disabled={isLoading}
+          />
           {errors.firstName && (
-            <p className="text-sm text-destructive">{errors.firstName.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.firstName.message}
+            </p>
           )}
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">{t("lastName")}</Label>
           <Input id="lastName" {...register("lastName")} disabled={isLoading} />
-          {errors.lastName && <p className="text-sm text-destructive">{errors.lastName.message}</p>}
+          {errors.lastName && (
+            <p className="text-sm text-destructive">
+              {errors.lastName.message}
+            </p>
+          )}
         </div>
       </div>
 
       {/* Email */}
       <div className="space-y-2">
         <Label htmlFor="email">{tCommon("email")}</Label>
-        <Input id="email" type="email" {...register("email")} disabled={isLoading} />
-        {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+        <Input
+          id="email"
+          type="email"
+          {...register("email")}
+          disabled={isLoading}
+        />
+        {errors.email && (
+          <p className="text-sm text-destructive">{errors.email.message}</p>
+        )}
         <p className="text-xs text-muted-foreground">
           {locale === "fr"
             ? "La modification de l'email nécessitera une vérification."

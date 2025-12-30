@@ -18,5 +18,11 @@ export function GlobalSearchWrapper({ userId }: GlobalSearchWrapperProps) {
   // In a real app, you might want to fetch this from context or pass it down
   const projectName = projectId ? `Project ${projectId}` : undefined;
 
-  return <GlobalSearch userId={userId} projectId={projectId} projectName={projectName} />;
+  return (
+    <GlobalSearch
+      userId={userId}
+      projectId={projectId}
+      projectName={projectName}
+    />
+  );
 }

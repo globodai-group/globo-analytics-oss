@@ -1,9 +1,28 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-type TextVariant = "h1" | "h2" | "h3" | "h4" | "body" | "body-lg" | "small" | "caption" | "label";
+type TextVariant =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "body"
+  | "body-lg"
+  | "small"
+  | "caption"
+  | "label";
 
-type ElementType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p" | "span" | "div" | "label";
+type ElementType =
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "p"
+  | "span"
+  | "div"
+  | "label";
 
 interface TextProps {
   children: React.ReactNode;
@@ -117,7 +136,7 @@ export function Text({
         align && alignClasses[align],
         weight && weightClasses[weight],
         getTruncateClass(),
-        className
+        className,
       )}
     >
       {children}
@@ -158,7 +177,11 @@ export function Paragraph({
   ...props
 }: Omit<TextProps, "variant" | "as"> & { size?: "default" | "large" }) {
   return (
-    <Text variant={size === "large" ? "body-lg" : "body"} className={className} {...props}>
+    <Text
+      variant={size === "large" ? "body-lg" : "body"}
+      className={className}
+      {...props}
+    >
       {children}
     </Text>
   );
@@ -167,7 +190,11 @@ export function Paragraph({
 /**
  * Caption component for small supporting text
  */
-export function Caption({ children, className = "", ...props }: Omit<TextProps, "variant" | "as">) {
+export function Caption({
+  children,
+  className = "",
+  ...props
+}: Omit<TextProps, "variant" | "as">) {
   return (
     <Text variant="caption" color="muted" className={className} {...props}>
       {children}

@@ -28,7 +28,7 @@ interface SearchAnalytics {
 export async function getSiteSearchAnalyticsAction(
   projectId: number,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<ActionResult<SearchAnalytics>> {
   const t = await getTranslations({ locale, namespace: "siteSearch" });
   const session = await auth();
@@ -68,7 +68,10 @@ export async function getSiteSearchAnalyticsAction(
     }
 
     // Count search terms
-    const termCounts = new Map<string, { count: number; totalResults: number }>();
+    const termCounts = new Map<
+      string,
+      { count: number; totalResults: number }
+    >();
     let totalResults = 0;
     let searchesWithResults = 0;
 
@@ -99,7 +102,8 @@ export async function getSiteSearchAnalyticsAction(
         term,
         count: data.count,
         percentage: Math.round((data.count / totalSearches) * 100 * 10) / 10,
-        avgResultsCount: data.count > 0 ? Math.round(data.totalResults / data.count) : 0,
+        avgResultsCount:
+          data.count > 0 ? Math.round(data.totalResults / data.count) : 0,
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 20);
@@ -125,7 +129,9 @@ export async function getSiteSearchAnalyticsAction(
       uniqueSearchTerms: termCounts.size,
       searchesWithNoResults,
       avgResultsPerSearch:
-        searchesWithResults > 0 ? Math.round(totalResults / searchesWithResults) : 0,
+        searchesWithResults > 0
+          ? Math.round(totalResults / searchesWithResults)
+          : 0,
     });
   } catch (error) {
     console.error("Site search analytics error:", error);
@@ -140,7 +146,7 @@ export async function getSearchTermDetailsAction(
   projectId: number,
   searchTerm: string,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     clickedPages: { page: string; count: number; percentage: number }[];
@@ -209,7 +215,9 @@ export async function getSearchTermDetailsAction(
 
       const sessionPageViews = pageViews
         .filter(
-          (pv) => pv.sessionId === searchEvent.sessionId && pv.createdAt > searchEvent.createdAt
+          (pv) =>
+            pv.sessionId === searchEvent.sessionId &&
+            pv.createdAt > searchEvent.createdAt,
         )
         .slice(0, 3); // First 3 pages after search
 

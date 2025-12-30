@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -25,7 +31,10 @@ import {
   TrendingUp,
   BarChart3,
 } from "lucide-react";
-import { getVideoOverviewAction, getVideoStatsAction } from "@/lib/actions/video-analytics";
+import {
+  getVideoOverviewAction,
+  getVideoStatsAction,
+} from "@/lib/actions/video-analytics";
 
 interface VideoStatsPageProps {
   params: Promise<{ id: string }>;
@@ -69,7 +78,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
   const t = {
     title: locale === "fr" ? "Analytics Vidéo" : "Video Analytics",
     subtitle:
-      locale === "fr" ? "Suivez l'engagement de vos vidéos" : "Track video engagement metrics",
+      locale === "fr"
+        ? "Suivez l'engagement de vos vidéos"
+        : "Track video engagement metrics",
     back: locale === "fr" ? "Retour aux stats" : "Back to Stats",
     overview: locale === "fr" ? "Vue d'ensemble" : "Overview",
     totalVideos: locale === "fr" ? "Vidéos uniques" : "Unique Videos",
@@ -78,14 +89,18 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
     completionRate: locale === "fr" ? "Taux de complétion" : "Completion Rate",
     watchTime: locale === "fr" ? "Temps de visionnage" : "Watch Time",
     topVideo: locale === "fr" ? "Top Vidéo" : "Top Video",
-    videoPerformance: locale === "fr" ? "Performance des vidéos" : "Video Performance",
+    videoPerformance:
+      locale === "fr" ? "Performance des vidéos" : "Video Performance",
     video: locale === "fr" ? "Vidéo" : "Video",
     plays: locale === "fr" ? "Lectures" : "Plays",
     completes: locale === "fr" ? "Complètes" : "Completes",
     completion: locale === "fr" ? "Complétion" : "Completion",
     avgProgress: locale === "fr" ? "Progression moy." : "Avg. Progress",
     viewers: locale === "fr" ? "Spectateurs" : "Viewers",
-    noData: locale === "fr" ? "Aucune donnée vidéo disponible" : "No video data available",
+    noData:
+      locale === "fr"
+        ? "Aucune donnée vidéo disponible"
+        : "No video data available",
     setupInstructions:
       locale === "fr"
         ? "Pour commencer à suivre les vidéos, ajoutez le code suivant à votre site:"
@@ -144,7 +159,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{overview.totalStarts.toLocaleString()}</p>
+                <p className="text-2xl font-bold">
+                  {overview.totalStarts.toLocaleString()}
+                </p>
               </CardContent>
             </Card>
 
@@ -156,7 +173,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{overview.totalCompletes.toLocaleString()}</p>
+                <p className="text-2xl font-bold">
+                  {overview.totalCompletes.toLocaleString()}
+                </p>
               </CardContent>
             </Card>
 
@@ -169,8 +188,13 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <p className="text-2xl font-bold">{overview.avgCompletionRate}%</p>
-                  <Progress value={overview.avgCompletionRate} className="h-2" />
+                  <p className="text-2xl font-bold">
+                    {overview.avgCompletionRate}%
+                  </p>
+                  <Progress
+                    value={overview.avgCompletionRate}
+                    className="h-2"
+                  />
                 </div>
               </CardContent>
             </Card>
@@ -183,7 +207,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{formatDuration(overview.totalWatchTime)}</p>
+                <p className="text-2xl font-bold">
+                  {formatDuration(overview.totalWatchTime)}
+                </p>
               </CardContent>
             </Card>
 
@@ -195,7 +221,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-sm font-medium truncate">{overview.topVideo || "-"}</p>
+                <p className="text-sm font-medium truncate">
+                  {overview.topVideo || "-"}
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -220,9 +248,15 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                     <TableRow>
                       <TableHead>{t.video}</TableHead>
                       <TableHead className="text-right">{t.plays}</TableHead>
-                      <TableHead className="text-right">{t.completes}</TableHead>
-                      <TableHead className="text-right">{t.completion}</TableHead>
-                      <TableHead className="text-right">{t.avgProgress}</TableHead>
+                      <TableHead className="text-right">
+                        {t.completes}
+                      </TableHead>
+                      <TableHead className="text-right">
+                        {t.completion}
+                      </TableHead>
+                      <TableHead className="text-right">
+                        {t.avgProgress}
+                      </TableHead>
                       <TableHead className="text-right">{t.viewers}</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -233,7 +267,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                           <div className="flex items-center gap-2">
                             <Play className="h-4 w-4 text-muted-foreground" />
                             <div>
-                              <p className="font-medium">{video.videoTitle || video.videoId}</p>
+                              <p className="font-medium">
+                                {video.videoTitle || video.videoId}
+                              </p>
                               {video.videoDuration && (
                                 <p className="text-xs text-muted-foreground">
                                   {formatDuration(video.videoDuration)}
@@ -263,7 +299,10 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex items-center justify-end gap-2">
-                            <Progress value={video.avgProgress} className="w-16 h-2" />
+                            <Progress
+                              value={video.avgProgress}
+                              className="w-16 h-2"
+                            />
                             <span className="text-sm text-muted-foreground w-10">
                               {video.avgProgress}%
                             </span>
@@ -280,7 +319,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-center text-muted-foreground py-8">{t.noData}</p>
+                <p className="text-center text-muted-foreground py-8">
+                  {t.noData}
+                </p>
               )}
             </CardContent>
           </Card>
@@ -290,7 +331,9 @@ export default async function VideoStatsPage({ params }: VideoStatsPageProps) {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Video className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">{t.noData}</h3>
-            <p className="text-muted-foreground text-center mb-6 max-w-md">{t.setupInstructions}</p>
+            <p className="text-muted-foreground text-center mb-6 max-w-md">
+              {t.setupInstructions}
+            </p>
             <pre className="bg-muted p-4 rounded-lg text-xs overflow-x-auto max-w-full">
               <code>{`// Video start
 gr.video('start', {

@@ -20,7 +20,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, AlertCircle, CheckCircle2, Eye, EyeOff, ArrowLeft, Globe } from "lucide-react";
+import {
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  Eye,
+  EyeOff,
+  ArrowLeft,
+  Globe,
+} from "lucide-react";
 
 export default function ResetPasswordPage() {
   const t = useTranslations();
@@ -61,7 +69,11 @@ export default function ResetPasswordPage() {
 
   async function onSubmit(data: ResetPasswordFormInput) {
     if (!token) {
-      setError(locale === "fr" ? "Token de réinitialisation manquant" : "Missing reset token");
+      setError(
+        locale === "fr"
+          ? "Token de réinitialisation manquant"
+          : "Missing reset token",
+      );
       return;
     }
 
@@ -100,12 +112,19 @@ export default function ResetPasswordPage() {
           <CardContent>
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{t("auth.errors.invalidToken")}</AlertDescription>
+              <AlertDescription>
+                {t("auth.errors.invalidToken")}
+              </AlertDescription>
             </Alert>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Link href="/forgot-password" className="text-sm text-primary hover:underline">
-              {locale === "fr" ? "Demander un nouveau lien" : "Request a new link"}
+            <Link
+              href="/forgot-password"
+              className="text-sm text-primary hover:underline"
+            >
+              {locale === "fr"
+                ? "Demander un nouveau lien"
+                : "Request a new link"}
             </Link>
           </CardFooter>
         </Card>
@@ -135,7 +154,9 @@ export default function ResetPasswordPage() {
             <div className="space-y-4">
               <Alert className="border-green-500 bg-green-50 dark:bg-green-950">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-600">{success}</AlertDescription>
+                <AlertDescription className="text-green-600">
+                  {success}
+                </AlertDescription>
               </Alert>
               <p className="text-sm text-muted-foreground text-center">
                 {locale === "fr"
@@ -169,16 +190,24 @@ export default function ResetPasswordPage() {
                     className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </Button>
                 </div>
                 {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                  <p className="text-sm text-destructive">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">{t("auth.confirmNewPassword")}</Label>
+                <Label htmlFor="confirmPassword">
+                  {t("auth.confirmNewPassword")}
+                </Label>
                 <div className="relative">
                   <Input
                     id="confirmPassword"
@@ -202,7 +231,9 @@ export default function ResetPasswordPage() {
                   </Button>
                 </div>
                 {errors.confirmPassword && (
-                  <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+                  <p className="text-sm text-destructive">
+                    {errors.confirmPassword.message}
+                  </p>
                 )}
               </div>
 

@@ -107,7 +107,9 @@ export default async function SegmentsPage({ params }: SegmentsPageProps) {
       </div>
 
       {/* AI Suggestions */}
-      {features.hasAI && <AISuggestions projectId={projectId} type="segments" />}
+      {features.hasAI && (
+        <AISuggestions projectId={projectId} type="segments" />
+      )}
 
       {/* Segments List */}
       {segmentsWithRuleCount.length === 0 ? (
@@ -131,7 +133,10 @@ export default async function SegmentsPage({ params }: SegmentsPageProps) {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {segmentsWithRuleCount.map((segment) => (
-            <Card key={segment.id} className="hover:shadow-md transition-shadow">
+            <Card
+              key={segment.id}
+              className="hover:shadow-md transition-shadow"
+            >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
@@ -146,7 +151,9 @@ export default async function SegmentsPage({ params }: SegmentsPageProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/projects/${projectId}/segments/${segment.id}`}>
+                        <Link
+                          href={`/projects/${projectId}/segments/${segment.id}`}
+                        >
                           <Pencil className="h-4 w-4 mr-2" />
                           {locale === "fr" ? "Modifier" : "Edit"}
                         </Link>
@@ -204,8 +211,14 @@ export default async function SegmentsPage({ params }: SegmentsPageProps) {
                 </div>
 
                 <div className="mt-4 pt-4 border-t">
-                  <Link href={`/projects/${projectId}/stats?segment=${segment.id}`}>
-                    <Button variant="outline" size="sm" className="w-full gap-2">
+                  <Link
+                    href={`/projects/${projectId}/stats?segment=${segment.id}`}
+                  >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-2"
+                    >
                       <Filter className="h-4 w-4" />
                       {t("applyToStats")}
                     </Button>

@@ -136,14 +136,20 @@ export function getCountryName(code: string): string {
 export function isValidCountryCode(code: string | null | undefined): boolean {
   if (!code) return false;
   const normalized = code.toUpperCase().trim();
-  return normalized.length === 2 && /^[A-Z]{2}$/.test(normalized) && normalized in COUNTRY_NAMES;
+  return (
+    normalized.length === 2 &&
+    /^[A-Z]{2}$/.test(normalized) &&
+    normalized in COUNTRY_NAMES
+  );
 }
 
 /**
  * Sanitize and validate a country code
  * Returns null if invalid
  */
-export function sanitizeCountryCode(code: string | null | undefined): string | null {
+export function sanitizeCountryCode(
+  code: string | null | undefined,
+): string | null {
   if (!code) return null;
   const normalized = code.toUpperCase().trim().slice(0, 2);
   return isValidCountryCode(normalized) ? normalized : null;
@@ -161,7 +167,8 @@ async function getReader(): Promise<ReaderModel | null> {
   if (readerError) return null;
 
   const dbPath =
-    process.env.GEOIP_DATABASE_PATH || path.join(process.cwd(), "data", "GeoLite2-City.mmdb");
+    process.env.GEOIP_DATABASE_PATH ||
+    path.join(process.cwd(), "data", "GeoLite2-City.mmdb");
 
   // Check if database file exists
   if (!fs.existsSync(dbPath)) {
@@ -181,7 +188,11 @@ async function getReader(): Promise<ReaderModel | null> {
     return readerModel;
   } catch (error) {
     readerError = `Failed to load GeoIP database: ${error}`;
-    logError(error, { context: "geoip", operation: "loadDatabase", path: dbPath });
+    logError(error, {
+      context: "geoip",
+      operation: "loadDatabase",
+      path: dbPath,
+    });
     return null;
   }
 }
@@ -233,8 +244,10 @@ export function getGeoDataFromHeaders(headers: Headers): GeoData | null {
         .trim()
     : undefined;
 
-  const latitude = headers.get("cf-iplat") || headers.get("x-vercel-ip-latitude");
-  const longitude = headers.get("cf-iplon") || headers.get("x-vercel-ip-longitude");
+  const latitude =
+    headers.get("cf-iplat") || headers.get("x-vercel-ip-latitude");
+  const longitude =
+    headers.get("cf-iplon") || headers.get("x-vercel-ip-longitude");
 
   return {
     country,
@@ -299,7 +312,7 @@ async function getGeoDataFromAPI(ip: string): Promise<GeoData | null> {
     // ip-api.com free tier - returns JSON with geo data
     const response = await fetch(
       `http://ip-api.com/json/${ip}?fields=status,countryCode,city,regionName,lat,lon`,
-      { signal: AbortSignal.timeout(2000) } // 2s timeout
+      { signal: AbortSignal.timeout(2000) }, // 2s timeout
     );
 
     if (!response.ok) {
@@ -341,7 +354,12 @@ async function getGeoDataFromAPI(ip: string): Promise<GeoData | null> {
     };
   } catch (error) {
     // API call failed - log but don't crash
-    logger.warn({ type: "geoip", event: "api_fallback_failed", ip, error: String(error) });
+    logger.warn({
+      type: "geoip",
+      event: "api_fallback_failed",
+      ip,
+      error: String(error),
+    });
     return null;
   }
 }
@@ -351,7 +369,7 @@ async function getGeoDataFromAPI(ip: string): Promise<GeoData | null> {
  */
 export async function getGeoDataWithFallback(
   ip: string,
-  headers: Headers
+  headers: Headers,
 ): Promise<GeoData | null> {
   // First try CDN-provided geo headers (most reliable, no DB needed)
   const headerGeo = getGeoDataFromHeaders(headers);
@@ -384,7 +402,12 @@ function isPrivateIP(ip: string): boolean {
   ];
 
   // IPv6 private
-  if (ip === "::1" || ip.startsWith("fe80:") || ip.startsWith("fc") || ip.startsWith("fd")) {
+  if (
+    ip === "::1" ||
+    ip.startsWith("fe80:") ||
+    ip.startsWith("fc") ||
+    ip.startsWith("fd")
+  ) {
     return true;
   }
 

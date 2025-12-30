@@ -23,7 +23,11 @@ interface StatsDetailClientProps {
   filter?: string[];
 }
 
-export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailClientProps) {
+export function StatsDetailClient({
+  websiteId,
+  statType,
+  filter,
+}: StatsDetailClientProps) {
   const t = useTranslations("stats");
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: subDays(new Date(), 29),
@@ -46,7 +50,7 @@ export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailCl
         statType,
         { from: dateRange.from, to: dateRange.to },
         currentPage,
-        20
+        20,
       );
 
       if (result.success && result.data) {
@@ -55,7 +59,9 @@ export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailCl
         // Apply filter for search engines or social networks
         if (filter) {
           filteredData = filteredData.filter((item) =>
-            filter.some((pattern) => item.value.toLowerCase().includes(pattern))
+            filter.some((pattern) =>
+              item.value.toLowerCase().includes(pattern),
+            ),
           );
         }
 
@@ -64,7 +70,7 @@ export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailCl
             label: row.value,
             count: row.count,
             percentage: row.percentage,
-          }))
+          })),
         );
         setTotal(result.data.total);
         setTotalPages(result.data.totalPages);
@@ -98,7 +104,10 @@ export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailCl
     <div className="space-y-6">
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-4 justify-between">
-        <DateRangePicker dateRange={dateRange} onDateRangeChange={handleDateRangeChange} />
+        <DateRangePicker
+          dateRange={dateRange}
+          onDateRangeChange={handleDateRangeChange}
+        />
         <ExportButton data={exportData} filename={`stats-${statType}`} />
       </div>
 
@@ -108,14 +117,18 @@ export function StatsDetailClient({ websiteId, statType, filter }: StatsDetailCl
           <CardTitle className="flex items-center justify-between">
             <span>
               {total.toLocaleString()}{" "}
-              {t("noData") === "Aucune donnée disponible" ? "résultats" : "results"}
+              {t("noData") === "Aucune donnée disponible"
+                ? "résultats"
+                : "results"}
             </span>
             {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {!isLoading && data.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">{t("noData")}</div>
+            <div className="text-center py-12 text-muted-foreground">
+              {t("noData")}
+            </div>
           ) : (
             <StatsTable
               data={data}

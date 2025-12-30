@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,7 +19,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { Shield, Smartphone, Key, Check, Plus, RefreshCw, Copy, AlertTriangle } from "lucide-react";
+import {
+  Shield,
+  Smartphone,
+  Key,
+  Check,
+  Plus,
+  RefreshCw,
+  Copy,
+  AlertTriangle,
+} from "lucide-react";
 import { TotpSetupDialog } from "./totp-setup-dialog";
 import { PasskeySetupDialog } from "./passkey-setup-dialog";
 import { PasskeyList } from "./passkey-list";
@@ -52,7 +67,10 @@ export function TwoFactorSection({
   const [newRecoveryCodes, setNewRecoveryCodes] = useState<string[]>([]);
 
   const t = {
-    twoFactor: locale === "fr" ? "Authentification à deux facteurs" : "Two-Factor Authentication",
+    twoFactor:
+      locale === "fr"
+        ? "Authentification à deux facteurs"
+        : "Two-Factor Authentication",
     twoFactorDescription:
       locale === "fr"
         ? "Ajoutez une couche de sécurité supplémentaire à votre compte"
@@ -61,12 +79,14 @@ export function TwoFactorSection({
     disabled: locale === "fr" ? "Désactivé" : "Disabled",
     default: locale === "fr" ? "Par défaut" : "Default",
     setupMethod: locale === "fr" ? "Configurer une méthode" : "Set up a method",
-    authenticatorApp: locale === "fr" ? "Application d'authentification" : "Authenticator App",
+    authenticatorApp:
+      locale === "fr" ? "Application d'authentification" : "Authenticator App",
     authenticatorAppDesc:
       locale === "fr"
         ? "Utilisez Google Authenticator, Authy ou une autre application"
         : "Use Google Authenticator, Authy, or another app",
-    passkey: locale === "fr" ? "Clé de sécurité / Passkey" : "Security Key / Passkey",
+    passkey:
+      locale === "fr" ? "Clé de sécurité / Passkey" : "Security Key / Passkey",
     passkeyDesc:
       locale === "fr"
         ? "Utilisez Touch ID, Face ID, Windows Hello ou une clé de sécurité USB"
@@ -116,7 +136,11 @@ export function TwoFactorSection({
     const result = await setDefault2FAMethodAction(method, locale);
 
     if (result.success) {
-      toast.success(locale === "fr" ? "Méthode par défaut mise à jour" : "Default method updated");
+      toast.success(
+        locale === "fr"
+          ? "Méthode par défaut mise à jour"
+          : "Default method updated",
+      );
       router.refresh();
     } else {
       toast.error(result.error);
@@ -194,7 +218,9 @@ export function TwoFactorSection({
                     </Badge>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">{t.authenticatorAppDesc}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t.authenticatorAppDesc}
+                </p>
               </div>
             </div>
             <div className="flex gap-2">
@@ -219,7 +245,11 @@ export function TwoFactorSection({
                   </Button>
                 </>
               ) : (
-                <Button variant="outline" size="sm" onClick={() => setShowTotpSetup(true)}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowTotpSetup(true)}
+                >
                   <Plus className="h-4 w-4 mr-2" />
                   {t.configure}
                 </Button>
@@ -254,16 +284,22 @@ export function TwoFactorSection({
               </div>
             </div>
             <div className="flex gap-2">
-              {passkeyCount > 0 && defaultMethod !== "passkey" && totpEnabled && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleSetDefaultMethod("passkey")}
-                >
-                  {t.setAsDefault}
-                </Button>
-              )}
-              <Button variant="outline" size="sm" onClick={() => setShowPasskeySetup(true)}>
+              {passkeyCount > 0 &&
+                defaultMethod !== "passkey" &&
+                totpEnabled && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleSetDefaultMethod("passkey")}
+                  >
+                    {t.setAsDefault}
+                  </Button>
+                )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPasskeySetup(true)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 {t.addPasskey}
               </Button>
@@ -289,7 +325,9 @@ export function TwoFactorSection({
                   </div>
                   <div>
                     <p className="font-medium">{t.recoveryCodes}</p>
-                    <p className="text-sm text-muted-foreground">{t.recoveryCodesDesc}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {t.recoveryCodesDesc}
+                    </p>
                     <p className="text-sm font-medium mt-1">
                       {recoveryCodesCount} {t.codesRemaining}
                     </p>
@@ -350,7 +388,9 @@ export function TwoFactorSection({
               </div>
               <div>
                 <p className="font-medium">{t.authenticatorApp}</p>
-                <p className="text-sm text-muted-foreground">{t.authenticatorAppDesc}</p>
+                <p className="text-sm text-muted-foreground">
+                  {t.authenticatorAppDesc}
+                </p>
               </div>
             </button>
             <button

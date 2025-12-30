@@ -82,7 +82,11 @@ export async function suggestFunnels(data: {
 }): Promise<FunnelSuggestion[]> {
   const client = getClient();
   if (!client) {
-    logger.warn({ type: "ai", event: "no_client", message: "AI features disabled" });
+    logger.warn({
+      type: "ai",
+      event: "no_client",
+      message: "AI features disabled",
+    });
     return [];
   }
 
@@ -114,12 +118,17 @@ Focus on realistic conversion paths based on the actual data provided.`;
       messages: [{ role: "user", content: prompt }],
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const text =
+      response.content[0].type === "text" ? response.content[0].text : "";
 
     // Extract JSON from response
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
-      logger.warn({ type: "ai", event: "no_json", response: text.substring(0, 200) });
+      logger.warn({
+        type: "ai",
+        event: "no_json",
+        response: text.substring(0, 200),
+      });
       return [];
     }
 
@@ -200,7 +209,8 @@ Focus on actionable segments based on the actual data provided.`;
       messages: [{ role: "user", content: prompt }],
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const text =
+      response.content[0].type === "text" ? response.content[0].text : "";
 
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
@@ -284,7 +294,8 @@ Focus on significant changes and actionable insights.`;
       messages: [{ role: "user", content: prompt }],
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const text =
+      response.content[0].type === "text" ? response.content[0].text : "";
 
     const jsonMatch = text.match(/\[[\s\S]*\]/);
     if (!jsonMatch) {
@@ -354,7 +365,8 @@ If the query cannot be converted, return an empty filters array with an explanat
       messages: [{ role: "user", content: prompt }],
     });
 
-    const text = response.content[0].type === "text" ? response.content[0].text : "";
+    const text =
+      response.content[0].type === "text" ? response.content[0].text : "";
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {

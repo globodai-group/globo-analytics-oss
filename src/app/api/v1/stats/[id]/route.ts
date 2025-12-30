@@ -1,5 +1,10 @@
 import { NextRequest } from "next/server";
-import { authenticateApiRequest, apiResponse, apiError, checkRateLimit } from "@/lib/api/auth";
+import {
+  authenticateApiRequest,
+  apiResponse,
+  apiError,
+  checkRateLimit,
+} from "@/lib/api/auth";
 import { prisma } from "@/lib/prisma";
 import { StatType } from "@prisma/client";
 
@@ -69,7 +74,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
   // Validate stat type if provided
   if (type && !VALID_STAT_TYPES.includes(type)) {
-    return apiError(`Invalid stat type. Valid types: ${VALID_STAT_TYPES.join(", ")}`, 400);
+    return apiError(
+      `Invalid stat type. Valid types: ${VALID_STAT_TYPES.join(", ")}`,
+      400,
+    );
   }
 
   // Default to last 30 days
@@ -82,7 +90,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
   // Validate dates
   if (isNaN(from.getTime()) || isNaN(to.getTime())) {
-    return apiError("Invalid date format. Use ISO 8601 format (YYYY-MM-DD)", 400);
+    return apiError(
+      "Invalid date format. Use ISO 8601 format (YYYY-MM-DD)",
+      400,
+    );
   }
 
   if (from > to) {
@@ -123,8 +134,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }),
     ]);
 
-    const totalVisitors = visitorsData.reduce((sum, d) => sum + Number(d._sum.count || 0), 0);
-    const totalPageviews = pageviewsData.reduce((sum, d) => sum + Number(d._sum.count || 0), 0);
+    const totalVisitors = visitorsData.reduce(
+      (sum, d) => sum + Number(d._sum.count || 0),
+      0,
+    );
+    const totalPageviews = pageviewsData.reduce(
+      (sum, d) => sum + Number(d._sum.count || 0),
+      0,
+    );
 
     return apiResponse({
       websiteId,
@@ -174,7 +191,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     data: stats.map((stat) => ({
       value: stat.value,
       count: Number(stat._sum.count || 0),
-      percentage: total > 0 ? Math.round((Number(stat._sum.count || 0) / total) * 10000) / 100 : 0,
+      percentage:
+        total > 0
+          ? Math.round((Number(stat._sum.count || 0) / total) * 10000) / 100
+          : 0,
     })),
     pagination: {
       page,

@@ -4,7 +4,13 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   FolderKanban,
@@ -51,9 +57,21 @@ export function ProjectCard({ project }: ProjectCardProps) {
   const t = useTranslations();
 
   const privacyLabels = {
-    0: { label: t("projects.privacyOptions.public"), icon: Unlock, variant: "secondary" as const },
-    1: { label: t("projects.privacyOptions.private"), icon: Lock, variant: "default" as const },
-    2: { label: t("projects.privacyOptions.password"), icon: Lock, variant: "outline" as const },
+    0: {
+      label: t("projects.privacyOptions.public"),
+      icon: Unlock,
+      variant: "secondary" as const,
+    },
+    1: {
+      label: t("projects.privacyOptions.private"),
+      icon: Lock,
+      variant: "default" as const,
+    },
+    2: {
+      label: t("projects.privacyOptions.password"),
+      icon: Lock,
+      variant: "outline" as const,
+    },
   };
 
   const platformLabels = {
@@ -63,7 +81,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
   };
 
   const privacy = privacyLabels[project.privacy as keyof typeof privacyLabels];
-  const platform = platformLabels[project.platform as keyof typeof platformLabels];
+  const platform =
+    platformLabels[project.platform as keyof typeof platformLabels];
   const PrivacyIcon = privacy.icon;
   const PlatformIcon = platform.icon;
 
@@ -85,14 +104,22 @@ export function ProjectCard({ project }: ProjectCardProps) {
               <FolderKanban className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
-              <CardTitle className="text-base truncate">{project.name}</CardTitle>
+              <CardTitle className="text-base truncate">
+                {project.name}
+              </CardTitle>
               <CardDescription className="truncate">
                 {primaryDomain || t("projects.noDomains")}
               </CardDescription>
             </div>
           </div>
-          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-            <ProjectFavoriteButton projectId={project.id} isFavorite={!!project.favoritedAt} />
+          <div
+            className="flex items-center gap-1"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ProjectFavoriteButton
+              projectId={project.id}
+              isFavorite={!!project.favoritedAt}
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -108,7 +135,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 </DropdownMenuItem>
                 {primaryDomain && (
                   <DropdownMenuItem asChild>
-                    <a href={`https://${primaryDomain}`} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={`https://${primaryDomain}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <ExternalLink className="h-4 w-4 mr-2" />
                       {t("projects.visitSite")}
                     </a>
@@ -128,7 +159,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <ProjectDeleteButton projectId={project.id} projectName={project.name} />
+                <ProjectDeleteButton
+                  projectId={project.id}
+                  projectName={project.name}
+                />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -152,14 +186,18 @@ export function ProjectCard({ project }: ProjectCardProps) {
                 <Users className="h-3 w-3 text-muted-foreground" />
                 {project.usersCount.toLocaleString()}
               </div>
-              <p className="text-xs text-muted-foreground">{t("stats.visitors")}</p>
+              <p className="text-xs text-muted-foreground">
+                {t("stats.visitors")}
+              </p>
             </div>
             <div>
               <div className="flex items-center gap-1 text-sm font-medium">
                 <Activity className="h-3 w-3 text-muted-foreground" />
                 {project.sessionsCount.toLocaleString()}
               </div>
-              <p className="text-xs text-muted-foreground">{t("stats.sessions")}</p>
+              <p className="text-xs text-muted-foreground">
+                {t("stats.sessions")}
+              </p>
             </div>
           </div>
         </div>

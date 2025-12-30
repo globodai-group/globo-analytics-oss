@@ -5,7 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { DimensionScope } from "@prisma/client";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { verifyProjectOwnership } from "./with-project-ownership";
 
 interface CustomDimensionInput {
@@ -31,7 +36,7 @@ async function getMaxSlotsForUser(): Promise<number> {
 export async function createCustomDimensionAction(
   projectId: number,
   input: CustomDimensionInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   const t = await getTranslations({ locale, namespace: "dimensions" });
   const session = await auth();
@@ -89,7 +94,7 @@ export async function createCustomDimensionAction(
 export async function updateCustomDimensionAction(
   dimensionId: number,
   input: Partial<CustomDimensionInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "dimensions" });
   const session = await auth();
@@ -115,7 +120,9 @@ export async function updateCustomDimensionAction(
     }
 
     const existingDimension = await prisma.customDimension.findUnique({
-      where: { projectId_slot: { projectId: dimension.projectId, slot: input.slot } },
+      where: {
+        projectId_slot: { projectId: dimension.projectId, slot: input.slot },
+      },
     });
 
     if (existingDimension) {
@@ -147,7 +154,7 @@ export async function updateCustomDimensionAction(
  */
 export async function deleteCustomDimensionAction(
   dimensionId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "dimensions" });
   const session = await auth();
@@ -179,7 +186,7 @@ export async function deleteCustomDimensionAction(
  * Toggle custom dimension active status
  */
 export async function toggleCustomDimensionActiveAction(
-  dimensionId: number
+  dimensionId: number,
 ): Promise<ActionResult<void>> {
   const session = await auth();
 
@@ -210,7 +217,7 @@ export async function toggleCustomDimensionActiveAction(
  */
 export async function getProjectCustomDimensionsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ dimensions: unknown[]; maxSlots: number }>> {
   const t = await getTranslations({ locale, namespace: "dimensions" });
   const session = await auth();
@@ -256,7 +263,7 @@ export async function getProjectCustomDimensionsAction(
 export async function getCustomDimensionValuesAction(
   dimensionId: number,
   dateRange: { from: Date; to: Date },
-  limit: number = 10
+  limit: number = 10,
 ): Promise<ActionResult<{ values: { value: string; count: number }[] }>> {
   const session = await auth();
 
@@ -304,7 +311,7 @@ export async function getCustomDimensionValuesAction(
  * Get next available slot for a project
  */
 export async function getNextAvailableSlotAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<{ slot: number }>> {
   const session = await auth();
 

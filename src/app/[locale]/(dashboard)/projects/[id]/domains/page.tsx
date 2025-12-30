@@ -8,7 +8,13 @@ import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -17,9 +23,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowLeft, Plus, Trash2, Globe, Loader2, Copy, Check, ArrowRight } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  Trash2,
+  Globe,
+  Loader2,
+  Copy,
+  Check,
+  ArrowRight,
+} from "lucide-react";
 import { toast } from "sonner";
-import { addProjectDomainAction, removeProjectDomainAction } from "@/lib/actions/projects";
+import {
+  addProjectDomainAction,
+  removeProjectDomainAction,
+} from "@/lib/actions/projects";
 
 interface Domain {
   id: number;
@@ -43,7 +61,9 @@ export default function ProjectDomainsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [newDomain, setNewDomain] = useState("");
-  const [domainType, setDomainType] = useState<"primary" | "secondary">("primary");
+  const [domainType, setDomainType] = useState<"primary" | "secondary">(
+    "primary",
+  );
   const [copied, setCopied] = useState(false);
   const [copiedScript, setCopiedScript] = useState(false);
   const [removingId, setRemovingId] = useState<number | null>(null);
@@ -69,7 +89,11 @@ export default function ProjectDomainsPage() {
     if (!newDomain.trim() || !project) return;
 
     setIsAdding(true);
-    const result = await addProjectDomainAction(project.id, newDomain.trim(), domainType);
+    const result = await addProjectDomainAction(
+      project.id,
+      newDomain.trim(),
+      domainType,
+    );
 
     if (result.success && result.data) {
       toast.success(result.message);
@@ -180,8 +204,16 @@ export default function ProjectDomainsPage() {
             <code className="flex-1 px-3 py-2 bg-muted rounded-md font-mono text-sm">
               {project.trackingId}
             </code>
-            <Button variant="outline" size="icon" onClick={handleCopyTrackingId}>
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleCopyTrackingId}
+            >
+              {copied ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </CardContent>
@@ -257,20 +289,29 @@ export default function ProjectDomainsPage() {
               <Label>{t("projects.domainType")}</Label>
               <Select
                 value={domainType}
-                onValueChange={(v) => setDomainType(v as "primary" | "secondary")}
+                onValueChange={(v) =>
+                  setDomainType(v as "primary" | "secondary")
+                }
                 disabled={isAdding}
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="primary">{t("projects.domainTypes.primary")}</SelectItem>
-                  <SelectItem value="secondary">{t("projects.domainTypes.secondary")}</SelectItem>
+                  <SelectItem value="primary">
+                    {t("projects.domainTypes.primary")}
+                  </SelectItem>
+                  <SelectItem value="secondary">
+                    {t("projects.domainTypes.secondary")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
-          <Button onClick={handleAddDomain} disabled={isAdding || !newDomain.trim()}>
+          <Button
+            onClick={handleAddDomain}
+            disabled={isAdding || !newDomain.trim()}
+          >
             {isAdding && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
             <Plus className="h-4 w-4 mr-2" />
             {t("projects.addDomain")}
@@ -301,7 +342,11 @@ export default function ProjectDomainsPage() {
                   <div className="flex items-center gap-3">
                     <Globe className="h-4 w-4 text-muted-foreground" />
                     <span className="font-medium">{domain.domain}</span>
-                    <Badge variant={domain.type === "primary" ? "default" : "secondary"}>
+                    <Badge
+                      variant={
+                        domain.type === "primary" ? "default" : "secondary"
+                      }
+                    >
                       {domain.type === "primary"
                         ? t("projects.domainTypes.primary")
                         : t("projects.domainTypes.secondary")}

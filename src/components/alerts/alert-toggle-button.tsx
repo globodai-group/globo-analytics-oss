@@ -13,7 +13,11 @@ interface AlertToggleButtonProps {
   locale: string;
 }
 
-export function AlertToggleButton({ alertId, isActive, locale }: AlertToggleButtonProps) {
+export function AlertToggleButton({
+  alertId,
+  isActive,
+  locale,
+}: AlertToggleButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +43,11 @@ export function AlertToggleButton({ alertId, isActive, locale }: AlertToggleButt
       disabled={isLoading}
       className={isActive ? "text-primary" : "text-muted-foreground"}
     >
-      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />}
+      {isLoading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Power className="h-4 w-4" />
+      )}
     </Button>
   );
 }

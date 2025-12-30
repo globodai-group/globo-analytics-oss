@@ -61,14 +61,19 @@ export function StatsTable({
         <TableHeader>
           <TableRow>
             <TableHead>{labelHeader || t("table.name")}</TableHead>
-            <TableHead className="text-right w-24">{countHeader || t("table.count")}</TableHead>
+            <TableHead className="text-right w-24">
+              {countHeader || t("table.count")}
+            </TableHead>
             <TableHead className="text-right w-24">%</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
+              <TableCell
+                colSpan={3}
+                className="text-center text-muted-foreground py-8"
+              >
                 {t("noData")}
               </TableCell>
             </TableRow>
@@ -82,7 +87,9 @@ export function StatsTable({
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className="text-right tabular-nums">{formatNumber(row.count)}</TableCell>
+                <TableCell className="text-right tabular-nums">
+                  {formatNumber(row.count)}
+                </TableCell>
                 <TableCell className="text-right tabular-nums text-muted-foreground">
                   {formatPercentage(row.percentage)}
                 </TableCell>

@@ -259,7 +259,13 @@ const pricingComparison = [
   { pageviews: "10M", globo: "$199/mo", plausible: "$169/mo" },
 ];
 
-function ComparisonValue({ value, note }: { value: boolean | string; note: string }) {
+function ComparisonValue({
+  value,
+  note,
+}: {
+  value: boolean | string;
+  note: string;
+}) {
   if (value === true) {
     return (
       <div className="flex items-center gap-2">
@@ -305,12 +311,14 @@ export default function PlausibleComparisonPage() {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              GloboAnalytics vs <span className="text-muted-foreground">Plausible</span>
+              GloboAnalytics vs{" "}
+              <span className="text-muted-foreground">Plausible</span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Love Plausible&apos;s clean, privacy-first approach? GloboAnalytics offers the same
-              simplicity with powerful features Plausible doesn&apos;t have.
+              Love Plausible&apos;s clean, privacy-first approach?
+              GloboAnalytics offers the same simplicity with powerful features
+              Plausible doesn&apos;t have.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -321,7 +329,11 @@ export default function PlausibleComparisonPage() {
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   View Pricing
                 </Button>
               </Link>
@@ -334,12 +346,16 @@ export default function PlausibleComparisonPage() {
       <section className="py-12 border-y bg-primary/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">The Bottom Line</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              The Bottom Line
+            </h2>
             <p className="text-lg text-muted-foreground">
-              Plausible is great for basic analytics. But if you need <strong>funnels</strong>,{" "}
-              <strong>segments</strong>, <strong>custom dashboards</strong>, or{" "}
-              <strong>advanced goals</strong>, you&apos;ll hit a wall. GloboAnalytics gives you
-              these features without sacrificing privacy.
+              Plausible is great for basic analytics. But if you need{" "}
+              <strong>funnels</strong>, <strong>segments</strong>,{" "}
+              <strong>custom dashboards</strong>, or{" "}
+              <strong>advanced goals</strong>, you&apos;ll hit a wall.
+              GloboAnalytics gives you these features without sacrificing
+              privacy.
             </p>
           </div>
         </div>
@@ -353,8 +369,8 @@ export default function PlausibleComparisonPage() {
               What Plausible Doesn&apos;t Have
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Plausible keeps things simple - sometimes too simple. Here&apos;s what you&apos;re
-              missing out on.
+              Plausible keeps things simple - sometimes too simple. Here&apos;s
+              what you&apos;re missing out on.
             </p>
           </div>
 
@@ -379,15 +395,21 @@ export default function PlausibleComparisonPage() {
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Feature-by-Feature Comparison</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Feature-by-Feature Comparison
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Both respect privacy. Only one gives you the full analytics toolkit.
+              Both respect privacy. Only one gives you the full analytics
+              toolkit.
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-8">
             {comparisonFeatures.map((category) => (
-              <div key={category.category} className="rounded-xl border bg-card overflow-hidden">
+              <div
+                key={category.category}
+                className="rounded-xl border bg-card overflow-hidden"
+              >
                 <div className="bg-muted/50 px-6 py-4 border-b">
                   <h3 className="font-semibold text-lg">{category.category}</h3>
                 </div>
@@ -399,13 +421,21 @@ export default function PlausibleComparisonPage() {
                       <Globe className="h-4 w-4" />
                       GloboAnalytics
                     </div>
-                    <div className="font-medium text-muted-foreground">Plausible</div>
+                    <div className="font-medium text-muted-foreground">
+                      Plausible
+                    </div>
                   </div>
 
                   {category.features.map((feature) => (
-                    <div key={feature.name} className="grid grid-cols-3 gap-4 px-6 py-4">
+                    <div
+                      key={feature.name}
+                      className="grid grid-cols-3 gap-4 px-6 py-4"
+                    >
                       <div className="font-medium">{feature.name}</div>
-                      <ComparisonValue value={feature.globo.value} note={feature.globo.note} />
+                      <ComparisonValue
+                        value={feature.globo.value}
+                        note={feature.globo.note}
+                      />
                       <ComparisonValue
                         value={feature.plausible.value}
                         note={feature.plausible.note}
@@ -427,17 +457,23 @@ export default function PlausibleComparisonPage() {
               Why Choose GloboAnalytics Over Plausible
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Get the privacy-first approach you love with the features you actually need.
+              Get the privacy-first approach you love with the features you
+              actually need.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {advantages.map((advantage) => (
-              <div key={advantage.title} className="p-6 rounded-xl border bg-card">
+              <div
+                key={advantage.title}
+                className="p-6 rounded-xl border bg-card"
+              >
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <advantage.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{advantage.title}</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  {advantage.title}
+                </h3>
                 <p className="text-muted-foreground">{advantage.description}</p>
               </div>
             ))}
@@ -450,9 +486,12 @@ export default function PlausibleComparisonPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Pricing Comparison</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Pricing Comparison
+              </h2>
               <p className="text-lg text-muted-foreground">
-                GloboAnalytics costs slightly more because you get significantly more features.
+                GloboAnalytics costs slightly more because you get significantly
+                more features.
               </p>
             </div>
 
@@ -460,7 +499,9 @@ export default function PlausibleComparisonPage() {
               <div className="grid grid-cols-3 gap-4 px-6 py-4 bg-muted/50 border-b">
                 <div className="font-medium">Monthly Pageviews</div>
                 <div className="font-medium text-primary">GloboAnalytics</div>
-                <div className="font-medium text-muted-foreground">Plausible</div>
+                <div className="font-medium text-muted-foreground">
+                  Plausible
+                </div>
               </div>
               {pricingComparison.map((tier) => (
                 <div
@@ -476,9 +517,10 @@ export default function PlausibleComparisonPage() {
 
             <div className="mt-6 p-4 bg-primary/10 rounded-lg text-center">
               <p className="text-sm">
-                <strong>Worth the difference?</strong> For ~$10/mo more, you get funnels, segments,
-                custom dashboards, advanced goals, and AI bot detection. Features that would cost
-                $100+/mo with other enterprise tools.
+                <strong>Worth the difference?</strong> For ~$10/mo more, you get
+                funnels, segments, custom dashboards, advanced goals, and AI bot
+                detection. Features that would cost $100+/mo with other
+                enterprise tools.
               </p>
             </div>
           </div>
@@ -499,9 +541,9 @@ export default function PlausibleComparisonPage() {
                   Is GloboAnalytics as privacy-friendly as Plausible?
                 </h3>
                 <p className="text-muted-foreground">
-                  Yes! We use the same cookieless, privacy-first approach. No personal data stored,
-                  no consent banner needed, fully GDPR/CCPA compliant. We just add more features on
-                  top.
+                  Yes! We use the same cookieless, privacy-first approach. No
+                  personal data stored, no consent banner needed, fully
+                  GDPR/CCPA compliant. We just add more features on top.
                 </p>
               </div>
 
@@ -510,34 +552,44 @@ export default function PlausibleComparisonPage() {
                   Is the dashboard still simple like Plausible?
                 </h3>
                 <p className="text-muted-foreground">
-                  Our default dashboard is clean and simple. Advanced features like funnels and
-                  segments are there when you need them, but they don&apos;t clutter the main view.
-                  Power when you want it, simplicity by default.
+                  Our default dashboard is clean and simple. Advanced features
+                  like funnels and segments are there when you need them, but
+                  they don&apos;t clutter the main view. Power when you want it,
+                  simplicity by default.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Can I migrate from Plausible easily?</h3>
+                <h3 className="font-semibold mb-2">
+                  Can I migrate from Plausible easily?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes! Our tracking script is a simple swap. You can even run both during
-                  transition. Historical data stays in Plausible, and you start fresh with
-                  GloboAnalytics (with all the new features).
+                  Yes! Our tracking script is a simple swap. You can even run
+                  both during transition. Historical data stays in Plausible,
+                  and you start fresh with GloboAnalytics (with all the new
+                  features).
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Do you support public dashboards?</h3>
+                <h3 className="font-semibold mb-2">
+                  Do you support public dashboards?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes! Like Plausible, you can make your dashboard public with a shareable link.
-                  Great for transparency and building trust with your audience.
+                  Yes! Like Plausible, you can make your dashboard public with a
+                  shareable link. Great for transparency and building trust with
+                  your audience.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">What about the script size?</h3>
+                <h3 className="font-semibold mb-2">
+                  What about the script size?
+                </h3>
                 <p className="text-muted-foreground">
-                  Our core script is under 3KB gzipped, comparable to Plausible. Advanced features
-                  load on-demand. We&apos;re obsessed with performance too.
+                  Our core script is under 3KB gzipped, comparable to Plausible.
+                  Advanced features load on-demand. We&apos;re obsessed with
+                  performance too.
                 </p>
               </div>
             </div>
@@ -553,12 +605,16 @@ export default function PlausibleComparisonPage() {
               Ready for Privacy Analytics That Does More?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Get funnels, segments, and advanced features without compromising on privacy. Start
-              your free trial today.
+              Get funnels, segments, and advanced features without compromising
+              on privacy. Start your free trial today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Start Free 14-Day Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

@@ -4,7 +4,13 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Users, TrendingDown, Target } from "lucide-react";
 import { getFunnelAnalysisAction } from "@/lib/actions/funnels";
 import { FunnelChart } from "@/components/funnels/funnel-chart";
@@ -40,7 +46,10 @@ interface FunnelAnalysis {
   };
 }
 
-export default async function FunnelDetailPage({ params, searchParams }: PageProps) {
+export default async function FunnelDetailPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id, funnelId } = await params;
   const { from, to } = await searchParams;
   const projectId = parseInt(id);
@@ -75,8 +84,14 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
     to: to ? new Date(to) : now,
   };
 
-  const analysisResult = await getFunnelAnalysisAction(funnelIdNum, dateRange, locale);
-  const analysis = analysisResult.success ? (analysisResult.data as FunnelAnalysis) : null;
+  const analysisResult = await getFunnelAnalysisAction(
+    funnelIdNum,
+    dateRange,
+    locale,
+  );
+  const analysis = analysisResult.success
+    ? (analysisResult.data as FunnelAnalysis)
+    : null;
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -88,7 +103,9 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
             </Button>
           </Link>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold truncate">{funnel.name}</h1>
+            <h1 className="text-lg sm:text-2xl font-bold truncate">
+              {funnel.name}
+            </h1>
             {funnel.description && (
               <p className="text-xs sm:text-sm text-muted-foreground truncate">
                 {funnel.description}
@@ -106,7 +123,9 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("totalEntrants")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("totalEntrants")}
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -117,7 +136,9 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("totalConversions")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("totalConversions")}
+              </CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -128,13 +149,18 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("conversionRate")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("conversionRate")}
+              </CardTitle>
               <TrendingDown className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analysis.summary.overallConversionRate}%</div>
+              <div className="text-2xl font-bold">
+                {analysis.summary.overallConversionRate}%
+              </div>
               <p className="text-xs text-muted-foreground">
-                {t("totalDropOff")}: {analysis.summary.totalDropOff.toLocaleString()}
+                {t("totalDropOff")}:{" "}
+                {analysis.summary.totalDropOff.toLocaleString()}
               </p>
             </CardContent>
           </Card>
@@ -145,13 +171,17 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
       <Card>
         <CardHeader>
           <CardTitle>{t("funnelVisualization")}</CardTitle>
-          <CardDescription>{t("funnelVisualizationDescription")}</CardDescription>
+          <CardDescription>
+            {t("funnelVisualizationDescription")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {analysis ? (
             <FunnelChart steps={analysis.steps} locale={locale} />
           ) : (
-            <div className="text-center py-8 text-muted-foreground">{t("noData")}</div>
+            <div className="text-center py-8 text-muted-foreground">
+              {t("noData")}
+            </div>
           )}
         </CardContent>
       </Card>
@@ -167,11 +197,21 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">{t("step")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("visitors")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("dropOff")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("dropOffRate")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("conversionRate")}</th>
+                    <th className="text-left py-3 px-4 font-medium">
+                      {t("step")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("visitors")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("dropOff")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("dropOffRate")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("conversionRate")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,9 +225,13 @@ export default async function FunnelDetailPage({ params, searchParams }: PagePro
                           <span className="font-medium">{step.name}</span>
                         </div>
                       </td>
-                      <td className="text-right py-3 px-4">{step.visitors.toLocaleString()}</td>
+                      <td className="text-right py-3 px-4">
+                        {step.visitors.toLocaleString()}
+                      </td>
                       <td className="text-right py-3 px-4 text-destructive">
-                        {step.position > 1 ? `-${step.dropOff.toLocaleString()}` : "-"}
+                        {step.position > 1
+                          ? `-${step.dropOff.toLocaleString()}`
+                          : "-"}
                       </td>
                       <td className="text-right py-3 px-4">
                         {step.position > 1 ? `${step.dropOffRate}%` : "-"}

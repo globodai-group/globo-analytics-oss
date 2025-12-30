@@ -48,11 +48,16 @@ export async function POST(request: NextRequest) {
 
     // Verify redirect URI
     if (!client.redirectUris.includes(redirectUri)) {
-      return NextResponse.json({ error: "invalid_redirect_uri" }, { status: 400 });
+      return NextResponse.json(
+        { error: "invalid_redirect_uri" },
+        { status: 400 },
+      );
     }
 
     // Validate scopes
-    const validScopes = (scopes || []).filter((s: string) => client.scopes.includes(s));
+    const validScopes = (scopes || []).filter((s: string) =>
+      client.scopes.includes(s),
+    );
 
     // SECURITY: Generate cryptographically secure authorization code
     const { code, codeHash } = generateAuthorizationCode();

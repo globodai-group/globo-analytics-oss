@@ -42,7 +42,7 @@ interface ConsentConfigData {
 // Get consent config for project
 export async function getConsentConfigAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<ConsentConfigData | null>> {
   try {
     const session = await auth();
@@ -86,7 +86,7 @@ export async function getConsentConfigAction(
 export async function saveConsentConfigAction(
   projectId: number,
   input: ConsentConfigInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -113,10 +113,15 @@ export async function saveConsentConfigAction(
     }
 
     // SECURITY: Validate bannerPosition to prevent XSS injection in generated script
-    if (!VALID_BANNER_POSITIONS.includes(input.bannerPosition as BannerPosition)) {
+    if (
+      !VALID_BANNER_POSITIONS.includes(input.bannerPosition as BannerPosition)
+    ) {
       return {
         success: false,
-        error: locale === "fr" ? "Position de bannière invalide" : "Invalid banner position",
+        error:
+          locale === "fr"
+            ? "Position de bannière invalide"
+            : "Invalid banner position",
       };
     }
 
@@ -145,7 +150,8 @@ export async function saveConsentConfigAction(
 
     return {
       success: true,
-      message: locale === "fr" ? "Configuration sauvegardée" : "Configuration saved",
+      message:
+        locale === "fr" ? "Configuration sauvegardée" : "Configuration saved",
     };
   } catch (error) {
     console.error("Error saving consent config:", error);
@@ -159,7 +165,7 @@ export async function saveConsentConfigAction(
 // Get consent statistics
 export async function getConsentStatsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     totalVisitors: number;
@@ -251,7 +257,7 @@ export async function getConsentStatsAction(
 // Generate consent banner script
 export async function getConsentBannerScriptAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<string>> {
   try {
     const session = await auth();

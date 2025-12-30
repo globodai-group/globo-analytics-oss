@@ -226,7 +226,13 @@ const migrationBenefits = [
   },
 ];
 
-function ComparisonValue({ value, note }: { value: boolean | string; note: string }) {
+function ComparisonValue({
+  value,
+  note,
+}: {
+  value: boolean | string;
+  note: string;
+}) {
   if (value === true) {
     return (
       <div className="flex items-center gap-2">
@@ -285,8 +291,9 @@ export default function GoogleAnalyticsComparisonPage() {
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Get accurate, privacy-compliant analytics without the legal headaches, cookie banners,
-              or complex interfaces. See why thousands are making the switch.
+              Get accurate, privacy-compliant analytics without the legal
+              headaches, cookie banners, or complex interfaces. See why
+              thousands are making the switch.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -297,7 +304,11 @@ export default function GoogleAnalyticsComparisonPage() {
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   View Pricing
                 </Button>
               </Link>
@@ -316,7 +327,9 @@ export default function GoogleAnalyticsComparisonPage() {
                   {benefit.metric}
                 </div>
                 <div className="font-medium mb-1">{benefit.label}</div>
-                <div className="text-sm text-muted-foreground">{benefit.description}</div>
+                <div className="text-sm text-muted-foreground">
+                  {benefit.description}
+                </div>
               </div>
             ))}
           </div>
@@ -331,8 +344,8 @@ export default function GoogleAnalyticsComparisonPage() {
               Why Companies Are Leaving Google Analytics
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              GA4 comes with serious drawbacks that affect your data accuracy, legal compliance, and
-              user experience.
+              GA4 comes with serious drawbacks that affect your data accuracy,
+              legal compliance, and user experience.
             </p>
           </div>
 
@@ -357,16 +370,21 @@ export default function GoogleAnalyticsComparisonPage() {
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Feature-by-Feature Comparison</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Feature-by-Feature Comparison
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              See exactly how GloboAnalytics compares to Google Analytics across every important
-              dimension.
+              See exactly how GloboAnalytics compares to Google Analytics across
+              every important dimension.
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-8">
             {comparisonFeatures.map((category) => (
-              <div key={category.category} className="rounded-xl border bg-card overflow-hidden">
+              <div
+                key={category.category}
+                className="rounded-xl border bg-card overflow-hidden"
+              >
                 <div className="bg-muted/50 px-6 py-4 border-b">
                   <h3 className="font-semibold text-lg">{category.category}</h3>
                 </div>
@@ -379,15 +397,26 @@ export default function GoogleAnalyticsComparisonPage() {
                       <Globe className="h-4 w-4" />
                       GloboAnalytics
                     </div>
-                    <div className="font-medium text-muted-foreground">Google Analytics</div>
+                    <div className="font-medium text-muted-foreground">
+                      Google Analytics
+                    </div>
                   </div>
 
                   {/* Feature rows */}
                   {category.features.map((feature) => (
-                    <div key={feature.name} className="grid grid-cols-3 gap-4 px-6 py-4">
+                    <div
+                      key={feature.name}
+                      className="grid grid-cols-3 gap-4 px-6 py-4"
+                    >
                       <div className="font-medium">{feature.name}</div>
-                      <ComparisonValue value={feature.globo.value} note={feature.globo.note} />
-                      <ComparisonValue value={feature.google.value} note={feature.google.note} />
+                      <ComparisonValue
+                        value={feature.globo.value}
+                        note={feature.globo.note}
+                      />
+                      <ComparisonValue
+                        value={feature.google.value}
+                        note={feature.google.note}
+                      />
                     </div>
                   ))}
                 </div>
@@ -405,8 +434,8 @@ export default function GoogleAnalyticsComparisonPage() {
               Why Choose GloboAnalytics Over Google Analytics
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Built from the ground up as a privacy-first analytics platform that respects your
-              visitors and delivers accurate data.
+              Built from the ground up as a privacy-first analytics platform
+              that respects your visitors and delivers accurate data.
             </p>
           </div>
 
@@ -415,10 +444,13 @@ export default function GoogleAnalyticsComparisonPage() {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">100% GDPR Compliant</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                100% GDPR Compliant
+              </h3>
               <p className="text-muted-foreground">
-                No cookie consent needed. No US data transfers. Your data stays in the EU if you
-                choose. Sleep easy knowing you&apos;re fully compliant.
+                No cookie consent needed. No US data transfers. Your data stays
+                in the EU if you choose. Sleep easy knowing you&apos;re fully
+                compliant.
               </p>
             </div>
 
@@ -428,8 +460,9 @@ export default function GoogleAnalyticsComparisonPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">More Accurate Data</h3>
               <p className="text-muted-foreground">
-                Without cookie consent rejections and ad blocker interference, you see 30-50% more
-                of your actual traffic. Real numbers, not samples.
+                Without cookie consent rejections and ad blocker interference,
+                you see 30-50% more of your actual traffic. Real numbers, not
+                samples.
               </p>
             </div>
 
@@ -439,8 +472,8 @@ export default function GoogleAnalyticsComparisonPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Simple & Intuitive</h3>
               <p className="text-muted-foreground">
-                No certification needed. Our clean dashboard shows you what matters in seconds.
-                Setup takes 5 minutes, not days.
+                No certification needed. Our clean dashboard shows you what
+                matters in seconds. Setup takes 5 minutes, not days.
               </p>
             </div>
 
@@ -448,10 +481,13 @@ export default function GoogleAnalyticsComparisonPage() {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <Lock className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Your Data, Your Control</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Your Data, Your Control
+              </h3>
               <p className="text-muted-foreground">
-                We don&apos;t sell your data or use it for advertising. You can export or delete
-                everything anytime. Self-host if you want complete control.
+                We don&apos;t sell your data or use it for advertising. You can
+                export or delete everything anytime. Self-host if you want
+                complete control.
               </p>
             </div>
 
@@ -461,8 +497,8 @@ export default function GoogleAnalyticsComparisonPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Real-Time Insights</h3>
               <p className="text-muted-foreground">
-                See visitor activity as it happens. No 24-48 hour delays. React to trends
-                immediately and optimize your campaigns in real-time.
+                See visitor activity as it happens. No 24-48 hour delays. React
+                to trends immediately and optimize your campaigns in real-time.
               </p>
             </div>
 
@@ -472,8 +508,8 @@ export default function GoogleAnalyticsComparisonPage() {
               </div>
               <h3 className="text-xl font-semibold mb-2">Human Support</h3>
               <p className="text-muted-foreground">
-                Real humans respond within 24 hours. No community forums, no AI chatbots. Get help
-                from people who actually know the product.
+                Real humans respond within 24 hours. No community forums, no AI
+                chatbots. Get help from people who actually know the product.
               </p>
             </div>
           </div>
@@ -489,8 +525,8 @@ export default function GoogleAnalyticsComparisonPage() {
                 Migrate from Google Analytics in Minutes
               </h2>
               <p className="text-lg text-muted-foreground">
-                Switching is easier than you think. Keep your historical context while gaining
-                better data going forward.
+                Switching is easier than you think. Keep your historical context
+                while gaining better data going forward.
               </p>
             </div>
 
@@ -501,7 +537,8 @@ export default function GoogleAnalyticsComparisonPage() {
                 </div>
                 <h3 className="font-semibold mb-2">Create Account</h3>
                 <p className="text-sm text-muted-foreground">
-                  Sign up in 30 seconds. No credit card required for the free trial.
+                  Sign up in 30 seconds. No credit card required for the free
+                  trial.
                 </p>
               </div>
 
@@ -511,7 +548,8 @@ export default function GoogleAnalyticsComparisonPage() {
                 </div>
                 <h3 className="font-semibold mb-2">Add Tracking Code</h3>
                 <p className="text-sm text-muted-foreground">
-                  Copy one line of code to your site. Works alongside GA4 during transition.
+                  Copy one line of code to your site. Works alongside GA4 during
+                  transition.
                 </p>
               </div>
 
@@ -521,7 +559,8 @@ export default function GoogleAnalyticsComparisonPage() {
                 </div>
                 <h3 className="font-semibold mb-2">See Your Data</h3>
                 <p className="text-sm text-muted-foreground">
-                  Watch real-time analytics flow in immediately. Remove GA4 when ready.
+                  Watch real-time analytics flow in immediately. Remove GA4 when
+                  ready.
                 </p>
               </div>
             </div>
@@ -543,17 +582,20 @@ export default function GoogleAnalyticsComparisonPage() {
                   Can I run GloboAnalytics alongside Google Analytics?
                 </h3>
                 <p className="text-muted-foreground">
-                  Yes! Many customers run both during a transition period. This lets you compare
-                  data accuracy and get comfortable before fully switching.
+                  Yes! Many customers run both during a transition period. This
+                  lets you compare data accuracy and get comfortable before
+                  fully switching.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Will I lose my historical GA data?</h3>
+                <h3 className="font-semibold mb-2">
+                  Will I lose my historical GA data?
+                </h3>
                 <p className="text-muted-foreground">
-                  Your Google Analytics historical data stays in Google. GloboAnalytics starts
-                  collecting from installation. We recommend keeping GA access for historical
-                  reference.
+                  Your Google Analytics historical data stays in Google.
+                  GloboAnalytics starts collecting from installation. We
+                  recommend keeping GA access for historical reference.
                 </p>
               </div>
 
@@ -562,27 +604,31 @@ export default function GoogleAnalyticsComparisonPage() {
                   Is GloboAnalytics really GDPR compliant without cookies?
                 </h3>
                 <p className="text-muted-foreground">
-                  Yes. We use privacy-preserving techniques to track page views and events without
-                  storing personal data or using cookies. Several EU DPAs have confirmed this
-                  approach is compliant.
+                  Yes. We use privacy-preserving techniques to track page views
+                  and events without storing personal data or using cookies.
+                  Several EU DPAs have confirmed this approach is compliant.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">What about features like Enhanced Ecommerce?</h3>
+                <h3 className="font-semibold mb-2">
+                  What about features like Enhanced Ecommerce?
+                </h3>
                 <p className="text-muted-foreground">
-                  GloboAnalytics supports ecommerce tracking, custom events, funnels, and goals.
-                  While the implementation differs, you get the insights you need to optimize your
-                  store.
+                  GloboAnalytics supports ecommerce tracking, custom events,
+                  funnels, and goals. While the implementation differs, you get
+                  the insights you need to optimize your store.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Do you offer a self-hosted option?</h3>
+                <h3 className="font-semibold mb-2">
+                  Do you offer a self-hosted option?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes! GloboAnalytics can be self-hosted using Docker. This gives you complete
-                  control over your data and infrastructure. Perfect for enterprises with strict
-                  data requirements.
+                  Yes! GloboAnalytics can be self-hosted using Docker. This
+                  gives you complete control over your data and infrastructure.
+                  Perfect for enterprises with strict data requirements.
                 </p>
               </div>
             </div>
@@ -598,12 +644,17 @@ export default function GoogleAnalyticsComparisonPage() {
               Ready to Ditch Google Analytics?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Join thousands of privacy-conscious businesses using GloboAnalytics. Start your free
-              trial today - no credit card required.
+              Join thousands of privacy-conscious businesses using
+              GloboAnalytics. Start your free trial today - no credit card
+              required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Start Free 14-Day Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

@@ -1,5 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import { subDays, startOfDay, endOfDay, eachDayOfInterval, format } from "date-fns";
+import {
+  subDays,
+  startOfDay,
+  endOfDay,
+  eachDayOfInterval,
+  format,
+} from "date-fns";
 
 export interface DateRange {
   from: Date;
@@ -88,7 +94,9 @@ export function getDefaultDateRange(): DateRange {
  * Get previous period for comparison
  */
 export function getPreviousPeriod(range: DateRange): DateRange {
-  const days = Math.ceil((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24));
+  const days = Math.ceil(
+    (range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24),
+  );
   return {
     from: subDays(range.from, days),
     to: subDays(range.to, days),
@@ -115,7 +123,7 @@ function formatEngagementTime(seconds: number): string {
  */
 export async function getGAStatsOverview(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<GAStatsOverview> {
   const previousRange = getPreviousPeriod(dateRange);
   const startDate = startOfDay(dateRange.from);
@@ -158,7 +166,9 @@ export async function getGAStatsOverview(
       by: ["name"],
       where: {
         projectId,
-        name: { in: ["pageviews", "unique_visitors", "visitors", "engaged_sessions"] },
+        name: {
+          in: ["pageviews", "unique_visitors", "visitors", "engaged_sessions"],
+        },
         date: { gte: prevStartDate, lte: prevEndDate },
       },
       _sum: { count: true },
@@ -183,7 +193,10 @@ export async function getGAStatsOverview(
     }),
     // Previous visitors
     prisma.visitor.aggregate({
-      where: { projectId, lastSeenAt: { gte: prevStartDate, lte: prevEndDate } },
+      where: {
+        projectId,
+        lastSeenAt: { gte: prevStartDate, lte: prevEndDate },
+      },
       _count: { id: true },
     }),
   ]);
@@ -193,31 +206,40 @@ export async function getGAStatsOverview(
     return Number(stats.find((s) => s.name === name)?._sum?.count || 0);
   };
 
-  const users = getStatValue(currentStats, "unique_visitors") || currentVisitors._count.id;
+  const users =
+    getStatValue(currentStats, "unique_visitors") || currentVisitors._count.id;
   const newUsers = getStatValue(currentStats, "new_users");
   const activeUsers = getStatValue(currentStats, "active_users") || users;
   const returningUsers = getStatValue(currentStats, "returning_users");
-  const sessions = getStatValue(currentStats, "visitors") || currentSessions._count.id;
+  const sessions =
+    getStatValue(currentStats, "visitors") || currentSessions._count.id;
   const engagedSessions = getStatValue(currentStats, "engaged_sessions");
   const pageviews = getStatValue(currentStats, "pageviews");
   const screenViews = getStatValue(currentStats, "screen_views");
 
   // Previous period stats
-  const prevUsers = getStatValue(previousStats, "unique_visitors") || previousVisitors._count.id;
-  const prevSessions = getStatValue(previousStats, "visitors") || previousSessions._count.id;
+  const prevUsers =
+    getStatValue(previousStats, "unique_visitors") ||
+    previousVisitors._count.id;
+  const prevSessions =
+    getStatValue(previousStats, "visitors") || previousSessions._count.id;
   const prevPageviews = getStatValue(previousStats, "pageviews");
   const prevEngagedSessions = getStatValue(previousStats, "engaged_sessions");
 
   // Calculate engagement metrics
   const totalEngagementTime = currentVisitors._sum.totalEngagementTime || 0;
   const avgEngagementTimeSeconds = users > 0 ? totalEngagementTime / users : 0;
-  const engagementRate = sessions > 0 ? Math.round((engagedSessions / sessions) * 100) : 0;
+  const engagementRate =
+    sessions > 0 ? Math.round((engagedSessions / sessions) * 100) : 0;
   const bounceRate = 100 - engagementRate;
-  const viewsPerSession = sessions > 0 ? Math.round((pageviews / sessions) * 10) / 10 : 0;
+  const viewsPerSession =
+    sessions > 0 ? Math.round((pageviews / sessions) * 10) / 10 : 0;
 
   // Previous engagement rate
   const prevEngagementRate =
-    prevSessions > 0 ? Math.round((prevEngagedSessions / prevSessions) * 100) : 0;
+    prevSessions > 0
+      ? Math.round((prevEngagedSessions / prevSessions) * 100)
+      : 0;
 
   // Calculate changes
   const calcChange = (current: number, previous: number): number => {
@@ -250,7 +272,7 @@ export async function getGAStatsOverview(
  */
 export async function getGAChartData(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<GAChartDataPoint[]> {
   const dates = eachDayOfInterval({
     start: dateRange.from,
@@ -261,7 +283,15 @@ export async function getGAChartData(
   const stats = await prisma.projectStat.findMany({
     where: {
       projectId,
-      name: { in: ["unique_visitors", "new_users", "visitors", "pageviews", "engaged_sessions"] },
+      name: {
+        in: [
+          "unique_visitors",
+          "new_users",
+          "visitors",
+          "pageviews",
+          "engaged_sessions",
+        ],
+      },
       date: {
         gte: startOfDay(dateRange.from),
         lte: endOfDay(dateRange.to),
@@ -300,7 +330,8 @@ export async function getGAChartData(
     if (stat.name === "unique_visitors") existing.users += count;
     else if (stat.name === "visitors") existing.sessions += count;
     else if (stat.name === "pageviews") existing.pageviews += count;
-    else if (stat.name === "engaged_sessions") existing.engagedSessions += count;
+    else if (stat.name === "engaged_sessions")
+      existing.engagedSessions += count;
     else if (stat.name === "new_users") existing.newUsers += count;
 
     statsByDate.set(dateKey, existing);
@@ -326,7 +357,9 @@ export async function getGAChartData(
 /**
  * Get real-time active users (like GA Real-time)
  */
-export async function getRealtimeData(projectId: number): Promise<RealtimeData> {
+export async function getRealtimeData(
+  projectId: number,
+): Promise<RealtimeData> {
   const now = new Date();
   const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
   const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
@@ -360,9 +393,14 @@ export async function getRealtimeData(projectId: number): Promise<RealtimeData> 
 
   for (const user of realtimeUsers) {
     pageCount.set(user.currentPage, (pageCount.get(user.currentPage) || 0) + 1);
-    if (user.country) countryCount.set(user.country, (countryCount.get(user.country) || 0) + 1);
-    platformCount.set(user.platform, (platformCount.get(user.platform) || 0) + 1);
-    if (user.device) deviceCount.set(user.device, (deviceCount.get(user.device) || 0) + 1);
+    if (user.country)
+      countryCount.set(user.country, (countryCount.get(user.country) || 0) + 1);
+    platformCount.set(
+      user.platform,
+      (platformCount.get(user.platform) || 0) + 1,
+    );
+    if (user.device)
+      deviceCount.set(user.device, (deviceCount.get(user.device) || 0) + 1);
   }
 
   const sortByCount = <T extends { users: number }>(arr: T[]): T[] =>
@@ -373,16 +411,25 @@ export async function getRealtimeData(projectId: number): Promise<RealtimeData> 
     usersLast30Min: recentPageviews,
     pageviewsPerMinute: Math.round(activeUsersNow / 5), // Approximate
     topPages: sortByCount(
-      Array.from(pageCount.entries()).map(([page, users]) => ({ page, users }))
+      Array.from(pageCount.entries()).map(([page, users]) => ({ page, users })),
     ).slice(0, 10),
     topCountries: sortByCount(
-      Array.from(countryCount.entries()).map(([country, users]) => ({ country, users }))
+      Array.from(countryCount.entries()).map(([country, users]) => ({
+        country,
+        users,
+      })),
     ).slice(0, 10),
     usersByPlatform: sortByCount(
-      Array.from(platformCount.entries()).map(([platform, users]) => ({ platform, users }))
+      Array.from(platformCount.entries()).map(([platform, users]) => ({
+        platform,
+        users,
+      })),
     ),
     usersByDevice: sortByCount(
-      Array.from(deviceCount.entries()).map(([device, users]) => ({ device, users }))
+      Array.from(deviceCount.entries()).map(([device, users]) => ({
+        device,
+        users,
+      })),
     ),
   };
 }
@@ -392,7 +439,7 @@ export async function getRealtimeData(projectId: number): Promise<RealtimeData> 
  */
 export async function getUserRetention(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<UserRetention[]> {
   const startDate = startOfDay(dateRange.from);
 
@@ -420,7 +467,8 @@ export async function getUserRetention(
   for (let day = 0; day <= 7; day++) {
     const retainedUsers = newVisitors.filter((visitor) => {
       const daysSinceFirst = Math.floor(
-        (visitor.lastSeenAt.getTime() - visitor.firstSeenAt.getTime()) / (1000 * 60 * 60 * 24)
+        (visitor.lastSeenAt.getTime() - visitor.firstSeenAt.getTime()) /
+          (1000 * 60 * 60 * 24),
       );
       return daysSinceFirst >= day;
     }).length;
@@ -440,7 +488,7 @@ export async function getUserRetention(
  */
 export async function getAppVersionStats(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<AppVersionStats[]> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
@@ -457,7 +505,10 @@ export async function getAppVersionStats(
     take: 20,
   });
 
-  const totalUsers = stats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalUsers = stats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
 
   // Get session counts for each version
   const sessionStats = await prisma.projectSession.groupBy({
@@ -470,13 +521,18 @@ export async function getAppVersionStats(
     _count: { id: true },
   });
 
-  const sessionMap = new Map(sessionStats.map((s) => [s.appVersion, s._count.id]));
+  const sessionMap = new Map(
+    sessionStats.map((s) => [s.appVersion, s._count.id]),
+  );
 
   return stats.map((s) => ({
     version: s.value,
     users: Number(s._sum?.count || 0),
     sessions: sessionMap.get(s.value) || 0,
-    percentage: totalUsers > 0 ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100) : 0,
+    percentage:
+      totalUsers > 0
+        ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100)
+        : 0,
   }));
 }
 
@@ -485,7 +541,7 @@ export async function getAppVersionStats(
  */
 export async function getOSVersionStats(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<OSVersionStats[]> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
@@ -502,7 +558,10 @@ export async function getOSVersionStats(
     take: 20,
   });
 
-  const totalUsers = stats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalUsers = stats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
 
   return stats.map((s) => {
     // Parse "OS Version" format (e.g., "Windows 11", "macOS 14.2")
@@ -514,7 +573,10 @@ export async function getOSVersionStats(
       os,
       version,
       users: Number(s._sum?.count || 0),
-      percentage: totalUsers > 0 ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100) : 0,
+      percentage:
+        totalUsers > 0
+          ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100)
+          : 0,
     };
   });
 }
@@ -525,8 +587,10 @@ export async function getOSVersionStats(
 export async function getUsersByCountry(
   projectId: number,
   dateRange: DateRange,
-  limit = 10
-): Promise<{ country: string; users: number; sessions: number; percentage: number }[]> {
+  limit = 10,
+): Promise<
+  { country: string; users: number; sessions: number; percentage: number }[]
+> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
 
@@ -553,14 +617,20 @@ export async function getUsersByCountry(
     }),
   ]);
 
-  const totalUsers = userStats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalUsers = userStats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
   const sessionMap = new Map(sessionStats.map((s) => [s.country, s._count.id]));
 
   return userStats.map((s) => ({
     country: s.value,
     users: Number(s._sum?.count || 0),
     sessions: sessionMap.get(s.value) || 0,
-    percentage: totalUsers > 0 ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100) : 0,
+    percentage:
+      totalUsers > 0
+        ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100)
+        : 0,
   }));
 }
 
@@ -570,7 +640,7 @@ export async function getUsersByCountry(
 export async function getUsersByCity(
   projectId: number,
   dateRange: DateRange,
-  limit = 10
+  limit = 10,
 ): Promise<{ city: string; users: number; percentage: number }[]> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
@@ -587,12 +657,18 @@ export async function getUsersByCity(
     take: limit,
   });
 
-  const totalUsers = stats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalUsers = stats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
 
   return stats.map((s) => ({
     city: s.value,
     users: Number(s._sum?.count || 0),
-    percentage: totalUsers > 0 ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100) : 0,
+    percentage:
+      totalUsers > 0
+        ? Math.round((Number(s._sum?.count || 0) / totalUsers) * 100)
+        : 0,
   }));
 }
 
@@ -602,7 +678,7 @@ export async function getUsersByCity(
 export async function getEventStats(
   projectId: number,
   dateRange: DateRange,
-  limit = 20
+  limit = 20,
 ): Promise<{ eventName: string; count: number; uniqueUsers: number }[]> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
@@ -629,10 +705,12 @@ export async function getEventStats(
         },
       });
       return { name: event.name, uniqueUsers: uniqueUsers.length };
-    })
+    }),
   );
 
-  const userCountMap = new Map(eventUserCounts.map((e) => [e.name, e.uniqueUsers]));
+  const userCountMap = new Map(
+    eventUserCounts.map((e) => [e.name, e.uniqueUsers]),
+  );
 
   return events
     .map((e) => ({
@@ -649,7 +727,7 @@ export async function getEventStats(
  */
 export async function getEngagementTimeDistribution(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<{ bucket: string; users: number; percentage: number }[]> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
@@ -664,7 +742,10 @@ export async function getEngagementTimeDistribution(
     _sum: { count: true },
   });
 
-  const totalUsers = stats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalUsers = stats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
   const buckets = ["0-10s", "10-30s", "30-60s", "60-180s", "180s+"];
 
   return buckets.map((bucket) => {

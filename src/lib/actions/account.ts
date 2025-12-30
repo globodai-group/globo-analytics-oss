@@ -16,7 +16,7 @@ interface ActionResult {
  */
 export async function updateProfileAction(
   data: { firstName: string; lastName: string; email: string },
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -42,7 +42,10 @@ export async function updateProfileAction(
       if (existingUser) {
         return {
           success: false,
-          error: locale === "fr" ? "Cet email est déjà utilisé" : "This email is already in use",
+          error:
+            locale === "fr"
+              ? "Cet email est déjà utilisé"
+              : "This email is already in use",
         };
       }
 
@@ -100,7 +103,7 @@ export async function updateProfileAction(
  */
 export async function changePasswordAction(
   data: { currentPassword: string; newPassword: string },
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -127,7 +130,10 @@ export async function changePasswordAction(
     if (!isValid) {
       return {
         success: false,
-        error: locale === "fr" ? "Mot de passe actuel incorrect" : "Current password is incorrect",
+        error:
+          locale === "fr"
+            ? "Mot de passe actuel incorrect"
+            : "Current password is incorrect",
       };
     }
 
@@ -202,7 +208,9 @@ export async function updatePreferencesAction(data: {
 /**
  * Regenerate API token
  */
-export async function regenerateApiTokenAction(): Promise<ActionResult & { token?: string }> {
+export async function regenerateApiTokenAction(): Promise<
+  ActionResult & { token?: string }
+> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -228,7 +236,7 @@ export async function regenerateApiTokenAction(): Promise<ActionResult & { token
  */
 export async function deleteAccountAction(
   confirmText: string,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();

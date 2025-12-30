@@ -36,7 +36,7 @@ export async function getUserFlowAnalysisAction(
   options: {
     entryPage?: string;
     maxDepth?: number;
-  } = {}
+  } = {},
 ): Promise<ActionResult<UserFlowData>> {
   const t = await getTranslations({ locale, namespace: "userFlow" });
   const session = await auth();
@@ -149,7 +149,10 @@ export async function getUserFlowAnalysisAction(
     // Get top entry pages
     const entryPageCounts = new Map<string, number>();
     for (const session of sessions) {
-      entryPageCounts.set(session.entryPage, (entryPageCounts.get(session.entryPage) || 0) + 1);
+      entryPageCounts.set(
+        session.entryPage,
+        (entryPageCounts.get(session.entryPage) || 0) + 1,
+      );
     }
     const topEntryPages = Array.from(entryPageCounts.entries())
       .map(([page, count]) => ({ page, count }))
@@ -159,7 +162,10 @@ export async function getUserFlowAnalysisAction(
     // Get top exit pages
     const exitPageCounts = new Map<string, number>();
     for (const session of sessions) {
-      exitPageCounts.set(session.exitPage, (exitPageCounts.get(session.exitPage) || 0) + 1);
+      exitPageCounts.set(
+        session.exitPage,
+        (exitPageCounts.get(session.exitPage) || 0) + 1,
+      );
     }
     const topExitPages = Array.from(exitPageCounts.entries())
       .map(([page, count]) => ({ page, count }))
@@ -187,8 +193,12 @@ export async function getPageFlowAction(
   pagePath: string,
   direction: "from" | "to",
   dateRange: { from: Date; to: Date },
-  locale: string
-): Promise<ActionResult<{ transitions: { page: string; count: number; percentage: number }[] }>> {
+  locale: string,
+): Promise<
+  ActionResult<{
+    transitions: { page: string; count: number; percentage: number }[];
+  }>
+> {
   const t = await getTranslations({ locale, namespace: "userFlow" });
   const session = await auth();
 
@@ -246,11 +256,17 @@ export async function getPageFlowAction(
       for (let i = 0; i < path.length - 1; i++) {
         if (direction === "from" && path[i] === pagePath) {
           const nextPage = path[i + 1];
-          transitionCounts.set(nextPage, (transitionCounts.get(nextPage) || 0) + 1);
+          transitionCounts.set(
+            nextPage,
+            (transitionCounts.get(nextPage) || 0) + 1,
+          );
           totalTransitions++;
         } else if (direction === "to" && path[i + 1] === pagePath) {
           const prevPage = path[i];
-          transitionCounts.set(prevPage, (transitionCounts.get(prevPage) || 0) + 1);
+          transitionCounts.set(
+            prevPage,
+            (transitionCounts.get(prevPage) || 0) + 1,
+          );
           totalTransitions++;
         }
       }
@@ -261,7 +277,9 @@ export async function getPageFlowAction(
         page,
         count,
         percentage:
-          totalTransitions > 0 ? Math.round((count / totalTransitions) * 100 * 10) / 10 : 0,
+          totalTransitions > 0
+            ? Math.round((count / totalTransitions) * 100 * 10) / 10
+            : 0,
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 20);

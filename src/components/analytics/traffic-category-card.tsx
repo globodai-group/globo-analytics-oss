@@ -2,9 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { Users, Bot, Search, Share2, Wrench, Shield, AlertTriangle } from "lucide-react";
+import {
+  Users,
+  Bot,
+  Search,
+  Share2,
+  Wrench,
+  Shield,
+  AlertTriangle,
+} from "lucide-react";
 import { getTrafficCategoryStatsAction } from "@/lib/actions/stats";
 
 interface TrafficCategoryCardProps {
@@ -34,7 +48,10 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   unknown_bot: AlertTriangle,
 };
 
-export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCardProps) {
+export function TrafficCategoryCard({
+  projectId,
+  dateRange,
+}: TrafficCategoryCardProps) {
   const locale = useLocale();
   const [data, setData] = useState<{
     categories: { category: string; count: number; percentage: number }[];
@@ -142,7 +159,14 @@ export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCar
     outerRadius?: number;
     percent?: number;
   }) => {
-    const { cx = 0, cy = 0, midAngle = 0, innerRadius = 0, outerRadius = 0, percent = 0 } = props;
+    const {
+      cx = 0,
+      cy = 0,
+      midAngle = 0,
+      innerRadius = 0,
+      outerRadius = 0,
+      percent = 0,
+    } = props;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos((-midAngle * Math.PI) / 180);
     const y = cy + radius * Math.sin((-midAngle * Math.PI) / 180);
@@ -163,7 +187,9 @@ export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCar
     );
   };
 
-  const hasAiAgents = data.categories.some((cat) => cat.category === "ai_agent");
+  const hasAiAgents = data.categories.some(
+    (cat) => cat.category === "ai_agent",
+  );
 
   return (
     <Card>
@@ -194,7 +220,10 @@ export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCar
                 dataKey="value"
               >
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.category] || "#9ca3af"} />
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={CATEGORY_COLORS[entry.category] || "#9ca3af"}
+                  />
                 ))}
               </Pie>
               <Tooltip
@@ -216,7 +245,9 @@ export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCar
             <div key={entry.category} className="flex items-center gap-1.5">
               <div
                 className="w-2.5 h-2.5 rounded-full shrink-0"
-                style={{ backgroundColor: CATEGORY_COLORS[entry.category] || "#9ca3af" }}
+                style={{
+                  backgroundColor: CATEGORY_COLORS[entry.category] || "#9ca3af",
+                }}
               />
               <span className="text-xs text-muted-foreground">
                 {entry.name} ({formatPercentage(entry.percentage)})
@@ -246,7 +277,9 @@ export function TrafficCategoryCard({ projectId, dateRange }: TrafficCategoryCar
               <p className="text-muted-foreground">
                 {locale === "fr" ? "Total de visites" : "Total Visits"}
               </p>
-              <p className="text-lg font-semibold">{formatNumber(data.total)}</p>
+              <p className="text-lg font-semibold">
+                {formatNumber(data.total)}
+              </p>
             </div>
             <div>
               <p className="text-muted-foreground">

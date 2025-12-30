@@ -47,7 +47,9 @@ export function ConsentBannerPreview({
             rel="noopener noreferrer"
             className="text-xs text-primary hover:underline mb-3 block"
           >
-            {locale === "fr" ? "Politique de confidentialité" : "Privacy Policy"}
+            {locale === "fr"
+              ? "Politique de confidentialité"
+              : "Privacy Policy"}
           </a>
         )}
         <div className="flex gap-2 flex-wrap">

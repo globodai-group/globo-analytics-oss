@@ -13,7 +13,7 @@ import {
  */
 export function buildSegmentWhereClause(
   conditions: SegmentCondition,
-  tablePrefix: "visitor" | "session" = "visitor"
+  tablePrefix: "visitor" | "session" = "visitor",
 ): Prisma.VisitorWhereInput | Prisma.ProjectSessionWhereInput {
   const buildRuleCondition = (rule: SegmentRule): object => {
     const { field, operator, value } = rule;
@@ -33,12 +33,14 @@ export function buildSegmentWhereClause(
       page_path: "currentPage",
       utm_source: tablePrefix === "session" ? "utmSource" : "firstUtmSource",
       utm_medium: tablePrefix === "session" ? "utmMedium" : "firstUtmMedium",
-      utm_campaign: tablePrefix === "session" ? "utmCampaign" : "firstUtmCampaign",
+      utm_campaign:
+        tablePrefix === "session" ? "utmCampaign" : "firstUtmCampaign",
       traffic_source: "trafficSource",
       is_new_user: "isNewUser",
       session_count: "totalSessions",
       page_views: tablePrefix === "session" ? "pageviews" : "totalPageviews",
-      engagement_time: tablePrefix === "session" ? "engagementTime" : "totalEngagementTime",
+      engagement_time:
+        tablePrefix === "session" ? "engagementTime" : "totalEngagementTime",
       custom_dimension_1: "customDimension1",
       custom_dimension_2: "customDimension2",
       custom_dimension_3: "customDimension3",
@@ -49,20 +51,33 @@ export function buildSegmentWhereClause(
     const dbField = fieldMapping[field] || field;
 
     // Build operator condition
-    const buildOperatorCondition = (op: SegmentOperator, val: unknown): object => {
+    const buildOperatorCondition = (
+      op: SegmentOperator,
+      val: unknown,
+    ): object => {
       switch (op) {
         case "equals":
           return { [dbField]: val };
         case "not_equals":
           return { [dbField]: { not: val } };
         case "contains":
-          return { [dbField]: { contains: val as string, mode: "insensitive" } };
+          return {
+            [dbField]: { contains: val as string, mode: "insensitive" },
+          };
         case "not_contains":
-          return { NOT: { [dbField]: { contains: val as string, mode: "insensitive" } } };
+          return {
+            NOT: {
+              [dbField]: { contains: val as string, mode: "insensitive" },
+            },
+          };
         case "starts_with":
-          return { [dbField]: { startsWith: val as string, mode: "insensitive" } };
+          return {
+            [dbField]: { startsWith: val as string, mode: "insensitive" },
+          };
         case "ends_with":
-          return { [dbField]: { endsWith: val as string, mode: "insensitive" } };
+          return {
+            [dbField]: { endsWith: val as string, mode: "insensitive" },
+          };
         case "greater_than":
           return { [dbField]: { gt: Number(val) } };
         case "less_than":
@@ -118,13 +133,16 @@ export async function getSegmentedVisitorIds(
   projectId: number,
   segmentId: number,
   userId: string,
-  dateRange?: { from: Date; to: Date }
+  dateRange?: { from: Date; to: Date },
 ): Promise<string[]> {
   const segment = await getSegmentWithAccess(segmentId, userId);
   if (!segment) return [];
 
   const conditions = segment.conditions as unknown as SegmentCondition;
-  const whereClause = buildSegmentWhereClause(conditions, "visitor") as Prisma.VisitorWhereInput;
+  const whereClause = buildSegmentWhereClause(
+    conditions,
+    "visitor",
+  ) as Prisma.VisitorWhereInput;
 
   const visitors = await prisma.visitor.findMany({
     where: {
@@ -152,7 +170,7 @@ export async function getSegmentedSessionIds(
   projectId: number,
   segmentId: number,
   userId: string,
-  dateRange?: { from: Date; to: Date }
+  dateRange?: { from: Date; to: Date },
 ): Promise<string[]> {
   const segment = await getSegmentWithAccess(segmentId, userId);
   if (!segment) return [];
@@ -160,7 +178,7 @@ export async function getSegmentedSessionIds(
   const conditions = segment.conditions as unknown as SegmentCondition;
   const whereClause = buildSegmentWhereClause(
     conditions,
-    "session"
+    "session",
   ) as Prisma.ProjectSessionWhereInput;
 
   const sessions = await prisma.projectSession.findMany({
@@ -188,7 +206,7 @@ export async function getSegmentedSessionIds(
 export async function getSegmentPreview(
   projectId: number,
   conditions: SegmentCondition,
-  dateRange?: { from: Date; to: Date }
+  dateRange?: { from: Date; to: Date },
 ): Promise<{
   matchingVisitors: number;
   matchingSessions: number;
@@ -198,11 +216,11 @@ export async function getSegmentPreview(
 }> {
   const visitorWhereClause = buildSegmentWhereClause(
     conditions,
-    "visitor"
+    "visitor",
   ) as Prisma.VisitorWhereInput;
   const sessionWhereClause = buildSegmentWhereClause(
     conditions,
-    "session"
+    "session",
   ) as Prisma.ProjectSessionWhereInput;
 
   const dateFilter = dateRange
@@ -223,36 +241,40 @@ export async function getSegmentPreview(
       }
     : {};
 
-  const [matchingVisitors, matchingSessions, totalVisitors, totalSessions] = await Promise.all([
-    prisma.visitor.count({
-      where: {
-        projectId,
-        ...visitorWhereClause,
-        ...dateFilter,
-      },
-    }),
-    prisma.projectSession.count({
-      where: {
-        projectId,
-        ...sessionWhereClause,
-        ...sessionDateFilter,
-      },
-    }),
-    prisma.visitor.count({
-      where: {
-        projectId,
-        ...dateFilter,
-      },
-    }),
-    prisma.projectSession.count({
-      where: {
-        projectId,
-        ...sessionDateFilter,
-      },
-    }),
-  ]);
+  const [matchingVisitors, matchingSessions, totalVisitors, totalSessions] =
+    await Promise.all([
+      prisma.visitor.count({
+        where: {
+          projectId,
+          ...visitorWhereClause,
+          ...dateFilter,
+        },
+      }),
+      prisma.projectSession.count({
+        where: {
+          projectId,
+          ...sessionWhereClause,
+          ...sessionDateFilter,
+        },
+      }),
+      prisma.visitor.count({
+        where: {
+          projectId,
+          ...dateFilter,
+        },
+      }),
+      prisma.projectSession.count({
+        where: {
+          projectId,
+          ...sessionDateFilter,
+        },
+      }),
+    ]);
 
-  const percentage = totalVisitors > 0 ? Math.round((matchingVisitors / totalVisitors) * 100) : 0;
+  const percentage =
+    totalVisitors > 0
+      ? Math.round((matchingVisitors / totalVisitors) * 100)
+      : 0;
 
   return {
     matchingVisitors,
@@ -274,7 +296,12 @@ export const SEGMENT_FIELDS = [
 
   // Technology
   { id: "browser", label: "Browser", category: "technology", type: "string" },
-  { id: "os", label: "Operating System", category: "technology", type: "string" },
+  {
+    id: "os",
+    label: "Operating System",
+    category: "technology",
+    type: "string",
+  },
   {
     id: "device",
     label: "Device Type",
@@ -291,10 +318,30 @@ export const SEGMENT_FIELDS = [
   },
 
   // Traffic Sources
-  { id: "referrer", label: "Referrer", category: "acquisition", type: "string" },
-  { id: "utm_source", label: "UTM Source", category: "acquisition", type: "string" },
-  { id: "utm_medium", label: "UTM Medium", category: "acquisition", type: "string" },
-  { id: "utm_campaign", label: "UTM Campaign", category: "acquisition", type: "string" },
+  {
+    id: "referrer",
+    label: "Referrer",
+    category: "acquisition",
+    type: "string",
+  },
+  {
+    id: "utm_source",
+    label: "UTM Source",
+    category: "acquisition",
+    type: "string",
+  },
+  {
+    id: "utm_medium",
+    label: "UTM Medium",
+    category: "acquisition",
+    type: "string",
+  },
+  {
+    id: "utm_campaign",
+    label: "UTM Campaign",
+    category: "acquisition",
+    type: "string",
+  },
   {
     id: "traffic_source",
     label: "Traffic Source",
@@ -304,28 +351,71 @@ export const SEGMENT_FIELDS = [
   },
 
   // Behavior
-  { id: "landing_page", label: "Landing Page", category: "behavior", type: "string" },
+  {
+    id: "landing_page",
+    label: "Landing Page",
+    category: "behavior",
+    type: "string",
+  },
   { id: "exit_page", label: "Exit Page", category: "behavior", type: "string" },
   { id: "page_path", label: "Page Path", category: "behavior", type: "string" },
 
   // User Attributes
   { id: "is_new_user", label: "New User", category: "user", type: "boolean" },
-  { id: "session_count", label: "Session Count", category: "user", type: "number" },
+  {
+    id: "session_count",
+    label: "Session Count",
+    category: "user",
+    type: "number",
+  },
   { id: "page_views", label: "Page Views", category: "user", type: "number" },
-  { id: "engagement_time", label: "Engagement Time (s)", category: "user", type: "number" },
+  {
+    id: "engagement_time",
+    label: "Engagement Time (s)",
+    category: "user",
+    type: "number",
+  },
 
   // Custom Dimensions
-  { id: "custom_dimension_1", label: "Custom Dimension 1", category: "custom", type: "string" },
-  { id: "custom_dimension_2", label: "Custom Dimension 2", category: "custom", type: "string" },
-  { id: "custom_dimension_3", label: "Custom Dimension 3", category: "custom", type: "string" },
-  { id: "custom_dimension_4", label: "Custom Dimension 4", category: "custom", type: "string" },
-  { id: "custom_dimension_5", label: "Custom Dimension 5", category: "custom", type: "string" },
+  {
+    id: "custom_dimension_1",
+    label: "Custom Dimension 1",
+    category: "custom",
+    type: "string",
+  },
+  {
+    id: "custom_dimension_2",
+    label: "Custom Dimension 2",
+    category: "custom",
+    type: "string",
+  },
+  {
+    id: "custom_dimension_3",
+    label: "Custom Dimension 3",
+    category: "custom",
+    type: "string",
+  },
+  {
+    id: "custom_dimension_4",
+    label: "Custom Dimension 4",
+    category: "custom",
+    type: "string",
+  },
+  {
+    id: "custom_dimension_5",
+    label: "Custom Dimension 5",
+    category: "custom",
+    type: "string",
+  },
 ] as const;
 
 /**
  * Available operators by field type
  */
-export const OPERATORS_BY_TYPE: Record<string, { id: SegmentOperator; label: string }[]> = {
+export const OPERATORS_BY_TYPE: Record<
+  string,
+  { id: SegmentOperator; label: string }[]
+> = {
   string: [
     { id: "equals", label: "equals" },
     { id: "not_equals", label: "does not equal" },

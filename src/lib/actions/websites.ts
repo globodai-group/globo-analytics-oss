@@ -2,7 +2,10 @@
 
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-import { createWebsiteSchema, updateWebsiteSchema } from "@/lib/validations/website";
+import {
+  createWebsiteSchema,
+  updateWebsiteSchema,
+} from "@/lib/validations/website";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 
@@ -15,7 +18,9 @@ interface ActionResult {
 }
 
 // Get all websites for the current user
-export async function getWebsitesAction(locale: string = "en"): Promise<ActionResult> {
+export async function getWebsitesAction(
+  locale: string = "en",
+): Promise<ActionResult> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -51,7 +56,9 @@ export async function getWebsitesAction(locale: string = "en"): Promise<ActionRe
     console.error("Error fetching websites:", error);
     return {
       error:
-        locale === "fr" ? "Erreur lors de la récupération des sites" : "Error fetching websites",
+        locale === "fr"
+          ? "Erreur lors de la récupération des sites"
+          : "Error fetching websites",
     };
   }
 }
@@ -59,7 +66,7 @@ export async function getWebsitesAction(locale: string = "en"): Promise<ActionRe
 // Get a single website by ID
 export async function getWebsiteAction(
   websiteId: number,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const session = await auth();
 
@@ -90,7 +97,10 @@ export async function getWebsiteAction(
   } catch (error) {
     console.error("Error fetching website:", error);
     return {
-      error: locale === "fr" ? "Erreur lors de la récupération du site" : "Error fetching website",
+      error:
+        locale === "fr"
+          ? "Erreur lors de la récupération du site"
+          : "Error fetching website",
     };
   }
 }
@@ -98,7 +108,7 @@ export async function getWebsiteAction(
 // Create a new website
 export async function createWebsiteAction(
   formData: FormData,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const session = await auth();
 
@@ -143,7 +153,8 @@ export async function createWebsiteAction(
 
   if (existingWebsite) {
     return {
-      error: locale === "fr" ? "Ce site existe déjà" : "This website already exists",
+      error:
+        locale === "fr" ? "Ce site existe déjà" : "This website already exists",
     };
   }
 
@@ -197,13 +208,19 @@ export async function createWebsiteAction(
 
     return {
       success: true,
-      message: locale === "fr" ? "Site créé avec succès" : "Website created successfully",
+      message:
+        locale === "fr"
+          ? "Site créé avec succès"
+          : "Website created successfully",
       data: { id: website.id },
     };
   } catch (error) {
     console.error("Error creating website:", error);
     return {
-      error: locale === "fr" ? "Erreur lors de la création du site" : "Error creating website",
+      error:
+        locale === "fr"
+          ? "Erreur lors de la création du site"
+          : "Error creating website",
     };
   }
 }
@@ -212,7 +229,7 @@ export async function createWebsiteAction(
 export async function updateWebsiteAction(
   websiteId: number,
   formData: FormData,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const session = await auth();
 
@@ -240,10 +257,14 @@ export async function updateWebsiteAction(
     privacy: formData.get("privacy") as string | undefined,
     password: formData.get("password") as string | undefined,
     email: formData.has("email") ? formData.get("email") === "true" : undefined,
-    excludeBots: formData.has("excludeBots") ? formData.get("excludeBots") === "true" : undefined,
+    excludeBots: formData.has("excludeBots")
+      ? formData.get("excludeBots") === "true"
+      : undefined,
     excludeIps: formData.get("excludeIps") as string | undefined,
     excludeParams: formData.get("excludeParams") as string | undefined,
-    favorite: formData.has("favorite") ? formData.get("favorite") === "true" : undefined,
+    favorite: formData.has("favorite")
+      ? formData.get("favorite") === "true"
+      : undefined,
   };
 
   const validatedFields = updateWebsiteSchema.safeParse(rawData);
@@ -254,8 +275,14 @@ export async function updateWebsiteAction(
     };
   }
 
-  const { privacy, password, excludeBots, excludeIps, excludeParams, favorite } =
-    validatedFields.data;
+  const {
+    privacy,
+    password,
+    excludeBots,
+    excludeIps,
+    excludeParams,
+    favorite,
+  } = validatedFields.data;
 
   try {
     const updateData: Record<string, unknown> = {};
@@ -296,12 +323,18 @@ export async function updateWebsiteAction(
 
     return {
       success: true,
-      message: locale === "fr" ? "Site mis à jour avec succès" : "Website updated successfully",
+      message:
+        locale === "fr"
+          ? "Site mis à jour avec succès"
+          : "Website updated successfully",
     };
   } catch (error) {
     console.error("Error updating website:", error);
     return {
-      error: locale === "fr" ? "Erreur lors de la mise à jour du site" : "Error updating website",
+      error:
+        locale === "fr"
+          ? "Erreur lors de la mise à jour du site"
+          : "Error updating website",
     };
   }
 }
@@ -309,7 +342,7 @@ export async function updateWebsiteAction(
 // Delete a website
 export async function deleteWebsiteAction(
   websiteId: number,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const session = await auth();
 
@@ -354,12 +387,18 @@ export async function deleteWebsiteAction(
 
     return {
       success: true,
-      message: locale === "fr" ? "Site supprimé avec succès" : "Website deleted successfully",
+      message:
+        locale === "fr"
+          ? "Site supprimé avec succès"
+          : "Website deleted successfully",
     };
   } catch (error) {
     console.error("Error deleting website:", error);
     return {
-      error: locale === "fr" ? "Erreur lors de la suppression du site" : "Error deleting website",
+      error:
+        locale === "fr"
+          ? "Erreur lors de la suppression du site"
+          : "Error deleting website",
     };
   }
 }
@@ -367,7 +406,7 @@ export async function deleteWebsiteAction(
 // Toggle website favorite status
 export async function toggleFavoriteAction(
   websiteId: number,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const session = await auth();
 
@@ -414,7 +453,8 @@ export async function toggleFavoriteAction(
   } catch (error) {
     console.error("Error toggling favorite:", error);
     return {
-      error: locale === "fr" ? "Erreur lors de la mise à jour" : "Error updating",
+      error:
+        locale === "fr" ? "Erreur lors de la mise à jour" : "Error updating",
     };
   }
 }
@@ -423,7 +463,7 @@ export async function toggleFavoriteAction(
 export async function validateWebsitePasswordAction(
   websiteId: number,
   password: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult> {
   const website = await prisma.website.findFirst({
     where: {

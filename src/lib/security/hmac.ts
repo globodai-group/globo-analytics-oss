@@ -27,7 +27,11 @@ export function signPayload(payload: string, secretKey: string): string {
  * Verify an HMAC signature using timing-safe comparison
  * Returns true if signature is valid
  */
-export function verifySignature(payload: string, signature: string, secretKey: string): boolean {
+export function verifySignature(
+  payload: string,
+  signature: string,
+  secretKey: string,
+): boolean {
   if (!signature || !secretKey || signature.length !== 64) {
     return false;
   }
@@ -57,6 +61,12 @@ export function createCanonicalPayload(data: {
 }): string {
   // Use a minimal set of fields that are always present
   // This prevents replay attacks by including timestamp
-  const parts = [data.tid, data.cid, data.t, data.dp || "", String(data.ts || Date.now())];
+  const parts = [
+    data.tid,
+    data.cid,
+    data.t,
+    data.dp || "",
+    String(data.ts || Date.now()),
+  ];
   return parts.join("|");
 }

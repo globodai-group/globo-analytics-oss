@@ -10,7 +10,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export type DateRangePreset =
   | "today"
@@ -23,19 +27,31 @@ export type DateRangePreset =
 
 interface DateRangePickerProps {
   dateRange: DateRange | undefined;
-  onDateRangeChange: (range: DateRange | undefined, preset: DateRangePreset) => void;
+  onDateRangeChange: (
+    range: DateRange | undefined,
+    preset: DateRangePreset,
+  ) => void;
   className?: string;
 }
 
-export function DateRangePicker({ dateRange, onDateRangeChange, className }: DateRangePickerProps) {
+export function DateRangePicker({
+  dateRange,
+  onDateRangeChange,
+  className,
+}: DateRangePickerProps) {
   const locale = useLocale();
   const t = useTranslations("stats");
   const [open, setOpen] = React.useState(false);
-  const [selectedPreset, setSelectedPreset] = React.useState<DateRangePreset>("30d");
+  const [selectedPreset, setSelectedPreset] =
+    React.useState<DateRangePreset>("30d");
 
   const dateLocale = locale === "fr" ? fr : enUS;
 
-  const presets: { value: DateRangePreset; label: string; getRange: () => DateRange }[] = [
+  const presets: {
+    value: DateRangePreset;
+    label: string;
+    getRange: () => DateRange;
+  }[] = [
     {
       value: "today",
       label: t("dateRange.today"),
@@ -128,13 +144,15 @@ export function DateRangePicker({ dateRange, onDateRangeChange, className }: Dat
         onDateRangeChange(defaultPreset.getRange(), "30d");
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className={cn("justify-start text-left font-normal", className)}>
+        <Button
+          variant="outline"
+          className={cn("justify-start text-left font-normal", className)}
+        >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {formatDateRange()}
           <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
@@ -147,7 +165,9 @@ export function DateRangePicker({ dateRange, onDateRangeChange, className }: Dat
             {presets.map((preset) => (
               <Button
                 key={preset.value}
-                variant={selectedPreset === preset.value ? "secondary" : "ghost"}
+                variant={
+                  selectedPreset === preset.value ? "secondary" : "ghost"
+                }
                 size="sm"
                 className="w-full justify-start"
                 onClick={() => handlePresetClick(preset.value)}

@@ -17,7 +17,10 @@ interface AttributionModelPickerProps {
   locale: string;
 }
 
-export function AttributionModelPicker({ projectId, currentModel }: AttributionModelPickerProps) {
+export function AttributionModelPicker({
+  projectId,
+  currentModel,
+}: AttributionModelPickerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations("attribution");
@@ -33,7 +36,9 @@ export function AttributionModelPicker({ projectId, currentModel }: AttributionM
   const handleModelChange = (model: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("model", model);
-    router.push(`/projects/${projectId}/stats/attribution?${params.toString()}`);
+    router.push(
+      `/projects/${projectId}/stats/attribution?${params.toString()}`,
+    );
   };
 
   return (

@@ -16,7 +16,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { createReportAction, updateReportAction } from "@/lib/actions/scheduled-reports";
+import {
+  createReportAction,
+  updateReportAction,
+} from "@/lib/actions/scheduled-reports";
 import { toast } from "sonner";
 import { Loader2, Plus, X } from "lucide-react";
 import { ReportFrequency, ReportDateRange, ReportFormat } from "@prisma/client";
@@ -31,7 +34,9 @@ const reportSchema = z.object({
   dayOfMonth: z.number().min(1).max(31).optional(),
   hour: z.number().min(0).max(23),
   timezone: z.string(),
-  recipients: z.array(z.string().email()).min(1, "At least one recipient is required"),
+  recipients: z
+    .array(z.string().email())
+    .min(1, "At least one recipient is required"),
   format: z.nativeEnum(ReportFormat),
 });
 
@@ -62,12 +67,21 @@ const AVAILABLE_METRICS = [
   { value: "pageviews", label: { en: "Pageviews", fr: "Pages vues" } },
   { value: "sessions", label: { en: "Sessions", fr: "Sessions" } },
   { value: "bounceRate", label: { en: "Bounce Rate", fr: "Taux de rebond" } },
-  { value: "avgSessionDuration", label: { en: "Avg. Session Duration", fr: "Durée moy. session" } },
+  {
+    value: "avgSessionDuration",
+    label: { en: "Avg. Session Duration", fr: "Durée moy. session" },
+  },
   { value: "conversions", label: { en: "Conversions", fr: "Conversions" } },
   { value: "revenue", label: { en: "Revenue", fr: "Revenus" } },
   { value: "topPages", label: { en: "Top Pages", fr: "Pages populaires" } },
-  { value: "topSources", label: { en: "Top Sources", fr: "Sources principales" } },
-  { value: "topCountries", label: { en: "Top Countries", fr: "Pays principaux" } },
+  {
+    value: "topSources",
+    label: { en: "Top Sources", fr: "Sources principales" },
+  },
+  {
+    value: "topCountries",
+    label: { en: "Top Countries", fr: "Pays principaux" },
+  },
 ];
 
 const DAYS_OF_WEEK = [
@@ -90,7 +104,12 @@ const TIMEZONES = [
   "UTC",
 ];
 
-export function ReportForm({ projectId, segments, locale, initialData }: ReportFormProps) {
+export function ReportForm({
+  projectId,
+  segments,
+  locale,
+  initialData,
+}: ReportFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [newRecipient, setNewRecipient] = useState("");
@@ -137,7 +156,9 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
         toast.error(result.error);
       }
     } catch {
-      toast.error(locale === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        locale === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -148,7 +169,7 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
     if (current.includes(metric)) {
       setValue(
         "metrics",
-        current.filter((m) => m !== metric)
+        current.filter((m) => m !== metric),
       );
     } else {
       setValue("metrics", [...current, metric]);
@@ -168,7 +189,7 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
   const removeRecipient = (email: string) => {
     setValue(
       "recipients",
-      (recipients || []).filter((r) => r !== email)
+      (recipients || []).filter((r) => r !== email),
     );
   };
 
@@ -205,9 +226,18 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
 
   const dateRangeOptions = [
     { value: "YESTERDAY", label: locale === "fr" ? "Hier" : "Yesterday" },
-    { value: "LAST_7_DAYS", label: locale === "fr" ? "7 derniers jours" : "Last 7 days" },
-    { value: "LAST_30_DAYS", label: locale === "fr" ? "30 derniers jours" : "Last 30 days" },
-    { value: "LAST_MONTH", label: locale === "fr" ? "Mois dernier" : "Last month" },
+    {
+      value: "LAST_7_DAYS",
+      label: locale === "fr" ? "7 derniers jours" : "Last 7 days",
+    },
+    {
+      value: "LAST_30_DAYS",
+      label: locale === "fr" ? "30 derniers jours" : "Last 30 days",
+    },
+    {
+      value: "LAST_MONTH",
+      label: locale === "fr" ? "Mois dernier" : "Last month",
+    },
   ];
 
   return (
@@ -215,8 +245,14 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
       {/* Name */}
       <div className="space-y-2">
         <Label htmlFor="name">{t.name}</Label>
-        <Input id="name" placeholder={t.namePlaceholder} {...register("name")} />
-        {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+        <Input
+          id="name"
+          placeholder={t.namePlaceholder}
+          {...register("name")}
+        />
+        {errors.name && (
+          <p className="text-sm text-destructive">{errors.name.message}</p>
+        )}
       </div>
 
       {/* Metrics */}
@@ -230,13 +266,18 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
                 checked={metrics?.includes(metric.value)}
                 onCheckedChange={() => toggleMetric(metric.value)}
               />
-              <label htmlFor={`metric-${metric.value}`} className="text-sm cursor-pointer">
+              <label
+                htmlFor={`metric-${metric.value}`}
+                className="text-sm cursor-pointer"
+              >
                 {metric.label[locale as "en" | "fr"]}
               </label>
             </div>
           ))}
         </div>
-        {errors.metrics && <p className="text-sm text-destructive">{errors.metrics.message}</p>}
+        {errors.metrics && (
+          <p className="text-sm text-destructive">{errors.metrics.message}</p>
+        )}
       </div>
 
       {/* Segment */}
@@ -267,7 +308,9 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
         <Label>{t.dateRange}</Label>
         <Select
           value={watch("dateRange")}
-          onValueChange={(value) => setValue("dateRange", value as ReportDateRange)}
+          onValueChange={(value) =>
+            setValue("dateRange", value as ReportDateRange)
+          }
         >
           <SelectTrigger>
             <SelectValue />
@@ -287,7 +330,9 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
         <Label>{t.frequency}</Label>
         <Select
           value={watch("frequency")}
-          onValueChange={(value) => setValue("frequency", value as ReportFrequency)}
+          onValueChange={(value) =>
+            setValue("frequency", value as ReportFrequency)
+          }
         >
           <SelectTrigger>
             <SelectValue />
@@ -369,7 +414,10 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
       {/* Timezone */}
       <div className="space-y-2">
         <Label>{t.timezone}</Label>
-        <Select value={watch("timezone")} onValueChange={(value) => setValue("timezone", value)}>
+        <Select
+          value={watch("timezone")}
+          onValueChange={(value) => setValue("timezone", value)}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -423,7 +471,9 @@ export function ReportForm({ projectId, segments, locale, initialData }: ReportF
           </div>
         )}
         {errors.recipients && (
-          <p className="text-sm text-destructive">{errors.recipients.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.recipients.message}
+          </p>
         )}
       </div>
 
