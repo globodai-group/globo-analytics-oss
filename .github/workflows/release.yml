@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # Only run on merge commits from rec branch
+    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'rec')
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from package.json
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if tag exists
+        id: tag_check
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate release notes
+        id: notes
+        if: steps.tag_check.outputs.exists == 'false'
+        run: |
+          # Get the previous tag or initial commit
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)
+
+          # Generate changelog from commits
+          echo "## What's Changed" > release_notes.md
+          echo "" >> release_notes.md
+
+          # Features
+          FEATURES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --grep="^feat" | head -20)
+          if [ -n "$FEATURES" ]; then
+            echo "### Features" >> release_notes.md
+            echo "$FEATURES" >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+
+          # Fixes
+          FIXES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --grep="^fix" | head -20)
+          if [ -n "$FIXES" ]; then
+            echo "### Bug Fixes" >> release_notes.md
+            echo "$FIXES" >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+
+          # Chores & CI
+          CHORES=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --grep="^chore\|^ci" | head -10)
+          if [ -n "$CHORES" ]; then
+            echo "### Maintenance" >> release_notes.md
+            echo "$CHORES" >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+
+          # Docs
+          DOCS=$(git log $PREV_TAG..HEAD --pretty=format:"- %s" --grep="^docs" | head -10)
+          if [ -n "$DOCS" ]; then
+            echo "### Documentation" >> release_notes.md
+            echo "$DOCS" >> release_notes.md
+            echo "" >> release_notes.md
+          fi
+
+          echo "" >> release_notes.md
+          echo "**Full Changelog**: https://github.com/${{ github.repository }}/compare/$PREV_TAG...${{ steps.version.outputs.tag }}" >> release_notes.md
+
+      - name: Create Git Tag
+        if: steps.tag_check.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+
+      - name: Create GitHub Release
+        if: steps.tag_check.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          generate_release_notes: false
+
+      - name: Update Docker tags
+        if: steps.tag_check.outputs.exists == 'false'
+        run: |
+          echo "Release ${{ steps.version.outputs.tag }} created successfully"
+          echo "Docker image will be tagged as:"
+          echo "  - globoanalytics/globo-analytics-oss:${{ steps.version.outputs.version }}"
+          echo "  - globoanalytics/globo-analytics-oss:latest"
