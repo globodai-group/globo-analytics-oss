@@ -22,8 +22,8 @@
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License"/>
   </a>
-  <a href="https://hub.docker.com/r/globoanalytics/oss">
-    <img src="https://img.shields.io/docker/pulls/globoanalytics/oss" alt="Docker Pulls"/>
+  <a href="https://hub.docker.com/r/artik0din/globo-analytics-oss">
+    <img src="https://img.shields.io/docker/pulls/artik0din/globo-analytics-oss" alt="Docker Pulls"/>
   </a>
 </p>
 
@@ -233,7 +233,7 @@ For production, we recommend pinning to a specific version:
 # docker-compose.yml
 services:
   app:
-    image: globoanalytics/oss:v1.2.0  # Pin to specific version
+    image: artik0din/globo-analytics-oss:v1.2.0  # Pin to specific version
 ```
 
 See [CHANGELOG.md](./CHANGELOG.md) for version history and migration guides.

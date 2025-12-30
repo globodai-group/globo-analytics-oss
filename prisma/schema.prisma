@@ -1,0 +1,1321 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== USER ====================
+
+model User {
+  id                     String    @id @default(cuid())
+  firstName              String
+  lastName               String
+  email                  String    @unique
+  emailVerified          DateTime?
+  password               String?
+  image                  String?
+  apiToken               String?   @unique
+  locale                 String    @default("en")
+  timezone               String    @default("UTC")
+  role                   UserRole  @default(USER)
+
+  // TFA - Multi-method support
+  tfaEnabled             Boolean   @default(false)
+  tfaDefaultMethod       String?   // "totp", "passkey", "email"
+
+  // TOTP (Google Authenticator, etc.)
+  totpSecret             String?
+  totpVerified           Boolean   @default(false)
+
+  // Recovery codes
+  recoveryCodes          String[]
+
+  // Legacy email-based TFA (deprecated, kept for migration)
+  tfaCode                String?
+  tfaCodeCreatedAt       DateTime?
+
+  // Email Verification
+  emailVerifyToken       String?
+  emailVerifyExpires     DateTime?
+
+  // Password Reset
+  resetToken             String?
+  resetTokenExpires      DateTime?
+
+  // Pending Email Change
+  pendingEmail           String?
+  pendingEmailToken      String?
+
+  // Tracking
+  hasWebsites            Boolean   @default(false)
+  canTrack               Boolean   @default(true)
+  emailAccountLimit      Boolean   @default(true)
+
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  deletedAt              DateTime?
+
+  // Relations
+  accounts               Account[]
+  sessions               Session[]
+  websites               Website[]
+  passkeys               Passkey[]
+  projects               Project[]
+  segments               Segment[]
+  alerts                 Alert[]
+  scheduledReports       ScheduledReport[]
+  oauthClients           OAuthClient[]
+  oauthTokens            OAuthToken[]
+  oauthAuthorizationCodes OAuthAuthorizationCode[]
+
+  @@index([email])
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String   @unique
+  expires DateTime
+}
+
+// ==================== PASSKEYS (WebAuthn) ====================
+
+model Passkey {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // WebAuthn credential data
+  credentialId        String   @unique // base64url encoded
+  publicKey           String   @db.Text // base64url encoded
+  counter             BigInt   @default(0)
+
+  // Authenticator info
+  deviceType          String?  // "singleDevice" or "multiDevice"
+  backedUp            Boolean  @default(false)
+  transports          String[] // ["internal", "usb", "ble", "nfc", "hybrid"]
+
+  // User-friendly name
+  name                String   @default("Passkey")
+
+  createdAt           DateTime @default(now())
+  lastUsedAt          DateTime?
+
+  @@index([userId])
+}
+
+// ==================== PROJECT (GA-like unified model) ====================
+
+model Project {
+  id            Int       @id @default(autoincrement())
+  trackingId    String    @unique @default(cuid()) // Used in tracking code: data-tid="xxx"
+  secretKey     String?   // HMAC secret for request signing (anti-spoofing)
+  name          String    // User-friendly project name
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Settings
+  platform      String    @default("web") // "web", "mobile", "both"
+  privacy       Int       @default(1) // 0=public, 1=private, 2=password
+  password      String?   // Encrypted
+  emailReports  Int       @default(0) // 0=none, 1=weekly, 2=monthly
+  excludeBots   Boolean   @default(true)
+  excludeIps    String?   @db.Text
+  excludeParams String?   @db.Text
+
+  // Session settings (GA-like)
+  sessionTimeout     Int  @default(30) // minutes of inactivity before new session
+  engagementThreshold Int @default(10) // seconds to be considered engaged
+
+  // Cached metrics (updated by cron)
+  pageviewsMonth  Int     @default(0)
+  usersMonth      Int     @default(0)
+  sessionsMonth   Int     @default(0)
+
+  favoritedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Site search config
+  searchQueryParam   String?   @default("q") // URL param: ?q=, ?search=, ?s=
+  searchCategoryParam String?  // Optional category param
+
+  // Relations
+  domains       ProjectDomain[]
+  visitors      Visitor[]
+  projectStats  ProjectStat[]
+  projectEvents ProjectEvent[]
+  projectSessions ProjectSession[]
+  ecommerceTransactions EcommerceTransaction[]
+  ecommerceEvents EcommerceEvent[]
+  goals         Goal[]
+  funnels       Funnel[]
+  segments      Segment[]
+  customDimensions CustomDimension[]
+  touchPoints   TouchPoint[]
+  attributionReports AttributionReport[]
+  userFlowPaths UserFlowPath[]
+  siteSearches  SiteSearch[]
+  alerts        Alert[]
+  scheduledReports ScheduledReport[]
+  consentConfig ConsentConfig?
+  videoEvents   VideoEvent[]
+
+  @@index([userId])
+  @@index([trackingId])
+}
+
+// Domains/apps associated with a project
+model ProjectDomain {
+  id                Int      @id @default(autoincrement())
+  projectId         Int
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  domain            String   @unique // e.g., "example.com", "com.myapp.ios"
+  type              String   @default("primary") // "primary", "secondary"
+  includeSubdomains Boolean  @default(true)
+
+  createdAt         DateTime @default(now())
+
+  @@index([projectId])
+}
+
+// Unique visitors (like GA's "Users")
+model Visitor {
+  id            String    @id // Privacy-friendly hash
+  projectId     Int
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  firstSeenAt   DateTime  @default(now())
+  lastSeenAt    DateTime  @default(now())
+
+  totalSessions      Int     @default(1)
+  totalPageviews     Int     @default(1)
+  totalEvents        Int     @default(0)
+  totalEngagementTime Int    @default(0) // Total engagement time in seconds
+
+  // First-touch attribution
+  firstReferrer   String?
+  firstUtmSource  String?
+  firstUtmMedium  String?
+  firstUtmCampaign String?
+
+  // Device info
+  browser       String?
+  os            String?
+  osVersion     String?
+  device        String?
+  country       String?
+  city          String?
+  language      String?
+  platform      String?   // web, ios, android
+  appVersion    String?
+
+  sessions      ProjectSession[]
+
+  @@unique([projectId, id])
+  @@index([projectId])
+  @@index([lastSeenAt])
+  @@index([projectId, firstSeenAt])
+}
+
+// Session tracking (like GA's "Sessions")
+model ProjectSession {
+  id            String   @id @default(cuid())
+  projectId     Int
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  visitorId     String
+  visitor       Visitor  @relation(fields: [visitorId, projectId], references: [id, projectId], onDelete: Cascade)
+
+  startedAt     DateTime @default(now())
+  lastActivityAt DateTime @default(now())
+  endedAt       DateTime?
+  duration      Int?
+  engagementTime Int   @default(0)
+
+  pageviews     Int      @default(1)
+  screenViews   Int      @default(0)
+  events        Int      @default(0)
+  isBounce      Boolean  @default(true)
+  isEngaged     Boolean  @default(false)
+
+  entryPage     String
+  exitPage      String
+  maxScrollDepth Int     @default(0)
+
+  domain        String?
+  referrer      String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  utmContent    String?
+  utmTerm       String?
+  trafficSource String?
+
+  browser       String?
+  browserVersion String?
+  os            String?
+  osVersion     String?
+  device        String?
+  country       String?
+  city          String?
+  language      String?
+  platform      String   @default("web")
+  appVersion    String?
+
+  @@index([projectId, startedAt])
+  @@index([projectId, visitorId])
+  @@index([startedAt])
+  @@index([projectId, lastActivityAt])
+}
+
+// Real-time active users tracking
+model RealtimeUser {
+  id            String   @id @default(cuid())
+  projectId     Int
+  visitorId     String
+  sessionId     String
+
+  currentPage   String
+  currentTitle  String?
+  lastPingAt    DateTime @default(now())
+
+  platform      String   @default("web")
+  country       String?
+  city          String?
+  device        String?
+
+  createdAt     DateTime @default(now())
+
+  @@unique([projectId, visitorId])
+  @@index([projectId, lastPingAt])
+  @@index([lastPingAt])
+}
+
+// Stats aggregation for projects
+model ProjectStat {
+  id        String   @id @default(cuid())
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  name      StatType
+  value     String
+  count     BigInt   @default(1)
+  date      DateTime @db.Date
+  domain    String?
+
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, name, value, date, domain])
+  @@index([projectId, name, date])
+  @@index([date])
+}
+
+// Events for projects
+model ProjectEvent {
+  id        String   @id @default(cuid())
+  projectId Int
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  name      String
+  value     String?
+  properties Json?
+
+  domain    String?
+  platform  String   @default("web")
+  sessionId String?
+  visitorId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([projectId, name])
+}
+
+// ==================== E-COMMERCE ====================
+
+// E-commerce transactions (purchases)
+model EcommerceTransaction {
+  id                String   @id @default(cuid())
+  projectId         Int
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  transactionId     String   // External order ID
+  visitorId         String?
+  sessionId         String?
+
+  currency          String   @default("EUR")
+  value             Float    // Total transaction value
+  tax               Float    @default(0)
+  shipping          Float    @default(0)
+
+  coupon            String?
+  affiliation       String?  // Store name or channel
+
+  itemCount         Int      @default(0)
+  status            String   @default("completed") // completed, refunded, partial_refund
+
+  domain            String?
+  platform          String   @default("web")
+
+  createdAt         DateTime @default(now())
+
+  items             EcommerceItem[]
+
+  @@unique([projectId, transactionId])
+  @@index([projectId, createdAt])
+  @@index([projectId, transactionId])
+}
+
+// E-commerce items (products in transactions)
+model EcommerceItem {
+  id                String   @id @default(cuid())
+  transactionId     String
+  transaction       EcommerceTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  itemId            String   // SKU
+  itemName          String
+  itemBrand         String?
+  itemCategory      String?
+  itemVariant       String?
+
+  price             Float
+  quantity          Int      @default(1)
+  discount          Float    @default(0)
+  coupon            String?
+
+  createdAt         DateTime @default(now())
+
+  @@index([transactionId])
+  @@index([itemId])
+}
+
+// E-commerce events (add_to_cart, view_item, etc.)
+model EcommerceEvent {
+  id                String   @id @default(cuid())
+  projectId         Int
+  project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  eventType         String   // view_item, add_to_cart, begin_checkout, purchase, refund
+  visitorId         String?
+  sessionId         String?
+
+  // For item-level events
+  itemId            String?
+  itemName          String?
+  itemBrand         String?
+  itemCategory      String?
+  itemVariant       String?
+  price             Float?
+  quantity          Int?
+
+  // For checkout/purchase events
+  transactionId     String?
+  currency          String   @default("EUR")
+  value             Float    @default(0)
+
+  // Additional properties
+  itemListId        String?
+  itemListName      String?
+  shippingTier      String?
+  paymentType       String?
+
+  domain            String?
+  platform          String   @default("web")
+
+  createdAt         DateTime @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([projectId, eventType])
+  @@index([projectId, itemId])
+}
+
+// ==================== GOALS & CONVERSIONS ====================
+
+model Goal {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  name            String
+  description     String?
+  type            GoalType
+  isActive        Boolean   @default(true)
+
+  // URL matching conditions (for URL type)
+  urlMatch        String?
+  urlMatchType    UrlMatchType?
+
+  // Event matching conditions (for EVENT type)
+  eventName       String?
+  eventCategory   String?
+  eventAction     String?
+  eventLabel      String?
+  eventValue      Float?
+
+  // Duration conditions (for DURATION type)
+  durationSeconds Int?
+
+  // Pages per session (for PAGES_PER_SESSION type)
+  minPages        Int?
+
+  // Revenue tracking
+  revenueTracking Boolean   @default(false)
+  defaultRevenue  Float?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  conversions     GoalConversion[]
+  funnelSteps     FunnelStep[]
+
+  @@index([projectId])
+  @@index([projectId, isActive])
+}
+
+enum GoalType {
+  URL               // Visit a specific URL
+  EVENT             // Custom event triggered
+  DURATION          // Time spent on site
+  PAGES_PER_SESSION // Number of pages viewed
+  ECOMMERCE         // E-commerce transaction
+}
+
+enum UrlMatchType {
+  EXACT
+  CONTAINS
+  STARTS_WITH
+  REGEX
+}
+
+model GoalConversion {
+  id          Int       @id @default(autoincrement())
+  goalId      Int
+  goal        Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  projectId   Int
+
+  visitorId   String
+  sessionId   String?
+  revenue     Float?
+
+  // Context data for debugging/analysis
+  pagePath    String?
+  eventName   String?
+
+  createdAt   DateTime  @default(now())
+
+  @@index([goalId])
+  @@index([projectId, createdAt])
+  @@index([projectId, goalId, createdAt])
+}
+
+// ==================== FUNNELS ====================
+
+model Funnel {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String?
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  steps       FunnelStep[]
+
+  @@index([projectId])
+}
+
+model FunnelStep {
+  id          Int       @id @default(autoincrement())
+  funnelId    Int
+  funnel      Funnel    @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+
+  position    Int       // Order in funnel (1, 2, 3...)
+  name        String
+  type        FunnelStepType
+
+  // Conditions based on type
+  urlPattern  String?   // For URL type
+  eventName   String?   // For EVENT type
+  goalId      Int?      // For GOAL type
+  goal        Goal?     @relation(fields: [goalId], references: [id])
+
+  createdAt   DateTime  @default(now())
+
+  @@unique([funnelId, position])
+  @@index([funnelId])
+}
+
+enum FunnelStepType {
+  URL
+  EVENT
+  GOAL
+}
+
+// ==================== SEGMENTS ====================
+
+model Segment {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String?
+  conditions  Json      // Segment conditions (AND/OR rules)
+  isShared    Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  scheduledReports ScheduledReport[]
+
+  @@index([projectId])
+  @@index([userId])
+}
+
+// ==================== CUSTOM DIMENSIONS ====================
+
+model CustomDimension {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  slot        Int       // 1-20 for free, 1-200 for pro
+  name        String
+  scope       DimensionScope
+  isActive    Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  values      CustomDimensionValue[]
+
+  @@unique([projectId, slot])
+  @@index([projectId])
+}
+
+enum DimensionScope {
+  HIT       // Value per hit (pageview/event)
+  SESSION   // Value for entire session
+  VISITOR   // Persistent value for visitor
+}
+
+model CustomDimensionValue {
+  id          Int       @id @default(autoincrement())
+  dimensionId Int
+  dimension   CustomDimension @relation(fields: [dimensionId], references: [id], onDelete: Cascade)
+
+  visitorId   String
+  sessionId   String?
+  value       String
+
+  createdAt   DateTime  @default(now())
+
+  @@index([dimensionId, createdAt])
+  @@index([visitorId])
+}
+
+// ==================== ATTRIBUTION ====================
+
+model TouchPoint {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  visitorId   String
+  sessionId   String
+
+  channel     String    // organic, paid, social, email, direct, referral
+  source      String?   // google, facebook, newsletter
+  medium      String?   // cpc, organic, email
+  campaign    String?
+  content     String?
+  term        String?
+
+  createdAt   DateTime  @default(now())
+
+  @@index([projectId, visitorId])
+  @@index([projectId, createdAt])
+}
+
+model AttributionReport {
+  id          Int       @id @default(autoincrement())
+  projectId   Int
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  date        DateTime  @db.Date
+  model       AttributionModel
+  channel     String
+
+  conversions Float     // Can be fractional for linear/decay models
+  revenue     Float
+
+  @@unique([projectId, date, model, channel])
+  @@index([projectId, date])
+}
+
+enum AttributionModel {
+  LAST_CLICK
+  FIRST_CLICK
+  LINEAR
+  TIME_DECAY
+  POSITION_BASED
+}
+
+// ==================== USER FLOW ====================
+
+model UserFlowPath {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  date            DateTime  @db.Date
+  fromPath        String
+  toPath          String
+  transitions     Int       // Number of transitions
+  avgTimeOnPage   Float?
+
+  @@unique([projectId, date, fromPath, toPath])
+  @@index([projectId, date])
+}
+
+// ==================== SITE SEARCH ====================
+
+model SiteSearch {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  visitorId       String
+  sessionId       String?
+  searchTerm      String
+  resultsCount    Int?
+  category        String?
+
+  createdAt       DateTime  @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([projectId, searchTerm])
+}
+
+// ==================== ALERTS ====================
+
+model Alert {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name            String
+  metric          AlertMetric
+  condition       AlertCondition
+  threshold       Float
+  compareType     CompareType
+
+  isActive        Boolean   @default(true)
+
+  // Notifications
+  emailEnabled    Boolean   @default(true)
+  webhookUrl      String?
+  slackWebhook    String?
+
+  // State
+  lastTriggered   DateTime?
+  consecutiveHits Int       @default(0) // Avoid false positives
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  history         AlertHistory[]
+
+  @@index([projectId])
+  @@index([userId])
+  @@index([isActive])
+}
+
+enum AlertMetric {
+  VISITORS
+  PAGEVIEWS
+  BOUNCE_RATE
+  AVG_SESSION_DURATION
+  CONVERSIONS
+  REVENUE
+  ERROR_RATE
+}
+
+enum AlertCondition {
+  GREATER_THAN
+  LESS_THAN
+  INCREASE_BY_PERCENT
+  DECREASE_BY_PERCENT
+}
+
+enum CompareType {
+  PREVIOUS_DAY
+  PREVIOUS_WEEK
+  PREVIOUS_MONTH
+  ABSOLUTE
+}
+
+model AlertHistory {
+  id                Int       @id @default(autoincrement())
+  alertId           Int
+  alert             Alert     @relation(fields: [alertId], references: [id], onDelete: Cascade)
+
+  triggeredAt       DateTime  @default(now())
+  metricValue       Float
+  thresholdValue    Float
+  notificationSent  Boolean   @default(false)
+
+  @@index([alertId, triggeredAt])
+}
+
+// ==================== SCHEDULED REPORTS ====================
+
+model ScheduledReport {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name            String
+  metrics         String[]  // ['visitors', 'pageviews', 'conversions', ...]
+  segmentId       Int?
+  segment         Segment?  @relation(fields: [segmentId], references: [id])
+  dateRange       ReportDateRange
+
+  // Schedule
+  frequency       ReportFrequency
+  dayOfWeek       Int?      // 0-6 for weekly
+  dayOfMonth      Int?      // 1-31 for monthly
+  hour            Int       @default(9) // Hour to send (0-23)
+  timezone        String    @default("Europe/Paris")
+
+  // Recipients
+  recipients      String[]  // Email addresses
+  format          ReportFormat @default(PDF)
+
+  isActive        Boolean   @default(true)
+  lastSent        DateTime?
+  nextRun         DateTime?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([nextRun])
+  @@index([isActive])
+}
+
+enum ReportFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+enum ReportDateRange {
+  YESTERDAY
+  LAST_7_DAYS
+  LAST_30_DAYS
+  LAST_MONTH
+}
+
+enum ReportFormat {
+  PDF
+  CSV
+  EXCEL
+}
+
+// ==================== CONSENT MANAGEMENT ====================
+
+model ConsentConfig {
+  id                Int       @id @default(autoincrement())
+  projectId         Int       @unique
+  project           Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  requireConsent    Boolean   @default(true)
+  consentMode       ConsentMode @default(EXPLICIT)
+
+  // Banner appearance
+  bannerPosition    String    @default("bottom") // bottom, top, center
+  bannerText        String?   @db.Text
+  privacyUrl        String?
+
+  // Consent duration
+  consentDuration   Int       @default(365) // days
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+enum ConsentMode {
+  EXPLICIT    // Opt-in required
+  IMPLICIT    // Opt-out available
+  DISABLED    // No consent required
+}
+
+model VisitorConsent {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  visitorId       String
+
+  analytics       Boolean   @default(false)
+  marketing       Boolean   @default(false)
+  preferences     Boolean   @default(false)
+
+  consentedAt     DateTime?
+  expiresAt       DateTime?
+  ipHash          String?   // For proof
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@unique([projectId, visitorId])
+  @@index([projectId])
+}
+
+// ==================== OAUTH 2.0 ====================
+
+model OAuthClient {
+  id              Int       @id @default(autoincrement())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  clientId        String    @unique @default(cuid())
+  clientSecret    String    // Hashed
+  name            String
+  description     String?
+  redirectUris    String[]
+  scopes          String[]  // ['read:stats', 'write:goals', 'admin']
+
+  isActive        Boolean   @default(true)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  tokens          OAuthToken[]
+  authorizationCodes OAuthAuthorizationCode[]
+
+  @@index([userId])
+  @@index([clientId])
+}
+
+// SECURITY: OAuth Authorization Codes stored securely with one-time use
+model OAuthAuthorizationCode {
+  id              Int       @id @default(autoincrement())
+  code            String    @unique // SHA256 hash of the actual code
+  clientId        Int
+  client          OAuthClient @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  redirectUri     String
+  scopes          String[]
+  expiresAt       DateTime
+  usedAt          DateTime? // One-time use: set when code is exchanged
+
+  createdAt       DateTime  @default(now())
+
+  @@index([code])
+  @@index([expiresAt])
+}
+
+model OAuthToken {
+  id              Int       @id @default(autoincrement())
+  clientId        Int
+  client          OAuthClient @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken     String    @unique
+  refreshToken    String?   @unique
+  scopes          String[]
+  expiresAt       DateTime
+
+  createdAt       DateTime  @default(now())
+
+  @@index([accessToken])
+  @@index([refreshToken])
+  @@index([expiresAt])
+}
+
+// ==================== VIDEO ANALYTICS ====================
+
+model VideoEvent {
+  id              Int       @id @default(autoincrement())
+  projectId       Int
+  project         Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  visitorId       String
+  sessionId       String?
+
+  videoId         String
+  videoTitle      String?
+  videoDuration   Int?      // seconds
+
+  eventType       VideoEventType
+  progress        Int?      // 0-100
+
+  createdAt       DateTime  @default(now())
+
+  @@index([projectId, createdAt])
+  @@index([projectId, videoId])
+}
+
+enum VideoEventType {
+  START
+  PAUSE
+  RESUME
+  PROGRESS
+  COMPLETE
+  SEEK
+}
+
+// ==================== WEBSITE ====================
+
+model Website {
+  id            Int       @id @default(autoincrement())
+  url           String
+  domain        String
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Settings
+  privacy       Int       @default(0) // 0=public, 1=private, 2=password
+  password      String?   // Encrypted
+  email         Int?      // Email report frequency
+  excludeBots   Boolean   @default(false)
+  excludeIps    String?   @db.Text
+  excludeParams String?   @db.Text
+
+  // Cached metrics
+  pageviewsMonth Int      @default(0)
+
+  favoritedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  stats         Stat[]
+  events        Event[]
+  sessions      AnalyticsSession[]
+
+  @@unique([url, userId])
+  @@index([userId])
+  @@index([domain])
+}
+
+// ==================== STATS ====================
+
+model Stat {
+  id        String   @id @default(cuid())
+  websiteId Int
+  website   Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  name      StatType
+  value     String
+  count     BigInt   @default(1)
+  date      DateTime @db.Date
+
+  createdAt DateTime @default(now())
+
+  @@unique([websiteId, name, value, date])
+  @@index([websiteId, name, date])
+  @@index([date])
+}
+
+enum StatType {
+  // Core metrics
+  browser
+  browser_version
+  os
+  os_version
+  device
+  visitors          // Sessions
+  pageviews
+  screen_views      // For mobile apps
+  unique_visitors   // Unique users
+  active_users      // Active users in period
+  new_users         // First-time users
+  returning_users   // Returning users
+  engaged_sessions  // Sessions with engagement > 10s
+  // Geography
+  country
+  city
+  continent
+  region
+  // Pages/Screens
+  page
+  screen            // For mobile apps
+  landing_page
+  exit_page
+  // Traffic sources
+  referrer
+  traffic_source     // organic, direct, referral, social, paid, email
+  traffic_category   // human, ai_agent, search_engine, social_bot, seo_tool, malicious, unknown_bot
+  // UTM parameters
+  campaign
+  utm_source
+  utm_medium
+  utm_content
+  utm_term
+  // User preferences
+  resolution
+  language
+  // Time-based
+  visitors_hour
+  pageviews_hour
+  // Engagement
+  bounce            // single-page sessions
+  session_duration  // time buckets: 0-10s, 10-30s, 30-60s, 1-3m, 3-10m, 10m+
+  scroll_depth      // 25%, 50%, 75%, 100%
+  time_on_page      // time buckets
+  engagement_time   // active engagement time buckets
+  // Custom events
+  event
+  event_category
+  event_action
+  // Conversions
+  conversion
+  conversion_value
+  // Multi-domain/platform tracking
+  domain            // Track which domain generated the hit
+  platform          // web, ios, android, server
+  app_version       // For mobile apps
+  // Real-time specific
+  realtime_users
+  // E-commerce metrics
+  ecommerce_revenue      // Total revenue
+  ecommerce_transactions // Number of transactions
+  ecommerce_items_sold   // Total items sold
+  ecommerce_avg_order    // Average order value
+  ecommerce_item         // Item-level stats (by SKU)
+  ecommerce_category     // Category-level stats
+  ecommerce_brand        // Brand-level stats
+  add_to_cart            // Add to cart events
+  remove_from_cart       // Remove from cart events
+  view_item              // Product views
+  begin_checkout         // Checkout starts
+  purchase               // Completed purchases
+  refund                 // Refunds
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  websiteId Int
+  website   Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  name      String
+  value     String?
+
+  createdAt DateTime @default(now())
+
+  @@index([websiteId, createdAt])
+}
+
+// Session tracking for engagement metrics
+model AnalyticsSession {
+  id            String   @id @default(cuid())
+  websiteId     Int
+  website       Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  // Anonymous visitor fingerprint (hashed, privacy-friendly)
+  visitorHash   String
+
+  // Session data
+  startedAt     DateTime @default(now())
+  lastActivityAt DateTime @default(now())
+  endedAt       DateTime?
+
+  // Engagement
+  pageviews     Int      @default(1)
+  isBounce      Boolean  @default(true)  // Updated when second page is viewed
+
+  // Entry/Exit
+  entryPage     String
+  exitPage      String
+  maxScrollDepth Int     @default(0)     // 0-100%
+
+  // Traffic source (captured at session start)
+  referrer      String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  utmContent    String?
+  utmTerm       String?
+  trafficSource String?  // organic, direct, referral, social, paid
+
+  // Device info
+  browser       String?
+  os            String?
+  device        String?
+  country       String?
+
+  @@unique([websiteId, visitorHash, startedAt])
+  @@index([websiteId, startedAt])
+  @@index([websiteId, visitorHash])
+  @@index([startedAt])
+}
+
+// ==================== CMS ====================
+
+model Page {
+  id        Int       @id @default(autoincrement())
+  name      String
+  slug      String    @unique
+  body      String    @db.Text
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+// ==================== SETTINGS ====================
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  value String @db.Text
+}
+
+model Language {
+  id     Int    @id @default(autoincrement())
+  code   String @unique
+  name   String
+  locale String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== CRON ====================
+
+model Cronjob {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  lastRunAt DateTime?
+}
+
+// ==================== OSS LICENSES ====================
+
+model License {
+  id              Int           @id @default(autoincrement())
+  licenseKey      String        @unique // GLOB-PRO-xxx or GLOB-ENT-xxx
+  type            LicenseType
+  status          LicenseStatus @default(ACTIVE)
+
+  // Customer info
+  customerEmail   String
+  customerName    String?
+  companyName     String?
+
+  // Validity
+  issuedAt        DateTime      @default(now())
+  expiresAt       DateTime?     // null = lifetime
+  maxDomains      Int           @default(1)
+
+  // Usage tracking
+  activations     Int           @default(0)
+  maxActivations  Int           @default(1)
+  lastActivatedAt DateTime?
+  lastActivatedIp String?
+  lastActivatedDomain String?
+
+  // Notes
+  notes           String?       @db.Text
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  activationLogs  LicenseActivation[]
+
+  @@index([customerEmail])
+  @@index([status])
+  @@index([type])
+}
+
+enum LicenseType {
+  COMMUNITY   // Free (no key needed)
+  PRO         // Paid
+  ENTERPRISE  // Paid
+}
+
+enum LicenseStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  SUSPENDED
+}
+
+model LicenseActivation {
+  id          Int       @id @default(autoincrement())
+  licenseId   Int
+  license     License   @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  domain      String
+  ipAddress   String?
+  instanceId  String?   // Unique instance identifier
+  version     String?   // App version
+
+  activatedAt DateTime  @default(now())
+  lastSeenAt  DateTime  @default(now())
+  isActive    Boolean   @default(true)
+
+  @@index([licenseId])
+  @@index([domain])
+}

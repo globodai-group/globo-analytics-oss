@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page de test - GloboRank Tracking</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      h1 {
+        color: #333;
+      }
+      p {
+        color: #666;
+        line-height: 1.6;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+      }
+      a {
+        color: #0066cc;
+      }
+      code {
+        background: #e8e8e8;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .btn {
+        padding: 10px 20px;
+        cursor: pointer;
+        background: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        margin: 5px;
+      }
+      .btn:hover {
+        background: #0055aa;
+      }
+      .status {
+        padding: 10px;
+        border-radius: 4px;
+        margin: 10px 0;
+      }
+      .status.success {
+        background: #d4edda;
+        color: #155724;
+      }
+      .status.error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+      .status.pending {
+        background: #fff3cd;
+        color: #856404;
+      }
+    </style>
+
+    <!-- GloboRank Analytics -->
+    <script
+      async
+      src="http://localhost:3000/js/tracker.js"
+      data-tid="cmjn3325v0001sc2zvy1jgbc6"
+    ></script>
+    <!-- End GloboRank Analytics -->
+  </head>
+  <body>
+    <h1>🚀 Page de test GloboRank - Projects</h1>
+
+    <div class="card">
+      <h2>Status du tracking</h2>
+      <p id="tracking-status" class="status pending">⏳ En attente de réponse du serveur...</p>
+    </div>
+
+    <div class="card">
+      <h2>Tests manuels</h2>
+      <p>Cliquez sur ces boutons pour envoyer des événements de test :</p>
+      <button class="btn" onclick="testPageview()">📊 Envoyer Pageview</button>
+      <button class="btn" onclick="testEngagement()">⏱️ Envoyer Engagement (30s)</button>
+      <button class="btn" onclick="testEvent()">🎯 Envoyer Event personnalisé</button>
+      <div id="test-result" class="status" style="display: none"></div>
+    </div>
+
+    <div class="card">
+      <h2>Navigation de test</h2>
+      <p>Cliquez sur ces liens pour tester le tracking :</p>
+      <ul>
+        <li><a href="/test-page" onclick="trackLink(event, '/test-page')">Test Page</a></li>
+        <li><a href="/page-1" onclick="trackLink(event, '/page-1')">Page 1</a></li>
+        <li><a href="/page-2" onclick="trackLink(event, '/page-2')">Page 2</a></li>
+        <li><a href="/page-3" onclick="trackLink(event, '/page-3')">Page 3</a></li>
+        <li><a href="/page-4" onclick="trackLink(event, '/page-4')">Page 4</a></li>
+        <li><a href="/page-5" onclick="trackLink(event, '/page-5')">Page 5</a></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Informations</h2>
+      <p><strong>Endpoint:</strong> <code>http://localhost:3000/api/v2/collect</code></p>
+      <p><strong>Tracking ID:</strong> <code>cmjn3325v0001sc2zvy1jgbc6</code></p>
+      <p><strong>Visitor ID:</strong> <code id="visitor-id">-</code></p>
+      <p><strong>Session ID:</strong> <code id="session-id">-</code></p>
+    </div>
+
+    <script>
+      // Display IDs after script loads
+      setTimeout(function () {
+        document.getElementById("visitor-id").textContent =
+          localStorage.getItem("gr_vid") || "New visitor";
+        document.getElementById("session-id").textContent =
+          sessionStorage.getItem("gr_sid") || "New session";
+
+        // Update status
+        if (window.gr) {
+          document.getElementById("tracking-status").className = "status success";
+          document.getElementById("tracking-status").textContent =
+            "✓ Tracker chargé - Pageview automatique envoyé";
+        }
+      }, 1000);
+
+      function showResult(msg, success) {
+        var el = document.getElementById("test-result");
+        el.style.display = "block";
+        el.className = "status " + (success ? "success" : "error");
+        el.textContent = success ? "✓ " + msg : "✗ " + msg;
+      }
+
+      function testPageview() {
+        if (!window.gr) return showResult("Tracker non chargé", false);
+        // Le tracker envoie via sendBeacon (fire-and-forget)
+        gr("event", "manual_pageview", { page: location.pathname });
+        showResult("Pageview envoyé", true);
+      }
+
+      function testEngagement() {
+        if (!window.gr) return showResult("Tracker non chargé", false);
+        gr("event", "engagement_test", { duration: 30 });
+        showResult("Engagement (30s) envoyé", true);
+      }
+
+      function testEvent() {
+        if (!window.gr) return showResult("Tracker non chargé", false);
+        gr("event", "button_click", { button: "test", page: "home" });
+        showResult("Event button_click envoyé", true);
+      }
+
+      function trackLink(e, path) {
+        e.preventDefault();
+        if (!window.gr) return showResult("Tracker non chargé", false);
+        gr("event", "page_navigation", { target_path: path, target_title: "Test - " + path });
+        showResult("Navigation vers " + path + " trackée", true);
+      }
+    </script>
+  </body>
+</html>
