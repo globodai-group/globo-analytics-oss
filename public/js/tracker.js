@@ -44,7 +44,7 @@
         enc.encode(secret),
         { name: "HMAC", hash: "SHA-256" },
         false,
-        ["sign"]
+        ["sign"],
       );
       var sig = await w.crypto.subtle.sign("HMAC", key, enc.encode(payload));
       return Array.from(new Uint8Array(sig))
@@ -61,7 +61,10 @@
   var getVid = function () {
     var v = localStorage.getItem("gr_vid");
     if (!v) {
-      v = "v_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      v =
+        "v_" +
+        Math.random().toString(36).substr(2, 9) +
+        Date.now().toString(36);
       localStorage.setItem("gr_vid", v);
     }
     return v;
@@ -69,7 +72,10 @@
   var getSid = function () {
     var x = sessionStorage.getItem("gr_sid");
     if (!x) {
-      x = "s_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      x =
+        "s_" +
+        Math.random().toString(36).substr(2, 9) +
+        Date.now().toString(36);
       sessionStorage.setItem("gr_sid", x);
     }
     return x;
@@ -98,7 +104,7 @@
         pl: "web",
         ts: ts, // timestamp for replay protection
       },
-      data || {}
+      data || {},
     );
     if (userId) p.uid = userId;
     if (isAuthenticated) p.auth = true;
@@ -112,7 +118,11 @@
     var doSend = function (payload) {
       navigator.sendBeacon
         ? navigator.sendBeacon(e, JSON.stringify(payload))
-        : fetch(e, { method: "POST", body: JSON.stringify(payload), keepalive: true });
+        : fetch(e, {
+            method: "POST",
+            body: JSON.stringify(payload),
+            keepalive: true,
+          });
     };
 
     if (sk) {
@@ -171,7 +181,8 @@
         case "remove_from_cart":
           edata.items = [normalizeItem(params)];
           edata.currency = params.currency || "EUR";
-          edata.value = (parseFloat(params.price) || 0) * (parseInt(params.quantity) || 1);
+          edata.value =
+            (parseFloat(params.price) || 0) * (parseInt(params.quantity) || 1);
           break;
         case "view_cart":
           edata.items = (params.items || []).map(normalizeItem);
@@ -200,7 +211,8 @@
           edata.transaction_id = params.transaction_id || params.order_id;
           edata.items = (params.items || []).map(normalizeItem);
           edata.currency = params.currency || "EUR";
-          edata.value = parseFloat(params.value) || parseFloat(params.total) || 0;
+          edata.value =
+            parseFloat(params.value) || parseFloat(params.total) || 0;
           edata.tax = parseFloat(params.tax) || 0;
           edata.shipping = parseFloat(params.shipping) || 0;
           edata.coupon = params.coupon;
@@ -208,7 +220,9 @@
           break;
         case "refund":
           edata.transaction_id = params.transaction_id || params.order_id;
-          edata.items = params.items ? (params.items || []).map(normalizeItem) : undefined;
+          edata.items = params.items
+            ? (params.items || []).map(normalizeItem)
+            : undefined;
           edata.currency = params.currency || "EUR";
           edata.value = parseFloat(params.value) || 0;
           break;
@@ -262,7 +276,9 @@
     scrollTracked = {};
   var trackScroll = function () {
     var scrollTop = w.pageYOffset || d.documentElement.scrollTop;
-    var docHeight = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight) - w.innerHeight;
+    var docHeight =
+      Math.max(d.body.scrollHeight, d.documentElement.scrollHeight) -
+      w.innerHeight;
     if (docHeight <= 0) return;
     var depth = Math.min(100, Math.round((scrollTop / docHeight) * 100));
     scrollDepths.forEach(function (threshold) {
