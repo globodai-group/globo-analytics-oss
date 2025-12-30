@@ -1186,6 +1186,36 @@
     "contactSales": "Contacter les ventes",
     "comparePlans": "Comparer les plans"
   },
+  "setup": {
+    "title": "Bienvenue sur GloboAnalytics",
+    "back": "Retour",
+    "license": {
+      "description": "Configurez votre licence pour débloquer les fonctionnalités premium",
+      "label": "Clé de licence",
+      "hint": "Laissez vide pour utiliser l'édition Community gratuite",
+      "validate": "Valider et continuer",
+      "skipCommunity": "Continuer avec l'édition Community",
+      "invalid": "Clé de licence invalide",
+      "communityTitle": "L'édition Community inclut :",
+      "communityTier": "Édition Community",
+      "websites": "sites web",
+      "pageviews": "pages vues/mois",
+      "basicFeatures": "Fonctionnalités d'analyse de base"
+    },
+    "account": {
+      "description": "Créez votre compte administrateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Adresse email",
+      "password": "Mot de passe",
+      "passwordHint": "Minimum 8 caractères",
+      "submit": "Créer le compte"
+    },
+    "success": {
+      "title": "Configuration terminée !",
+      "description": "Votre compte administrateur a été créé. Redirection vers la connexion..."
+    }
+  },
   "search": {
     "title": "Recherche",
     "description": "Recherchez dans vos projets, pages, événements et plus encore",
