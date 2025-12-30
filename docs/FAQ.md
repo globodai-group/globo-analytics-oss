@@ -12,15 +12,15 @@ Yes! The Community Edition is free forever with no limits on pageviews or visito
 
 ### How does it compare to Google Analytics?
 
-| Feature | GloboAnalytics | Google Analytics |
-|---------|---------------|------------------|
-| Privacy | Your data, your servers | Google's servers |
-| GDPR Compliance | Built-in | Requires configuration |
-| Cookie Consent | Optional (cookie-free mode) | Required |
-| Real-time | Yes | Yes |
-| Heatmaps | Pro license | No |
-| Session Recording | Pro license | No |
-| Price | Free (OSS) / €29-199/mo | Free / Paid |
+| Feature           | GloboAnalytics              | Google Analytics       |
+| ----------------- | --------------------------- | ---------------------- |
+| Privacy           | Your data, your servers     | Google's servers       |
+| GDPR Compliance   | Built-in                    | Requires configuration |
+| Cookie Consent    | Optional (cookie-free mode) | Required               |
+| Real-time         | Yes                         | Yes                    |
+| Heatmaps          | Pro license                 | No                     |
+| Session Recording | Pro license                 | No                     |
+| Price             | Free (OSS) / €29-199/mo     | Free / Paid            |
 
 ### How does it compare to Plausible/Umami?
 
@@ -68,15 +68,17 @@ We use a daily-rotating hash of: IP + User-Agent + Salt. This provides accurate 
 ### Does it track logged-in users?
 
 You can optionally pass a hashed user ID for more accurate cross-device tracking:
+
 ```javascript
-gr('set', 'userId', 'hashed_user_id');
+gr("set", "userId", "hashed_user_id");
 ```
 
 ### Can I track events?
 
 Yes:
+
 ```javascript
-gr('event', 'button_click', { category: 'ui' });
+gr("event", "button_click", { category: "ui" });
 ```
 
 ### Does it work with SPAs?
@@ -90,6 +92,7 @@ Yes. Use `data-hash-mode="true"` or manually call `gr('pageview')` on route chan
 ### Is it GDPR compliant?
 
 Yes, GloboAnalytics is designed for GDPR compliance:
+
 - No personal data stored
 - Cookie-free mode available
 - Data stays on your servers
@@ -106,6 +109,7 @@ All data is stored in YOUR PostgreSQL database. We have zero access to your data
 ### What about premium features?
 
 Premium features (heatmaps, AI) send data to our API for processing, but:
+
 - Data is processed transiently
 - We don't store your data
 - Results are returned immediately
@@ -147,6 +151,7 @@ Premium features (heatmaps, AI) send data to our API for processing, but:
 ### How do I activate a license?
 
 Add your license key to `.env`:
+
 ```bash
 LICENSE_KEY=GLOB-PRO-xxxxx
 ```
@@ -178,6 +183,7 @@ Contact us for a trial license: [sales@globoanalytics.com](mailto:sales@globoana
 ### Getting 500 errors
 
 Check logs for details:
+
 ```bash
 docker-compose logs app
 # or
@@ -185,6 +191,7 @@ pm2 logs globo-analytics
 ```
 
 Common causes:
+
 - Database connection issues
 - Missing environment variables
 - Memory limits exceeded
@@ -206,11 +213,13 @@ Redis is optional. If not using Redis, remove `REDIS_URL` from your `.env`. The 
 ### How do I upgrade?
 
 Docker:
+
 ```bash
 docker-compose pull && docker-compose up -d
 ```
 
 Manual:
+
 ```bash
 git pull origin main
 pnpm install

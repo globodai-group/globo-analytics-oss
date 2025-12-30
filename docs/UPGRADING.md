@@ -58,7 +58,7 @@ We strongly recommend pinning to specific versions in production.
 # docker-compose.yml
 services:
   app:
-    image: globoanalytics/oss:v1.0.0  # Pin version
+    image: globoanalytics/oss:v1.0.0 # Pin version
 ```
 
 ### Git
@@ -103,16 +103,20 @@ Migration guides will be added here as new versions are released.
 **Release Date:** TBD
 
 **New Features:**
+
 - Feature 1
 - Feature 2
 
 **Breaking Changes:**
+
 - None
 
 **Migration Steps:**
+
 1. Standard upgrade process
 
 **Database Migrations:**
+
 - Auto-applied on startup
 ```
 
@@ -182,6 +186,7 @@ find $BACKUP_DIR -name "globo_*.sql.gz" -mtime +30 -delete
 ```
 
 Add to crontab:
+
 ```bash
 0 3 * * * /scripts/backup.sh
 ```

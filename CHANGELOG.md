@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Initial open-source release
 
 ---
@@ -15,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2024-12-30
 
 ### Added
+
 - **Core Analytics**
   - Real-time visitor tracking
   - Pageview and event collection
@@ -91,6 +93,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Priority support
 
 ### Security
+
 - Rate limiting on all endpoints
 - CSRF protection
 - XSS prevention with DOMPurify
@@ -102,9 +105,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
-| Version | Date | Highlights |
-|---------|------|------------|
-| 1.0.0 | 2024-12-30 | Initial release |
+| Version | Date       | Highlights      |
+| ------- | ---------- | --------------- |
+| 1.0.0   | 2024-12-30 | Initial release |
 
 ---
 
@@ -115,6 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 This is the initial release. No migration needed.
 
 For future upgrades:
+
 1. Always backup your database before upgrading
 2. Read the migration notes for your version
 3. Run `pnpm db:migrate` after updating
