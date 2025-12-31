@@ -3,6 +3,13 @@ name: Release
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: "Force release even if tag exists"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -15,8 +22,8 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    # Only run on merge commits from rec branch (release candidate)
-    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'rec')
+    # Run on: manual trigger OR merge from rec branch
+    if: github.event_name == 'workflow_dispatch' || (contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'rec'))
 
     steps:
       - uses: actions/checkout@v4
