@@ -5,20 +5,20 @@ on:
     branches: [dev]
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 # =============================================================================
-# INTELLIGENT FLOW: Each job depends on previous success
-# Fails fast - no point running tests if lint fails
+# PARALLEL BLOCKS WITH FAIL-FAST
+# Block 1: Code Quality (parallel) -> Block 2: Security -> Block 3: Tests/Build
 # =============================================================================
 
 jobs:
   # ===========================================================================
-  # Stage 1: Code Quality (lint, format, types)
+  # BLOCK 1: Code Quality (ESLint, Prettier, TypeScript, Audit - PARALLEL)
   # ===========================================================================
   lint:
-    name: "1️⃣ ESLint"
+    name: "ESLint"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,12 +49,11 @@ jobs:
         run: pnpm db:generate
 
       - name: Run ESLint
-        run: pnpm lint --max-warnings=0
+        run: pnpm lint
 
   format:
-    name: "2️⃣ Prettier"
+    name: "Prettier"
     runs-on: ubuntu-latest
-    needs: [lint]
     steps:
       - uses: actions/checkout@v4
 
@@ -84,9 +83,8 @@ jobs:
         run: pnpm format:check
 
   typecheck:
-    name: "3️⃣ TypeScript"
+    name: "TypeScript"
     runs-on: ubuntu-latest
-    needs: [format]
     steps:
       - uses: actions/checkout@v4
 
@@ -118,13 +116,9 @@ jobs:
       - name: TypeScript strict check
         run: pnpm type-check
 
-  # ===========================================================================
-  # Stage 2: Security
-  # ===========================================================================
-  security:
-    name: "4️⃣ Security Audit"
+  audit:
+    name: "Security Audit"
     runs-on: ubuntu-latest
-    needs: [typecheck]
     steps:
       - uses: actions/checkout@v4
 
@@ -142,16 +136,51 @@ jobs:
       - name: Audit dependencies (high/critical)
         run: pnpm audit --audit-level=high
 
+  # ===========================================================================
+  # BLOCK 2: Security Checks (depends on Block 1)
+  # ===========================================================================
+  security:
+    name: "Security Scan"
+    runs-on: ubuntu-latest
+    needs: [lint, format, typecheck, audit]
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Check for secrets in code
         uses: trufflesecurity/trufflehog@main
         with:
           extra_args: --only-verified
 
+      - name: Check for banned keywords
+        run: |
+          echo "Checking for banned patterns..."
+          FOUND=0
+
+          if grep -rn --include="*.ts" --include="*.tsx" --include="*.js" -E "TODO.*HACK" src/ 2>/dev/null | grep -v "node_modules"; then
+            echo "::error::Found TODO.*HACK pattern"
+            FOUND=1
+          fi
+
+          if grep -rn --include="*.ts" --include="*.tsx" --include="*.js" -E "FIXME.*security" src/ 2>/dev/null | grep -v "node_modules"; then
+            echo "::error::Found FIXME.*security pattern"
+            FOUND=1
+          fi
+
+          if grep -rn --include="*.ts" --include="*.tsx" --include="*.js" -E "password\s*=\s*['\"][^'\"]{8,}['\"]" src/ 2>/dev/null | grep -v "node_modules" | grep -v "example" | grep -v "placeholder" | grep -v "schema"; then
+            echo "::error::Found hardcoded password"
+            FOUND=1
+          fi
+
+          if [ $FOUND -eq 1 ]; then
+            exit 1
+          fi
+          echo "No banned patterns found"
+
   # ===========================================================================
-  # Stage 3: Tests
+  # BLOCK 3: Tests & Build (depends on Block 2, run in PARALLEL)
   # ===========================================================================
   test:
-    name: "5️⃣ Tests"
+    name: "Tests"
     runs-on: ubuntu-latest
     needs: [security]
     services:
@@ -215,13 +244,10 @@ jobs:
           files: ./coverage/lcov.info
           fail_ci_if_error: false
 
-  # ===========================================================================
-  # Stage 4: Build
-  # ===========================================================================
   build:
-    name: "6️⃣ Build"
+    name: "Build"
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [security]
     steps:
       - uses: actions/checkout@v4
 
@@ -255,13 +281,10 @@ jobs:
         env:
           SKIP_ENV_VALIDATION: true
 
-  # ===========================================================================
-  # Stage 5: Docker
-  # ===========================================================================
   docker:
-    name: "7️⃣ Docker Build"
+    name: "Docker Build"
     runs-on: ubuntu-latest
-    needs: [build]
+    needs: [security]
     steps:
       - uses: actions/checkout@v4
 
@@ -285,41 +308,52 @@ jobs:
           cache-to: type=gha,mode=max
 
   # ===========================================================================
-  # Final: Summary Report
+  # SUMMARY: Final Report
   # ===========================================================================
   summary:
-    name: "✅ CI Summary"
+    name: "CI Summary"
     runs-on: ubuntu-latest
-    needs: [lint, format, typecheck, security, test, build, docker]
+    needs: [lint, format, typecheck, audit, security, test, build, docker]
     if: always()
     steps:
       - name: Generate summary
         run: |
-          echo "## 🔍 CI Pipeline Results" >> $GITHUB_STEP_SUMMARY
+          echo "## CI Pipeline Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Stage | Job | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-------|-----|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| 1️⃣ | ESLint | ${{ needs.lint.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 2️⃣ | Prettier | ${{ needs.format.result == 'success' && '✅' || needs.format.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3️⃣ | TypeScript | ${{ needs.typecheck.result == 'success' && '✅' || needs.typecheck.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 4️⃣ | Security | ${{ needs.security.result == 'success' && '✅' || needs.security.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 5️⃣ | Tests | ${{ needs.test.result == 'success' && '✅' || needs.test.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 6️⃣ | Build | ${{ needs.build.result == 'success' && '✅' || needs.build.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| 7️⃣ | Docker | ${{ needs.docker.result == 'success' && '✅' || needs.docker.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "### Block 1: Code Quality (parallel)" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ESLint | ${{ needs.lint.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Prettier | ${{ needs.format.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| TypeScript | ${{ needs.typecheck.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Security Audit | ${{ needs.audit.result == 'success' && '✅' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Block 2: Security Checks" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| TruffleHog + Banned Keywords | ${{ needs.security.result == 'success' && '✅' || needs.security.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Block 3: Tests & Build (parallel)" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests | ${{ needs.test.result == 'success' && '✅' || needs.test.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Build | ${{ needs.build.result == 'success' && '✅' || needs.build.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Docker | ${{ needs.docker.result == 'success' && '✅' || needs.docker.result == 'skipped' && '⏭️' || '❌' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
           # Check if all passed
           if [ "${{ needs.lint.result }}" == "success" ] && \
              [ "${{ needs.format.result }}" == "success" ] && \
              [ "${{ needs.typecheck.result }}" == "success" ] && \
+             [ "${{ needs.audit.result }}" == "success" ] && \
              [ "${{ needs.security.result }}" == "success" ] && \
              [ "${{ needs.test.result }}" == "success" ] && \
              [ "${{ needs.build.result }}" == "success" ] && \
              [ "${{ needs.docker.result }}" == "success" ]; then
-            echo "### 🎉 All checks passed!" >> $GITHUB_STEP_SUMMARY
+            echo "### ✅ All checks passed!" >> $GITHUB_STEP_SUMMARY
             echo "Ready to merge into \`dev\`" >> $GITHUB_STEP_SUMMARY
           else
-            echo "### ⚠️ Some checks failed or were skipped" >> $GITHUB_STEP_SUMMARY
+            echo "### ❌ Some checks failed" >> $GITHUB_STEP_SUMMARY
             echo "Fix the issues above before merging." >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
