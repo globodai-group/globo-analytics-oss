@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale } from "next-intl";
 import { clientLogger } from "@/lib/client-logger";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +27,6 @@ export function RealTimeWidget({
   projectId,
   initialCount = 0,
 }: RealTimeWidgetProps) {
-  const t = useTranslations();
   const locale = useLocale();
   const [activeUsers, setActiveUsers] = useState(initialCount);
   const [realtimeUsers, setRealtimeUsers] = useState<RealtimeUser[]>([]);
@@ -123,7 +122,7 @@ export function RealTimeWidget({
           {realtimeUsers.length > 0 && (
             <div className="hidden md:flex items-center gap-4">
               <div className="flex -space-x-2">
-                {realtimeUsers.slice(0, 5).map((user, i) => {
+                {realtimeUsers.slice(0, 5).map((user, _i) => {
                   const DeviceIcon = getDeviceIcon(user.device);
                   return (
                     <div

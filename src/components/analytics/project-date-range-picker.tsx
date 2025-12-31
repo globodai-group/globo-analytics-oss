@@ -32,7 +32,7 @@ interface ProjectDateRangePickerProps {
 }
 
 export function ProjectDateRangePicker({
-  projectId,
+  projectId: _projectId,
   className,
 }: ProjectDateRangePickerProps) {
   const locale = useLocale();

@@ -20,7 +20,6 @@ import {
   Clock,
   Users,
   Mail,
-  Send,
 } from "lucide-react";
 import { ReportDeleteButton } from "@/components/reports/report-delete-button";
 import { ReportToggleButton } from "@/components/reports/report-toggle-button";
@@ -35,7 +34,7 @@ interface ReportsPageProps {
 export default async function ReportsPage({ params }: ReportsPageProps) {
   const { id } = await params;
   const session = await auth();
-  const t = await getTranslations();
+  const _t = await getTranslations();
   const locale = await getLocale();
 
   if (!session?.user?.id) {

@@ -14,7 +14,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Plus, Key, Code, ExternalLink } from "lucide-react";
 import { OAuthClientCard } from "@/components/developers/oauth-client-card";
-import { format } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
 
 export default async function DevelopersPage() {

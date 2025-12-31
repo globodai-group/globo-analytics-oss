@@ -7,7 +7,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -564,7 +563,13 @@ browser_stats = browser_response.json()`,
   },
 ];
 
-function CodeBlock({ code, language }: { code: string; language: string }) {
+function CodeBlock({
+  code,
+  language: _language,
+}: {
+  code: string;
+  language: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {

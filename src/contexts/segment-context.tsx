@@ -144,7 +144,11 @@ export function useSegment() {
 /**
  * Segment selector component for use in header/toolbar
  */
-export function SegmentSelector({ projectId }: { projectId: number }) {
+export function SegmentSelector({
+  projectId: _projectId,
+}: {
+  projectId: number;
+}) {
   // This would be imported from another file but keeping it simple for now
   return null;
 }

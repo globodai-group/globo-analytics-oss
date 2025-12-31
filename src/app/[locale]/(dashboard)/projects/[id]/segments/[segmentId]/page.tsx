@@ -16,7 +16,7 @@ export default async function EditSegmentPage({
 }: EditSegmentPageProps) {
   const { id, segmentId } = await params;
   const session = await auth();
-  const t = await getTranslations("segments");
+  const _t = await getTranslations("segments");
   const locale = await getLocale();
 
   if (!session?.user?.id) {

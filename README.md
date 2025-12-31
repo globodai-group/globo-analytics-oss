@@ -13,6 +13,9 @@
   <a href="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml">
     <img src="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml/badge.svg" alt="CI"/>
   </a>
+  <a href="https://codecov.io/gh/globodai-group/globo-analytics-oss">
+    <img src="https://codecov.io/gh/globodai-group/globo-analytics-oss/branch/main/graph/badge.svg" alt="Coverage"/>
+  </a>
   <a href="https://github.com/globodai-group/globo-analytics-oss/releases">
     <img src="https://img.shields.io/github/v/release/globodai-group/globo-analytics-oss?color=blue" alt="Release"/>
   </a>
