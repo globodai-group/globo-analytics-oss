@@ -117,8 +117,8 @@ SMTP_PASS=SG.your-api-key
 ```bash
 SMTP_HOST=email-smtp.us-east-1.amazonaws.com
 SMTP_PORT=587
-SMTP_USER=AKIAIOSFODNN7EXAMPLE
-SMTP_PASS=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+SMTP_USER=your-ses-access-key-id
+SMTP_PASS=your-ses-secret-access-key
 ```
 
 **Resend:**

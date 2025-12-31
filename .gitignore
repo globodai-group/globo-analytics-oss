@@ -2,6 +2,13 @@
 node_modules/
 .pnpm-store/
 
+# Bun
+.bun/
+
+# Migration backup
+*.backup
+.migration-backup/
+
 # Build outputs
 .next/
 out/

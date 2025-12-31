@@ -1,0 +1,23 @@
+# bunfig.toml - Configuration Bun pour Globo Analytics OSS
+
+[install]
+# Registry npm par défaut
+registry = "https://registry.npmjs.org"
+
+# Installer les peer dependencies automatiquement
+peer = true
+
+# Installer les devDependencies par défaut
+dev = true
+
+[install.cache]
+# Activer le cache global
+dir = "~/.bun/install/cache"
+
+[run]
+# Shell à utiliser pour les scripts (bun ou system)
+shell = "system"
+
+[test]
+# Configuration des tests (utilise Vitest, pas Bun test)
+# coverage = true
