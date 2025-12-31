@@ -2,47 +2,42 @@
 # GloboAnalytics OSS Docker Image
 # =============================================================================
 # Multi-stage build for optimized production image
+# Using Bun for faster dependency installation
 # =============================================================================
 
 # -----------------------------------------------------------------------------
 # Stage 1: Dependencies
 # -----------------------------------------------------------------------------
-FROM node:22-alpine AS deps
+FROM oven/bun:1.3.5-alpine AS deps
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Install pnpm via npm (corepack not available in all node images)
-RUN npm install -g pnpm@10
-
 # Copy package files
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json bun.lock* ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN bun install --frozen-lockfile
 
 # -----------------------------------------------------------------------------
 # Stage 2: Builder
 # -----------------------------------------------------------------------------
-FROM node:22-alpine AS builder
+FROM oven/bun:1.3.5-alpine AS builder
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
-
-# Install pnpm via npm
-RUN npm install -g pnpm@10
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma client
-RUN pnpm db:generate
+RUN bun run db:generate
 
 # Build the application
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-RUN pnpm build
+RUN bun run build
 
 # -----------------------------------------------------------------------------
 # Stage 3: Production Runner
