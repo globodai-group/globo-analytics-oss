@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  type ReactNode,
+} from "react";
 import { clientLogger } from "@/lib/client-logger";
 
 interface Segment {
@@ -60,7 +66,7 @@ export function SegmentProvider({ children }: SegmentProviderProps) {
         setActiveSegmentState(segment || null);
       }
     },
-    [segments]
+    [segments],
   );
 
   const clearSegment = useCallback(() => {
@@ -93,17 +99,19 @@ export function SegmentProvider({ children }: SegmentProviderProps) {
         setActiveSegmentState(null);
       }
     },
-    [activeSegment]
+    [activeSegment],
   );
 
   const updateSegment = useCallback(
     (segment: Segment) => {
-      setSegments((prev) => prev.map((s) => (s.id === segment.id ? segment : s)));
+      setSegments((prev) =>
+        prev.map((s) => (s.id === segment.id ? segment : s)),
+      );
       if (activeSegment?.id === segment.id) {
         setActiveSegmentState(segment);
       }
     },
-    [activeSegment]
+    [activeSegment],
   );
 
   const value: SegmentContextValue = {
@@ -120,7 +128,9 @@ export function SegmentProvider({ children }: SegmentProviderProps) {
     updateSegment,
   };
 
-  return <SegmentContext.Provider value={value}>{children}</SegmentContext.Provider>;
+  return (
+    <SegmentContext.Provider value={value}>{children}</SegmentContext.Provider>
+  );
 }
 
 export function useSegment() {

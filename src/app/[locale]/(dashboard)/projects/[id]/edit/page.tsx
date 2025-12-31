@@ -11,7 +11,9 @@ interface EditProjectPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function EditProjectPage({ params }: EditProjectPageProps) {
+export default async function EditProjectPage({
+  params,
+}: EditProjectPageProps) {
   const { id } = await params;
   const session = await auth();
   const t = await getTranslations();

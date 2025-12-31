@@ -6,17 +6,38 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { Sparkles, Loader2, Lightbulb, TrendingUp, AlertTriangle, Target } from "lucide-react";
+import {
+  Sparkles,
+  Loader2,
+  Lightbulb,
+  TrendingUp,
+  AlertTriangle,
+  Target,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   getAIFunnelSuggestionsAction,
   getAISegmentSuggestionsAction,
   getAIInsightsAction,
 } from "@/lib/actions/ai";
-import type { FunnelSuggestion, SegmentSuggestion, AnalyticsInsight } from "@/lib/ai";
+import type {
+  FunnelSuggestion,
+  SegmentSuggestion,
+  AnalyticsInsight,
+} from "@/lib/ai";
 
 interface AISuggestionsProps {
   projectId: number;
@@ -105,7 +126,12 @@ export function AISuggestions({
               </CardTitle>
             </div>
             {!suggestions && (
-              <Button size="sm" onClick={handleGenerate} disabled={isPending} className="gap-2">
+              <Button
+                size="sm"
+                onClick={handleGenerate}
+                disabled={isPending}
+                className="gap-2"
+              >
                 {isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -145,14 +171,23 @@ export function AISuggestions({
             {/* Funnel Suggestions */}
             {type === "funnels" &&
               (suggestions as FunnelSuggestion[])?.map((suggestion, index) => (
-                <div key={index} className="rounded-lg border bg-card p-4 space-y-3">
+                <div
+                  key={index}
+                  className="rounded-lg border bg-card p-4 space-y-3"
+                >
                   <div className="flex items-start justify-between">
                     <div>
                       <h4 className="font-medium">{suggestion.name}</h4>
-                      <p className="text-sm text-muted-foreground">{suggestion.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {suggestion.description}
+                      </p>
                     </div>
                     {onApplyFunnel && (
-                      <Button size="sm" variant="outline" onClick={() => onApplyFunnel(suggestion)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onApplyFunnel(suggestion)}
+                      >
                         {t("apply")}
                       </Button>
                     )}
@@ -164,18 +199,25 @@ export function AISuggestions({
                       </Badge>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground italic">{suggestion.reasoning}</p>
+                  <p className="text-xs text-muted-foreground italic">
+                    {suggestion.reasoning}
+                  </p>
                 </div>
               ))}
 
             {/* Segment Suggestions */}
             {type === "segments" &&
               (suggestions as SegmentSuggestion[])?.map((suggestion, index) => (
-                <div key={index} className="rounded-lg border bg-card p-4 space-y-3">
+                <div
+                  key={index}
+                  className="rounded-lg border bg-card p-4 space-y-3"
+                >
                   <div className="flex items-start justify-between">
                     <div>
                       <h4 className="font-medium">{suggestion.name}</h4>
-                      <p className="text-sm text-muted-foreground">{suggestion.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {suggestion.description}
+                      </p>
                     </div>
                     {onApplySegment && (
                       <Button
@@ -194,16 +236,23 @@ export function AISuggestions({
                       </Badge>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground italic">{suggestion.reasoning}</p>
+                  <p className="text-xs text-muted-foreground italic">
+                    {suggestion.reasoning}
+                  </p>
                 </div>
               ))}
 
             {/* Insights */}
             {type === "insights" &&
               (suggestions as AnalyticsInsight[])?.map((insight, index) => (
-                <div key={index} className="rounded-lg border bg-card p-4 space-y-2">
+                <div
+                  key={index}
+                  className="rounded-lg border bg-card p-4 space-y-2"
+                >
                   <div className="flex items-center gap-2">
-                    <span className={`p-1.5 rounded ${getInsightColor(insight.type)}`}>
+                    <span
+                      className={`p-1.5 rounded ${getInsightColor(insight.type)}`}
+                    >
                       {getInsightIcon(insight.type)}
                     </span>
                     <h4 className="font-medium">{insight.title}</h4>
@@ -211,15 +260,21 @@ export function AISuggestions({
                       {insight.metric}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">{insight.description}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {insight.description}
+                  </p>
                   {insight.suggestion && (
-                    <p className="text-sm text-primary">💡 {insight.suggestion}</p>
+                    <p className="text-sm text-primary">
+                      💡 {insight.suggestion}
+                    </p>
                   )}
                 </div>
               ))}
 
             {suggestions && suggestions.length === 0 && (
-              <p className="text-sm text-muted-foreground text-center py-4">{t("noSuggestions")}</p>
+              <p className="text-sm text-muted-foreground text-center py-4">
+                {t("noSuggestions")}
+              </p>
             )}
 
             {suggestions && suggestions.length > 0 && (

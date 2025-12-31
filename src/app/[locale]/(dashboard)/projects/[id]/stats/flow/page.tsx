@@ -4,7 +4,13 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, ArrowRight, LogIn, LogOut, Activity } from "lucide-react";
 import { getUserFlowAnalysisAction } from "@/lib/actions/user-flow";
 import { ProjectDateRangePicker } from "@/components/analytics/project-date-range-picker";
@@ -36,7 +42,10 @@ interface UserFlowData {
   totalSessions: number;
 }
 
-export default async function UserFlowPage({ params, searchParams }: PageProps) {
+export default async function UserFlowPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id } = await params;
   const { from, to, entry } = await searchParams;
   const projectId = parseInt(id);
@@ -72,8 +81,10 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
   });
   const data = result.success ? (result.data as UserFlowData) : null;
 
-  const totalEntryCount = data?.topEntryPages.reduce((sum, p) => sum + p.count, 0) || 1;
-  const totalExitCount = data?.topExitPages.reduce((sum, p) => sum + p.count, 0) || 1;
+  const totalEntryCount =
+    data?.topEntryPages.reduce((sum, p) => sum + p.count, 0) || 1;
+  const totalExitCount =
+    data?.topExitPages.reduce((sum, p) => sum + p.count, 0) || 1;
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -86,8 +97,12 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
             </Button>
           </Link>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold truncate">{t("title")}</h1>
-            <p className="text-xs sm:text-sm text-muted-foreground">{t("subtitle")}</p>
+            <h1 className="text-lg sm:text-2xl font-bold truncate">
+              {t("title")}
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("subtitle")}
+            </p>
           </div>
         </div>
         <div className="flex justify-end">
@@ -100,16 +115,22 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("totalSessions")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("totalSessions")}
+              </CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data.totalSessions.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {data.totalSessions.toLocaleString()}
+              </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("uniquePages")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("uniquePages")}
+              </CardTitle>
               <LogIn className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -118,7 +139,9 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("transitions")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("transitions")}
+              </CardTitle>
               <ArrowRight className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -136,9 +159,15 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
         </CardHeader>
         <CardContent>
           {data && data.links.length > 0 ? (
-            <UserFlowChart nodes={data.nodes} links={data.links} locale={locale} />
+            <UserFlowChart
+              nodes={data.nodes}
+              links={data.links}
+              locale={locale}
+            />
           ) : (
-            <div className="text-center py-12 text-muted-foreground">{t("noData")}</div>
+            <div className="text-center py-12 text-muted-foreground">
+              {t("noData")}
+            </div>
           )}
         </CardContent>
       </Card>
@@ -160,17 +189,27 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
                 {data.topEntryPages.map((page, i) => (
                   <div key={i} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="truncate max-w-[250px]" title={page.page}>
+                      <span
+                        className="truncate max-w-[250px]"
+                        title={page.page}
+                      >
                         {page.page || "/"}
                       </span>
-                      <span className="font-medium">{page.count.toLocaleString()}</span>
+                      <span className="font-medium">
+                        {page.count.toLocaleString()}
+                      </span>
                     </div>
-                    <Progress value={(page.count / totalEntryCount) * 100} className="h-2" />
+                    <Progress
+                      value={(page.count / totalEntryCount) * 100}
+                      className="h-2"
+                    />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-4 text-muted-foreground">{t("noData")}</div>
+              <div className="text-center py-4 text-muted-foreground">
+                {t("noData")}
+              </div>
             )}
           </CardContent>
         </Card>
@@ -190,17 +229,27 @@ export default async function UserFlowPage({ params, searchParams }: PageProps) 
                 {data.topExitPages.map((page, i) => (
                   <div key={i} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="truncate max-w-[250px]" title={page.page}>
+                      <span
+                        className="truncate max-w-[250px]"
+                        title={page.page}
+                      >
                         {page.page || "/"}
                       </span>
-                      <span className="font-medium">{page.count.toLocaleString()}</span>
+                      <span className="font-medium">
+                        {page.count.toLocaleString()}
+                      </span>
                     </div>
-                    <Progress value={(page.count / totalExitCount) * 100} className="h-2" />
+                    <Progress
+                      value={(page.count / totalExitCount) * 100}
+                      className="h-2"
+                    />
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-4 text-muted-foreground">{t("noData")}</div>
+              <div className="text-center py-4 text-muted-foreground">
+                {t("noData")}
+              </div>
             )}
           </CardContent>
         </Card>

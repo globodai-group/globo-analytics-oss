@@ -5,7 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { generateTrackingCode } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Code, CheckCircle2 } from "lucide-react";
 import { TrackingCodeCopy } from "@/components/websites/tracking-code-copy";
 
@@ -13,7 +19,9 @@ interface TrackingCodePageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function TrackingCodePage({ params }: TrackingCodePageProps) {
+export default async function TrackingCodePage({
+  params,
+}: TrackingCodePageProps) {
   const { id } = await params;
   const session = await auth();
   const t = await getTranslations();
@@ -66,7 +74,9 @@ export default async function TrackingCodePage({ params }: TrackingCodePageProps
           <CheckCircle2 className="h-6 w-6 text-green-600 mt-0.5" />
           <div>
             <p className="font-medium text-green-900 dark:text-green-100">
-              {locale === "fr" ? "Site ajouté avec succès !" : "Website added successfully!"}
+              {locale === "fr"
+                ? "Site ajouté avec succès !"
+                : "Website added successfully!"}
             </p>
             <p className="text-sm text-green-800 dark:text-green-200">
               {locale === "fr"
@@ -84,7 +94,9 @@ export default async function TrackingCodePage({ params }: TrackingCodePageProps
             <Code className="h-5 w-5" />
             {t("websites.trackingCode")}
           </CardTitle>
-          <CardDescription>{t("websites.trackingCodeDescription")}</CardDescription>
+          <CardDescription>
+            {t("websites.trackingCodeDescription")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <TrackingCodeCopy code={trackingCode} />
@@ -95,7 +107,9 @@ export default async function TrackingCodePage({ params }: TrackingCodePageProps
       <Card>
         <CardHeader>
           <CardTitle>
-            {locale === "fr" ? "Instructions d'installation" : "Installation Instructions"}
+            {locale === "fr"
+              ? "Instructions d'installation"
+              : "Installation Instructions"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -112,7 +126,9 @@ export default async function TrackingCodePage({ params }: TrackingCodePageProps
 
           <div className="space-y-2">
             <h3 className="font-medium">
-              {locale === "fr" ? "2. Ajoutez-le à votre site" : "2. Add it to your website"}
+              {locale === "fr"
+                ? "2. Ajoutez-le à votre site"
+                : "2. Add it to your website"}
             </h3>
             <p className="text-sm text-muted-foreground">
               {locale === "fr"
@@ -123,7 +139,9 @@ export default async function TrackingCodePage({ params }: TrackingCodePageProps
 
           <div className="space-y-2">
             <h3 className="font-medium">
-              {locale === "fr" ? "3. Vérifiez l'installation" : "3. Verify installation"}
+              {locale === "fr"
+                ? "3. Vérifiez l'installation"
+                : "3. Verify installation"}
             </h3>
             <p className="text-sm text-muted-foreground">
               {locale === "fr"

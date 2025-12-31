@@ -31,13 +31,14 @@ curl -H "Authorization: Bearer YOUR_API_KEY" \
 
 ## Rate Limits
 
-| Plan | Requests/Hour |
-|------|---------------|
-| Community | 1,000 |
-| Pro | 10,000 |
-| Enterprise | Unlimited |
+| Plan       | Requests/Hour |
+| ---------- | ------------- |
+| Community  | 1,000         |
+| Pro        | 10,000        |
+| Enterprise | Unlimited     |
 
 Rate limit headers:
+
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 999
@@ -55,6 +56,7 @@ GET /api/v1/projects
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -120,13 +122,14 @@ GET /api/v1/projects/:id/stats
 
 **Query Parameters:**
 
-| Parameter | Type | Description | Default |
-|-----------|------|-------------|---------|
-| `start` | date | Start date (YYYY-MM-DD) | 7 days ago |
-| `end` | date | End date (YYYY-MM-DD) | Today |
-| `interval` | string | `hour`, `day`, `month` | `day` |
+| Parameter  | Type   | Description             | Default    |
+| ---------- | ------ | ----------------------- | ---------- |
+| `start`    | date   | Start date (YYYY-MM-DD) | 7 days ago |
+| `end`      | date   | End date (YYYY-MM-DD)   | Today      |
+| `interval` | string | `hour`, `day`, `month`  | `day`      |
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -150,6 +153,7 @@ GET /api/v1/projects/:id/stats/timeseries
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -176,6 +180,7 @@ GET /api/v1/projects/:id/stats/pages
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -204,6 +209,7 @@ GET /api/v1/projects/:id/stats/sources
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -228,6 +234,7 @@ GET /api/v1/projects/:id/stats/geo
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -254,6 +261,7 @@ GET /api/v1/projects/:id/stats/devices
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -284,6 +292,7 @@ GET /api/v1/projects/:id/realtime
 ```
 
 **Response:**
+
 ```json
 {
   "data": {
@@ -312,6 +321,7 @@ GET /api/v1/projects/:id/events
 ```
 
 **Response:**
+
 ```json
 {
   "data": [
@@ -325,7 +335,7 @@ GET /api/v1/projects/:id/events
       "name": "purchase",
       "count": 45,
       "visitors": 43,
-      "totalValue": 4500.00
+      "totalValue": 4500.0
     }
   ]
 }
@@ -378,14 +388,15 @@ GET /api/v1/projects/:id/export
 
 **Query Parameters:**
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `start` | date | Start date |
-| `end` | date | End date |
-| `format` | string | `csv` or `json` |
-| `type` | string | `pageviews`, `events`, `sessions` |
+| Parameter | Type   | Description                       |
+| --------- | ------ | --------------------------------- |
+| `start`   | date   | Start date                        |
+| `end`     | date   | End date                          |
+| `format`  | string | `csv` or `json`                   |
+| `type`    | string | `pageviews`, `events`, `sessions` |
 
 **Response (CSV):**
+
 ```
 date,path,pageviews,visitors
 2024-01-01,/,450,300
@@ -410,14 +421,14 @@ date,path,pageviews,visitors
 
 ### Error Codes
 
-| Code | Status | Description |
-|------|--------|-------------|
-| `UNAUTHORIZED` | 401 | Invalid or missing API key |
-| `FORBIDDEN` | 403 | Access denied to resource |
-| `NOT_FOUND` | 404 | Resource not found |
-| `RATE_LIMITED` | 429 | Too many requests |
-| `INVALID_REQUEST` | 400 | Malformed request |
-| `SERVER_ERROR` | 500 | Internal server error |
+| Code              | Status | Description                |
+| ----------------- | ------ | -------------------------- |
+| `UNAUTHORIZED`    | 401    | Invalid or missing API key |
+| `FORBIDDEN`       | 403    | Access denied to resource  |
+| `NOT_FOUND`       | 404    | Resource not found         |
+| `RATE_LIMITED`    | 429    | Too many requests          |
+| `INVALID_REQUEST` | 400    | Malformed request          |
+| `SERVER_ERROR`    | 500    | Internal server error      |
 
 ---
 
@@ -466,16 +477,13 @@ Configure webhooks to receive real-time notifications.
 Verify webhook signatures using the `X-Signature` header:
 
 ```javascript
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 function verifyWebhook(payload, signature, secret) {
   const expected = crypto
-    .createHmac('sha256', secret)
+    .createHmac("sha256", secret)
     .update(payload)
-    .digest('hex');
-  return crypto.timingSafeEqual(
-    Buffer.from(signature),
-    Buffer.from(expected)
-  );
+    .digest("hex");
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
 }
 ```

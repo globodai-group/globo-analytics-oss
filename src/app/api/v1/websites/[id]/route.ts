@@ -1,5 +1,10 @@
 import { NextRequest } from "next/server";
-import { authenticateApiRequest, apiResponse, apiError, checkRateLimit } from "@/lib/api/auth";
+import {
+  authenticateApiRequest,
+  apiResponse,
+  apiError,
+  checkRateLimit,
+} from "@/lib/api/auth";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 

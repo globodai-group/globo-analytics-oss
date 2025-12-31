@@ -113,7 +113,9 @@ export function CreateLicenseButton() {
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{t("create")}</DialogTitle>
-          <DialogDescription>Generate a new license key for a customer.</DialogDescription>
+          <DialogDescription>
+            Generate a new license key for a customer.
+          </DialogDescription>
         </DialogHeader>
 
         {createdLicense ? (
@@ -139,13 +141,18 @@ export function CreateLicenseButton() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label>{t("type")}</Label>
-              <Select value={type} onValueChange={(v) => setType(v as "PRO" | "ENTERPRISE")}>
+              <Select
+                value={type}
+                onValueChange={(v) => setType(v as "PRO" | "ENTERPRISE")}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="PRO">{t("types.PRO")} - 29/mo</SelectItem>
-                  <SelectItem value="ENTERPRISE">{t("types.ENTERPRISE")} - 199/mo</SelectItem>
+                  <SelectItem value="ENTERPRISE">
+                    {t("types.ENTERPRISE")} - 199/mo
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -198,7 +205,9 @@ export function CreateLicenseButton() {
                   min={1}
                   max={100}
                   value={maxActivations}
-                  onChange={(e) => setMaxActivations(parseInt(e.target.value) || 1)}
+                  onChange={(e) =>
+                    setMaxActivations(parseInt(e.target.value) || 1)
+                  }
                 />
               </div>
             </div>
@@ -206,7 +215,9 @@ export function CreateLicenseButton() {
             <div className="flex flex-row items-center justify-between rounded-lg border p-3">
               <div className="space-y-0.5">
                 <Label>Set Expiration Date</Label>
-                <p className="text-xs text-muted-foreground">Leave off for lifetime license</p>
+                <p className="text-xs text-muted-foreground">
+                  Leave off for lifetime license
+                </p>
               </div>
               <Switch checked={hasExpiry} onCheckedChange={setHasExpiry} />
             </div>

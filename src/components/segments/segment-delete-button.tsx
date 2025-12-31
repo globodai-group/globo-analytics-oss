@@ -9,7 +9,11 @@ interface SegmentDeleteButtonProps {
   locale: string;
 }
 
-export function SegmentDeleteButton({ segmentId, segmentName, locale }: SegmentDeleteButtonProps) {
+export function SegmentDeleteButton({
+  segmentId,
+  segmentName,
+  locale,
+}: SegmentDeleteButtonProps) {
   return (
     <DeleteResourceDialog
       resourceId={segmentId}

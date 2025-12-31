@@ -4,7 +4,14 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Globe, Settings, Code, ExternalLink, Activity } from "lucide-react";
+import {
+  ArrowLeft,
+  Globe,
+  Settings,
+  Code,
+  ExternalLink,
+  Activity,
+} from "lucide-react";
 import { StatsPageClient } from "./stats-page-client";
 
 interface StatsPageProps {

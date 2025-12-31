@@ -11,7 +11,11 @@ interface ExportButtonProps {
   className?: string;
 }
 
-export function ExportButton({ data, filename = "export", className }: ExportButtonProps) {
+export function ExportButton({
+  data,
+  filename = "export",
+  className,
+}: ExportButtonProps) {
   const t = useTranslations("stats");
   const [isExporting, setIsExporting] = useState(false);
 
@@ -36,13 +40,15 @@ export function ExportButton({ data, filename = "export", className }: ExportBut
               // Handle values that contain commas, quotes, or newlines
               if (
                 typeof value === "string" &&
-                (value.includes(",") || value.includes('"') || value.includes("\n"))
+                (value.includes(",") ||
+                  value.includes('"') ||
+                  value.includes("\n"))
               ) {
                 return `"${value.replace(/"/g, '""')}"`;
               }
               return value ?? "";
             })
-            .join(",")
+            .join(","),
         ),
       ].join("\n");
 

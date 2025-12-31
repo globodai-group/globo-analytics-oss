@@ -5,7 +5,12 @@ import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { AlertMetric, AlertCondition, CompareType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { verifyProjectOwnership } from "./with-project-ownership";
 
 interface AlertInput {
@@ -24,7 +29,7 @@ interface AlertInput {
  */
 export async function getProjectAlertsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     alerts: Array<{
@@ -84,7 +89,7 @@ export async function getProjectAlertsAction(
 export async function createAlertAction(
   projectId: number,
   input: AlertInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ alertId: number }>> {
   const t = await getTranslations({ locale, namespace: "alerts" });
   const session = await auth();
@@ -133,7 +138,7 @@ export async function createAlertAction(
 export async function updateAlertAction(
   alertId: number,
   input: Partial<AlertInput> & { isActive?: boolean },
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "alerts" });
   const session = await auth();
@@ -159,10 +164,18 @@ export async function updateAlertAction(
         ...(input.metric !== undefined && { metric: input.metric }),
         ...(input.condition !== undefined && { condition: input.condition }),
         ...(input.threshold !== undefined && { threshold: input.threshold }),
-        ...(input.compareType !== undefined && { compareType: input.compareType }),
-        ...(input.emailEnabled !== undefined && { emailEnabled: input.emailEnabled }),
-        ...(input.webhookUrl !== undefined && { webhookUrl: input.webhookUrl || null }),
-        ...(input.slackWebhook !== undefined && { slackWebhook: input.slackWebhook || null }),
+        ...(input.compareType !== undefined && {
+          compareType: input.compareType,
+        }),
+        ...(input.emailEnabled !== undefined && {
+          emailEnabled: input.emailEnabled,
+        }),
+        ...(input.webhookUrl !== undefined && {
+          webhookUrl: input.webhookUrl || null,
+        }),
+        ...(input.slackWebhook !== undefined && {
+          slackWebhook: input.slackWebhook || null,
+        }),
         ...(input.isActive !== undefined && { isActive: input.isActive }),
       },
     });
@@ -181,7 +194,7 @@ export async function updateAlertAction(
  */
 export async function deleteAlertAction(
   alertId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "alerts" });
   const session = await auth();
@@ -218,7 +231,7 @@ export async function deleteAlertAction(
  */
 export async function toggleAlertAction(
   alertId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "alerts" });
   const session = await auth();
@@ -256,7 +269,7 @@ export async function toggleAlertAction(
  */
 export async function getAlertHistoryAction(
   alertId: number,
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<{
     history: Array<{

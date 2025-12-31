@@ -41,7 +41,7 @@ interface VideoEngagement {
  */
 export async function getVideoOverviewAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<VideoOverview>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -50,64 +50,66 @@ export async function getVideoOverviewAction(
     }
 
     // Run all queries in parallel for better performance
-    const [events, uniqueVideos, topVideoStats, progressEvents] = await Promise.all([
-      // Get all video events in date range
-      prisma.videoEvent.groupBy({
-        by: ["eventType"],
-        where: {
-          projectId,
-          createdAt: {
-            gte: dateRange.startDate,
-            lte: dateRange.endDate,
+    const [events, uniqueVideos, topVideoStats, progressEvents] =
+      await Promise.all([
+        // Get all video events in date range
+        prisma.videoEvent.groupBy({
+          by: ["eventType"],
+          where: {
+            projectId,
+            createdAt: {
+              gte: dateRange.startDate,
+              lte: dateRange.endDate,
+            },
           },
-        },
-        _count: true,
-      }),
-      // Get unique videos
-      prisma.videoEvent.findMany({
-        where: {
-          projectId,
-          createdAt: {
-            gte: dateRange.startDate,
-            lte: dateRange.endDate,
+          _count: true,
+        }),
+        // Get unique videos
+        prisma.videoEvent.findMany({
+          where: {
+            projectId,
+            createdAt: {
+              gte: dateRange.startDate,
+              lte: dateRange.endDate,
+            },
           },
-        },
-        distinct: ["videoId"],
-        select: { videoId: true },
-      }),
-      // Get top video by starts
-      prisma.videoEvent.groupBy({
-        by: ["videoId", "videoTitle"],
-        where: {
-          projectId,
-          eventType: "START",
-          createdAt: {
-            gte: dateRange.startDate,
-            lte: dateRange.endDate,
+          distinct: ["videoId"],
+          select: { videoId: true },
+        }),
+        // Get top video by starts
+        prisma.videoEvent.groupBy({
+          by: ["videoId", "videoTitle"],
+          where: {
+            projectId,
+            eventType: "START",
+            createdAt: {
+              gte: dateRange.startDate,
+              lte: dateRange.endDate,
+            },
           },
-        },
-        _count: true,
-        orderBy: {
-          _count: { videoId: "desc" },
-        },
-        take: 1,
-      }),
-      // Get progress events for watch time calculation
-      prisma.videoEvent.findMany({
-        where: {
-          projectId,
-          eventType: "PROGRESS",
-          createdAt: {
-            gte: dateRange.startDate,
-            lte: dateRange.endDate,
+          _count: true,
+          orderBy: {
+            _count: { videoId: "desc" },
           },
-        },
-        select: { progress: true, videoDuration: true },
-      }),
-    ]);
+          take: 1,
+        }),
+        // Get progress events for watch time calculation
+        prisma.videoEvent.findMany({
+          where: {
+            projectId,
+            eventType: "PROGRESS",
+            createdAt: {
+              gte: dateRange.startDate,
+              lte: dateRange.endDate,
+            },
+          },
+          select: { progress: true, videoDuration: true },
+        }),
+      ]);
 
     const starts = events.find((e) => e.eventType === "START")?._count || 0;
-    const completes = events.find((e) => e.eventType === "COMPLETE")?._count || 0;
+    const completes =
+      events.find((e) => e.eventType === "COMPLETE")?._count || 0;
 
     let totalWatchTime = 0;
     progressEvents.forEach((e) => {
@@ -122,9 +124,11 @@ export async function getVideoOverviewAction(
         totalVideos: uniqueVideos.length,
         totalStarts: starts,
         totalCompletes: completes,
-        avgCompletionRate: starts > 0 ? Math.round((completes / starts) * 100) : 0,
+        avgCompletionRate:
+          starts > 0 ? Math.round((completes / starts) * 100) : 0,
         totalWatchTime: Math.round(totalWatchTime),
-        topVideo: topVideoStats[0]?.videoTitle || topVideoStats[0]?.videoId || null,
+        topVideo:
+          topVideoStats[0]?.videoTitle || topVideoStats[0]?.videoId || null,
       },
     };
   } catch (error) {
@@ -140,7 +144,7 @@ export async function getVideoOverviewAction(
 export async function getVideoStatsAction(
   projectId: number,
   dateRange: DateRange,
-  limit = 20
+  limit = 20,
 ): Promise<ActionResult<VideoStats[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -279,7 +283,7 @@ export async function getVideoStatsAction(
 export async function getVideoEngagementAction(
   projectId: number,
   videoId: string,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<VideoEngagement[]>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -321,12 +325,16 @@ export async function getVideoEngagementAction(
 
     milestones.forEach((milestone, index) => {
       const viewersAtMilestone = new Set(
-        progressEvents.filter((e) => (e.progress || 0) >= milestone).map((e) => e.visitorId)
+        progressEvents
+          .filter((e) => (e.progress || 0) >= milestone)
+          .map((e) => e.visitorId),
       );
 
       const viewers = milestone === 0 ? totalStarts : viewersAtMilestone.size;
       const previousViewers =
-        index === 0 ? totalStarts : engagement[index - 1]?.viewers || totalStarts;
+        index === 0
+          ? totalStarts
+          : engagement[index - 1]?.viewers || totalStarts;
 
       engagement.push({
         progress: milestone,
@@ -350,7 +358,7 @@ export async function getVideoEngagementAction(
  */
 export async function getRecentVideoEventsAction(
   projectId: number,
-  limit = 50
+  limit = 50,
 ): Promise<
   ActionResult<
     {

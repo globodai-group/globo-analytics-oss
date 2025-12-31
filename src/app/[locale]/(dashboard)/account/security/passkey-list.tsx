@@ -15,7 +15,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Key, Trash2, Pencil, Check, X, Loader2 } from "lucide-react";
-import { getUserPasskeysAction, deletePasskeyAction, renamePasskeyAction } from "@/lib/actions/tfa";
+import {
+  getUserPasskeysAction,
+  deletePasskeyAction,
+  renamePasskeyAction,
+} from "@/lib/actions/tfa";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
@@ -44,7 +48,8 @@ export function PasskeyList({ locale }: PasskeyListProps) {
   const [isSaving, setIsSaving] = useState(false);
 
   const t = {
-    noPasskeys: locale === "fr" ? "Aucune clé configurée" : "No keys configured",
+    noPasskeys:
+      locale === "fr" ? "Aucune clé configurée" : "No keys configured",
     lastUsed: locale === "fr" ? "Dernière utilisation" : "Last used",
     never: locale === "fr" ? "Jamais" : "Never",
     created: locale === "fr" ? "Créée" : "Created",
@@ -91,12 +96,18 @@ export function PasskeyList({ locale }: PasskeyListProps) {
     }
 
     setIsSaving(true);
-    const result = await renamePasskeyAction(passkeyId, editName.trim(), locale);
+    const result = await renamePasskeyAction(
+      passkeyId,
+      editName.trim(),
+      locale,
+    );
     setIsSaving(false);
 
     if (result.success) {
       setPasskeys((prev) =>
-        prev.map((p) => (p.id === passkeyId ? { ...p, name: editName.trim() } : p))
+        prev.map((p) =>
+          p.id === passkeyId ? { ...p, name: editName.trim() } : p,
+        ),
       );
       toast.success(locale === "fr" ? "Nom mis à jour" : "Name updated");
     } else {
@@ -222,10 +233,14 @@ export function PasskeyList({ locale }: PasskeyListProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{t.deleteTitle}</AlertDialogTitle>
-            <AlertDialogDescription>{t.deleteDescription}</AlertDialogDescription>
+            <AlertDialogDescription>
+              {t.deleteDescription}
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>{t.cancel}</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>
+              {t.cancel}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deletingId && handleDelete(deletingId)}
               disabled={isDeleting}

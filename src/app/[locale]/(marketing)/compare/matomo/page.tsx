@@ -286,7 +286,13 @@ const migrationBenefits = [
   },
 ];
 
-function ComparisonValue({ value, note }: { value: boolean | string; note: string }) {
+function ComparisonValue({
+  value,
+  note,
+}: {
+  value: boolean | string;
+  note: string;
+}) {
   if (value === true) {
     return (
       <div className="flex items-center gap-2">
@@ -337,13 +343,16 @@ export default function MatomoComparisonPage() {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              GloboAnalytics vs <span className="text-muted-foreground">Matomo</span>
-              <span className="text-sm font-normal text-muted-foreground ml-2">(Piwik)</span>
+              GloboAnalytics vs{" "}
+              <span className="text-muted-foreground">Matomo</span>
+              <span className="text-sm font-normal text-muted-foreground ml-2">
+                (Piwik)
+              </span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Love Matomo&apos;s privacy focus but tired of server maintenance? Get the same privacy
-              benefits without the DevOps headache.
+              Love Matomo&apos;s privacy focus but tired of server maintenance?
+              Get the same privacy benefits without the DevOps headache.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -354,7 +363,11 @@ export default function MatomoComparisonPage() {
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   View Pricing
                 </Button>
               </Link>
@@ -373,7 +386,9 @@ export default function MatomoComparisonPage() {
                   {benefit.metric}
                 </div>
                 <div className="font-medium mb-1">{benefit.label}</div>
-                <div className="text-sm text-muted-foreground">{benefit.description}</div>
+                <div className="text-sm text-muted-foreground">
+                  {benefit.description}
+                </div>
               </div>
             ))}
           </div>
@@ -384,10 +399,12 @@ export default function MatomoComparisonPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">The Hidden Cost of Self-Hosting</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              The Hidden Cost of Self-Hosting
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Matomo&apos;s &quot;free&quot; self-hosted option comes with significant hidden costs
-              in time, money, and complexity.
+              Matomo&apos;s &quot;free&quot; self-hosted option comes with
+              significant hidden costs in time, money, and complexity.
             </p>
           </div>
 
@@ -412,16 +429,21 @@ export default function MatomoComparisonPage() {
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Feature-by-Feature Comparison</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Feature-by-Feature Comparison
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              See how GloboAnalytics compares to Matomo across setup, features, and total cost of
-              ownership.
+              See how GloboAnalytics compares to Matomo across setup, features,
+              and total cost of ownership.
             </p>
           </div>
 
           <div className="max-w-4xl mx-auto space-y-8">
             {comparisonFeatures.map((category) => (
-              <div key={category.category} className="rounded-xl border bg-card overflow-hidden">
+              <div
+                key={category.category}
+                className="rounded-xl border bg-card overflow-hidden"
+              >
                 <div className="bg-muted/50 px-6 py-4 border-b">
                   <h3 className="font-semibold text-lg">{category.category}</h3>
                 </div>
@@ -433,14 +455,25 @@ export default function MatomoComparisonPage() {
                       <Globe className="h-4 w-4" />
                       GloboAnalytics
                     </div>
-                    <div className="font-medium text-muted-foreground">Matomo</div>
+                    <div className="font-medium text-muted-foreground">
+                      Matomo
+                    </div>
                   </div>
 
                   {category.features.map((feature) => (
-                    <div key={feature.name} className="grid grid-cols-3 gap-4 px-6 py-4">
+                    <div
+                      key={feature.name}
+                      className="grid grid-cols-3 gap-4 px-6 py-4"
+                    >
                       <div className="font-medium">{feature.name}</div>
-                      <ComparisonValue value={feature.globo.value} note={feature.globo.note} />
-                      <ComparisonValue value={feature.matomo.value} note={feature.matomo.note} />
+                      <ComparisonValue
+                        value={feature.globo.value}
+                        note={feature.globo.note}
+                      />
+                      <ComparisonValue
+                        value={feature.matomo.value}
+                        note={feature.matomo.note}
+                      />
                     </div>
                   ))}
                 </div>
@@ -458,17 +491,23 @@ export default function MatomoComparisonPage() {
               Why Switch from Matomo to GloboAnalytics
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Keep the privacy benefits you love while eliminating maintenance headaches.
+              Keep the privacy benefits you love while eliminating maintenance
+              headaches.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {advantages.map((advantage) => (
-              <div key={advantage.title} className="p-6 rounded-xl border bg-card">
+              <div
+                key={advantage.title}
+                className="p-6 rounded-xl border bg-card"
+              >
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <advantage.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{advantage.title}</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  {advantage.title}
+                </h3>
                 <p className="text-muted-foreground">{advantage.description}</p>
               </div>
             ))}
@@ -485,8 +524,8 @@ export default function MatomoComparisonPage() {
                 The True Cost of Self-Hosted Matomo
               </h2>
               <p className="text-lg text-muted-foreground">
-                When you add up servers, plugins, and your time, the &quot;free&quot; option
-                isn&apos;t so free.
+                When you add up servers, plugins, and your time, the
+                &quot;free&quot; option isn&apos;t so free.
               </p>
             </div>
 
@@ -519,7 +558,9 @@ export default function MatomoComparisonPage() {
                   </div>
                   <div className="border-t pt-3 flex justify-between font-bold">
                     <span>Total Monthly Cost</span>
-                    <span className="text-orange-600 dark:text-orange-400">~$170-210/mo</span>
+                    <span className="text-orange-600 dark:text-orange-400">
+                      ~$170-210/mo
+                    </span>
                   </div>
                 </div>
               </div>
@@ -576,11 +617,14 @@ export default function MatomoComparisonPage() {
 
             <div className="space-y-6">
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Can I import my Matomo data?</h3>
+                <h3 className="font-semibold mb-2">
+                  Can I import my Matomo data?
+                </h3>
                 <p className="text-muted-foreground">
-                  We&apos;re working on a Matomo import tool. In the meantime, most customers run
-                  both platforms during transition to maintain historical reference while building
-                  new data in GloboAnalytics.
+                  We&apos;re working on a Matomo import tool. In the meantime,
+                  most customers run both platforms during transition to
+                  maintain historical reference while building new data in
+                  GloboAnalytics.
                 </p>
               </div>
 
@@ -589,25 +633,32 @@ export default function MatomoComparisonPage() {
                   I need self-hosting for compliance. Do you offer that?
                 </h3>
                 <p className="text-muted-foreground">
-                  Yes! GloboAnalytics can be self-hosted via Docker for organizations with strict
-                  data residency requirements. You get the same modern interface without the
-                  complexity of Matomo&apos;s PHP stack.
+                  Yes! GloboAnalytics can be self-hosted via Docker for
+                  organizations with strict data residency requirements. You get
+                  the same modern interface without the complexity of
+                  Matomo&apos;s PHP stack.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">What about Matomo Tag Manager?</h3>
+                <h3 className="font-semibold mb-2">
+                  What about Matomo Tag Manager?
+                </h3>
                 <p className="text-muted-foreground">
-                  GloboAnalytics integrates with Google Tag Manager and other popular tag managers.
-                  Our lightweight script also supports direct event tracking without a tag manager.
+                  GloboAnalytics integrates with Google Tag Manager and other
+                  popular tag managers. Our lightweight script also supports
+                  direct event tracking without a tag manager.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Do you have an API like Matomo?</h3>
+                <h3 className="font-semibold mb-2">
+                  Do you have an API like Matomo?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes, we offer a comprehensive REST API for data export, custom integrations, and
-                  automation. Documentation includes examples for common use cases.
+                  Yes, we offer a comprehensive REST API for data export, custom
+                  integrations, and automation. Documentation includes examples
+                  for common use cases.
                 </p>
               </div>
 
@@ -616,9 +667,10 @@ export default function MatomoComparisonPage() {
                   Is cookieless tracking really GDPR compliant?
                 </h3>
                 <p className="text-muted-foreground">
-                  Yes. Our cookieless tracking uses privacy-preserving techniques that don&apos;t
-                  store personal data. Several EU data protection authorities have confirmed this
-                  approach doesn&apos;t require consent.
+                  Yes. Our cookieless tracking uses privacy-preserving
+                  techniques that don&apos;t store personal data. Several EU
+                  data protection authorities have confirmed this approach
+                  doesn&apos;t require consent.
                 </p>
               </div>
             </div>
@@ -634,11 +686,16 @@ export default function MatomoComparisonPage() {
               Ready to Stop Maintaining Servers?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Keep privacy-first analytics without the DevOps burden. Start your free trial today.
+              Keep privacy-first analytics without the DevOps burden. Start your
+              free trial today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Start Free 14-Day Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

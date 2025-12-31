@@ -11,23 +11,38 @@ import { useLocale, useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-type DateRangePreset = "today" | "yesterday" | "7d" | "30d" | "month" | "last_month" | "custom";
+type DateRangePreset =
+  | "today"
+  | "yesterday"
+  | "7d"
+  | "30d"
+  | "month"
+  | "last_month"
+  | "custom";
 
 interface ProjectDateRangePickerProps {
   projectId: number;
   className?: string;
 }
 
-export function ProjectDateRangePicker({ projectId, className }: ProjectDateRangePickerProps) {
+export function ProjectDateRangePicker({
+  projectId,
+  className,
+}: ProjectDateRangePickerProps) {
   const locale = useLocale();
   const t = useTranslations("stats");
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [open, setOpen] = React.useState(false);
-  const [selectedPreset, setSelectedPreset] = React.useState<DateRangePreset>("30d");
+  const [selectedPreset, setSelectedPreset] =
+    React.useState<DateRangePreset>("30d");
 
   const dateLocale = locale === "fr" ? fr : enUS;
 
@@ -35,14 +50,20 @@ export function ProjectDateRangePicker({ projectId, className }: ProjectDateRang
   const fromParam = searchParams.get("from");
   const toParam = searchParams.get("to");
 
-  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(() => {
-    if (fromParam && toParam) {
-      return { from: new Date(fromParam), to: new Date(toParam) };
-    }
-    return { from: subDays(new Date(), 29), to: new Date() };
-  });
+  const [dateRange, setDateRange] = React.useState<DateRange | undefined>(
+    () => {
+      if (fromParam && toParam) {
+        return { from: new Date(fromParam), to: new Date(toParam) };
+      }
+      return { from: subDays(new Date(), 29), to: new Date() };
+    },
+  );
 
-  const presets: { value: DateRangePreset; label: string; getRange: () => DateRange }[] = [
+  const presets: {
+    value: DateRangePreset;
+    label: string;
+    getRange: () => DateRange;
+  }[] = [
     {
       value: "today",
       label: t("dateRange.today"),
@@ -119,13 +140,17 @@ export function ProjectDateRangePicker({ projectId, className }: ProjectDateRang
 
     if (dateRange.to) {
       if (dateRange.from.toDateString() === dateRange.to.toDateString()) {
-        return format(dateRange.from, compact ? "d MMM" : "PPP", { locale: dateLocale });
+        return format(dateRange.from, compact ? "d MMM" : "PPP", {
+          locale: dateLocale,
+        });
       }
       const formatStr = compact ? "d MMM" : "PP";
       return `${format(dateRange.from, formatStr, { locale: dateLocale })} - ${format(dateRange.to, compact ? "d MMM yy" : "PP", { locale: dateLocale })}`;
     }
 
-    return format(dateRange.from, compact ? "d MMM" : "PPP", { locale: dateLocale });
+    return format(dateRange.from, compact ? "d MMM" : "PPP", {
+      locale: dateLocale,
+    });
   };
 
   return (
@@ -135,7 +160,7 @@ export function ProjectDateRangePicker({ projectId, className }: ProjectDateRang
           variant="outline"
           className={cn(
             "justify-start text-left font-normal text-xs sm:text-sm px-2 sm:px-3",
-            className
+            className,
           )}
         >
           <CalendarIcon className="mr-1.5 sm:mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
@@ -158,7 +183,9 @@ export function ProjectDateRangePicker({ projectId, className }: ProjectDateRang
             {presets.map((preset) => (
               <Button
                 key={preset.value}
-                variant={selectedPreset === preset.value ? "secondary" : "ghost"}
+                variant={
+                  selectedPreset === preset.value ? "secondary" : "ghost"
+                }
                 size="sm"
                 className="whitespace-nowrap sm:w-full justify-start shrink-0"
                 onClick={() => handlePresetClick(preset.value)}

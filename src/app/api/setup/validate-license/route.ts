@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     if (!licenseKey) {
       return NextResponse.json(
         { valid: false, error: "No license key provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     if (!result.valid) {
       return NextResponse.json(
         { valid: false, error: result.error || "Invalid license key" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     console.error("License validation error:", error);
     return NextResponse.json(
       { valid: false, error: "License validation failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

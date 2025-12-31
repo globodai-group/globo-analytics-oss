@@ -9,7 +9,10 @@ interface WebsiteDeleteButtonProps {
   websiteName: string;
 }
 
-export function WebsiteDeleteButton({ websiteId, websiteName }: WebsiteDeleteButtonProps) {
+export function WebsiteDeleteButton({
+  websiteId,
+  websiteName,
+}: WebsiteDeleteButtonProps) {
   const locale = useLocale();
 
   return (

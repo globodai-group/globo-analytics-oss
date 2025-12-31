@@ -1,10 +1,25 @@
 import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Code, Key, BarChart3, Target, Users, FileText, Shield } from "lucide-react";
+import {
+  ArrowLeft,
+  Code,
+  Key,
+  BarChart3,
+  Target,
+  Users,
+  FileText,
+  Shield,
+} from "lucide-react";
 
 export default async function ApiDocsPage() {
   const locale = await getLocale();
@@ -127,9 +142,16 @@ Authorization: Bearer YOUR_ACCESS_TOKEN`}</code>
                       { scope: "read:reports", desc: "View reports" },
                       { scope: "write:reports", desc: "Create/edit reports" },
                     ].map((item) => (
-                      <div key={item.scope} className="flex items-center gap-4 text-sm">
-                        <code className="bg-muted px-2 py-1 rounded font-mono">{item.scope}</code>
-                        <span className="text-muted-foreground">{item.desc}</span>
+                      <div
+                        key={item.scope}
+                        className="flex items-center gap-4 text-sm"
+                      >
+                        <code className="bg-muted px-2 py-1 rounded font-mono">
+                          {item.scope}
+                        </code>
+                        <span className="text-muted-foreground">
+                          {item.desc}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -149,7 +171,11 @@ Authorization: Bearer YOUR_ACCESS_TOKEN`}</code>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <EndpointRow method="GET" path="/api/v2/projects" description="List all projects" />
+                <EndpointRow
+                  method="GET"
+                  path="/api/v2/projects"
+                  description="List all projects"
+                />
                 <EndpointRow
                   method="GET"
                   path="/api/v2/projects/:id"
@@ -366,21 +392,27 @@ print(projects)`}</code>
                     <h4 className="font-semibold">Free Plan</h4>
                     <p className="text-2xl font-bold mt-2">100</p>
                     <p className="text-sm text-muted-foreground">
-                      {locale === "fr" ? "requêtes par minute" : "requests per minute"}
+                      {locale === "fr"
+                        ? "requêtes par minute"
+                        : "requests per minute"}
                     </p>
                   </div>
                   <div className="p-4 border rounded-lg">
                     <h4 className="font-semibold">Pro Plan</h4>
                     <p className="text-2xl font-bold mt-2">1000</p>
                     <p className="text-sm text-muted-foreground">
-                      {locale === "fr" ? "requêtes par minute" : "requests per minute"}
+                      {locale === "fr"
+                        ? "requêtes par minute"
+                        : "requests per minute"}
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <h4 className="font-semibold">
-                    {locale === "fr" ? "En-têtes de réponse" : "Response Headers"}
+                    {locale === "fr"
+                      ? "En-têtes de réponse"
+                      : "Response Headers"}
                   </h4>
                   <div className="grid gap-2 text-sm">
                     <div className="flex justify-between p-2 bg-muted rounded">
@@ -392,13 +424,17 @@ print(projects)`}</code>
                     <div className="flex justify-between p-2 bg-muted rounded">
                       <code>X-RateLimit-Remaining</code>
                       <span className="text-muted-foreground">
-                        {locale === "fr" ? "Requêtes restantes" : "Remaining requests"}
+                        {locale === "fr"
+                          ? "Requêtes restantes"
+                          : "Remaining requests"}
                       </span>
                     </div>
                     <div className="flex justify-between p-2 bg-muted rounded">
                       <code>X-RateLimit-Reset</code>
                       <span className="text-muted-foreground">
-                        {locale === "fr" ? "Timestamp de reset" : "Reset timestamp"}
+                        {locale === "fr"
+                          ? "Timestamp de reset"
+                          : "Reset timestamp"}
                       </span>
                     </div>
                   </div>
@@ -406,7 +442,9 @@ print(projects)`}</code>
 
                 <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
                   <h4 className="font-semibold text-yellow-800 dark:text-yellow-200">
-                    {locale === "fr" ? "Dépassement de limite" : "Rate Limit Exceeded"}
+                    {locale === "fr"
+                      ? "Dépassement de limite"
+                      : "Rate Limit Exceeded"}
                   </h4>
                   <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
                     {locale === "fr"

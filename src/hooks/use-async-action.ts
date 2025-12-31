@@ -69,7 +69,7 @@ interface UseAsyncActionReturn<TArgs extends unknown[], TResult> {
  */
 export function useAsyncAction<TArgs extends unknown[], TResult>(
   action: (...args: TArgs) => Promise<ActionResult<TResult>>,
-  options: UseAsyncActionOptions<TResult> = {}
+  options: UseAsyncActionOptions<TResult> = {},
 ): UseAsyncActionReturn<TArgs, TResult> {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -112,7 +112,9 @@ export function useAsyncAction<TArgs extends unknown[], TResult>(
 
         return result;
       } catch (err) {
-        const errMsg = errorMessage || (err instanceof Error ? err.message : "An error occurred");
+        const errMsg =
+          errorMessage ||
+          (err instanceof Error ? err.message : "An error occurred");
         setError(errMsg);
         if (showErrorToast) {
           toast.error(errMsg);
@@ -137,7 +139,7 @@ export function useAsyncAction<TArgs extends unknown[], TResult>(
       onSuccess,
       onError,
       onSettled,
-    ]
+    ],
   );
 
   const reset = useCallback(() => {
@@ -163,8 +165,11 @@ export function useAsyncAction<TArgs extends unknown[], TResult>(
  * };
  */
 export function useFormAction<TResult>(
-  action: (formData: FormData, locale: string) => Promise<ActionResult<TResult>>,
-  options: UseAsyncActionOptions<TResult> = {}
+  action: (
+    formData: FormData,
+    locale: string,
+  ) => Promise<ActionResult<TResult>>,
+  options: UseAsyncActionOptions<TResult> = {},
 ) {
   return useAsyncAction(action, options);
 }
@@ -176,7 +181,7 @@ export function useVoidAction<TArgs extends unknown[]>(
   action: (...args: TArgs) => Promise<ActionResult<void>>,
   options: Omit<UseAsyncActionOptions<void>, "onSuccess"> & {
     onSuccess?: () => void;
-  } = {}
+  } = {},
 ) {
   const modifiedOptions: UseAsyncActionOptions<void> = {
     ...options,

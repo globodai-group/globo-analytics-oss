@@ -53,7 +53,11 @@ export function ContactForm() {
         <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
         <h3 className="text-xl font-semibold mb-2">{t("successTitle")}</h3>
         <p className="text-muted-foreground">{t("successMessage")}</p>
-        <Button variant="outline" className="mt-4" onClick={() => setIsSuccess(false)}>
+        <Button
+          variant="outline"
+          className="mt-4"
+          onClick={() => setIsSuccess(false)}
+        >
           {t("sendAnother")}
         </Button>
       </div>

@@ -3,7 +3,13 @@ import { cn } from "@/lib/utils";
 type StackDirection = "row" | "col" | "row-reverse" | "col-reverse";
 type StackGap = "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 type StackAlign = "start" | "center" | "end" | "stretch" | "baseline";
-type StackJustify = "start" | "center" | "end" | "between" | "around" | "evenly";
+type StackJustify =
+  | "start"
+  | "center"
+  | "end"
+  | "between"
+  | "around"
+  | "evenly";
 
 interface StackProps {
   children: React.ReactNode;
@@ -21,7 +27,15 @@ interface StackProps {
   /** Allow items to wrap */
   wrap?: boolean;
   /** HTML element to render as */
-  as?: "div" | "nav" | "ul" | "ol" | "section" | "article" | "header" | "footer";
+  as?:
+    | "div"
+    | "nav"
+    | "ul"
+    | "ol"
+    | "section"
+    | "article"
+    | "header"
+    | "footer";
 }
 
 const directionClasses: Record<StackDirection, string> = {
@@ -97,7 +111,7 @@ export function Stack({
         alignClasses[align],
         justifyClasses[justify],
         wrap && "flex-wrap",
-        className
+        className,
       )}
     >
       {children}
@@ -144,7 +158,14 @@ export function VStack({
   as = "div",
 }: Omit<StackProps, "direction" | "responsive" | "wrap">) {
   return (
-    <Stack direction="col" gap={gap} align={align} justify={justify} as={as} className={className}>
+    <Stack
+      direction="col"
+      gap={gap}
+      align={align}
+      justify={justify}
+      as={as}
+      className={className}
+    >
       {children}
     </Stack>
   );
@@ -154,5 +175,11 @@ export function VStack({
  * Spacer component to push items apart in a flex container
  */
 export function Spacer({ className = "" }: { className?: string }) {
-  return <div data-slot="spacer" className={cn("flex-1", className)} aria-hidden="true" />;
+  return (
+    <div
+      data-slot="spacer"
+      className={cn("flex-1", className)}
+      aria-hidden="true"
+    />
+  );
 }

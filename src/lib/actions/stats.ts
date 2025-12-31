@@ -34,7 +34,7 @@ interface ActionResult<T> {
  */
 export async function getStatsOverviewAction(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<StatsOverview>> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
@@ -55,7 +55,7 @@ export async function getStatsOverviewAction(
  */
 export async function getChartDataAction(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<ChartDataPoint[]>> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
@@ -79,8 +79,10 @@ export async function getStatsByTypeAction(
   statType: StatType,
   dateRange: DateRange,
   page = 1,
-  perPage = 10
-): Promise<ActionResult<{ data: StatRow[]; total: number; totalPages: number }>> {
+  perPage = 10,
+): Promise<
+  ActionResult<{ data: StatRow[]; total: number; totalPages: number }>
+> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
     if (!isOwner) {
@@ -88,7 +90,13 @@ export async function getStatsByTypeAction(
     }
 
     const offset = (page - 1) * perPage;
-    const { data, total } = await getStatsByType(websiteId, statType, dateRange, perPage, offset);
+    const { data, total } = await getStatsByType(
+      websiteId,
+      statType,
+      dateRange,
+      perPage,
+      offset,
+    );
     const totalPages = Math.ceil(total / perPage);
 
     return { success: true, data: { data, total, totalPages } };
@@ -127,7 +135,7 @@ export async function getRealtimeStatsAction(websiteId: number): Promise<
  */
 export async function getEngagementMetricsAction(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<EngagementMetrics>> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
@@ -148,8 +156,10 @@ export async function getEngagementMetricsAction(
  */
 export async function getTrafficSourcesAction(
   websiteId: number,
-  dateRange: DateRange
-): Promise<ActionResult<{ source: string; visitors: number; percentage: number }[]>> {
+  dateRange: DateRange,
+): Promise<
+  ActionResult<{ source: string; visitors: number; percentage: number }[]>
+> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
     if (!isOwner) {
@@ -169,8 +179,12 @@ export async function getTrafficSourcesAction(
  */
 export async function getUtmCampaignsAction(
   websiteId: number,
-  dateRange: DateRange
-): Promise<ActionResult<{ campaign: string; source: string; medium: string; visitors: number }[]>> {
+  dateRange: DateRange,
+): Promise<
+  ActionResult<
+    { campaign: string; source: string; medium: string; visitors: number }[]
+  >
+> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
     if (!isOwner) {
@@ -191,9 +205,16 @@ export async function getUtmCampaignsAction(
 export async function getTopEntryPagesAction(
   websiteId: number,
   dateRange: DateRange,
-  limit = 10
+  limit = 10,
 ): Promise<
-  ActionResult<{ page: string; entries: number; bounceRate: number; avgTimeOnPage: string }[]>
+  ActionResult<
+    {
+      page: string;
+      entries: number;
+      bounceRate: number;
+      avgTimeOnPage: string;
+    }[]
+  >
 > {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
@@ -215,8 +236,10 @@ export async function getTopEntryPagesAction(
 export async function getTopExitPagesAction(
   websiteId: number,
   dateRange: DateRange,
-  limit = 10
-): Promise<ActionResult<{ page: string; exits: number; percentage: number }[]>> {
+  limit = 10,
+): Promise<
+  ActionResult<{ page: string; exits: number; percentage: number }[]>
+> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
     if (!isOwner) {
@@ -237,8 +260,10 @@ export async function getTopExitPagesAction(
 export async function exportStatsAction(
   websiteId: number,
   statType: StatType,
-  dateRange: DateRange
-): Promise<ActionResult<{ name: string; count: string; percentage: string }[]>> {
+  dateRange: DateRange,
+): Promise<
+  ActionResult<{ name: string; count: string; percentage: string }[]>
+> {
   try {
     const isOwner = await hasWebsiteAccess(websiteId);
     if (!isOwner) {
@@ -262,7 +287,7 @@ export async function exportStatsAction(
  */
 export async function getTrafficCategoryStatsAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<
   ActionResult<{
     categories: { category: string; count: number; percentage: number }[];
@@ -293,7 +318,10 @@ export async function getTrafficCategoryStatsAction(
     });
 
     // Calculate total and percentages
-    const total = stats.reduce((sum, stat) => sum + Number(stat._sum?.count ?? 0), 0);
+    const total = stats.reduce(
+      (sum, stat) => sum + Number(stat._sum?.count ?? 0),
+      0,
+    );
 
     const categories = stats.map((stat) => ({
       category: stat.value,
@@ -329,7 +357,12 @@ export async function getTrafficCategoryStatsAction(
     trendStats.forEach((stat) => {
       const dateStr = stat.date.toISOString().split("T")[0];
       if (!trendMap.has(dateStr)) {
-        trendMap.set(dateStr, { date: dateStr, human: 0, bots: 0, ai_agents: 0 });
+        trendMap.set(dateStr, {
+          date: dateStr,
+          human: 0,
+          bots: 0,
+          ai_agents: 0,
+        });
       }
 
       const entry = trendMap.get(dateStr)!;
@@ -367,7 +400,7 @@ export async function getTrafficCategoryStatsAction(
 export async function getGeoStatsAction(
   projectId: number,
   dateRange: DateRange,
-  countryCode?: string
+  countryCode?: string,
 ): Promise<
   ActionResult<{
     countries: {
@@ -443,7 +476,10 @@ export async function getGeoStatsAction(
       PT: "Portugal",
     };
 
-    const total = countryStats.reduce((sum, stat) => sum + Number(stat._sum?.count ?? 0), 0);
+    const total = countryStats.reduce(
+      (sum, stat) => sum + Number(stat._sum?.count ?? 0),
+      0,
+    );
 
     const countries = countryStats.map((stat) => ({
       code: stat.value,
@@ -454,7 +490,9 @@ export async function getGeoStatsAction(
     }));
 
     // If a specific country is requested, get city breakdown
-    let cities: { name: string; country: string; visitors: number }[] | undefined;
+    let cities:
+      | { name: string; country: string; visitors: number }[]
+      | undefined;
 
     if (countryCode) {
       const cityStats = await prisma.projectStat.groupBy({
@@ -532,7 +570,7 @@ export interface TechnologyStats {
  */
 export async function getTechnologyStatsAction(
   projectId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ActionResult<TechnologyStats>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -541,88 +579,103 @@ export async function getTechnologyStatsAction(
     }
 
     // Fetch all tech stats in parallel
-    const [browserStats, osStats, languageStats, deviceStats] = await Promise.all([
-      // Browsers with versions
-      prisma.projectSession.groupBy({
-        by: ["browser", "browserVersion"],
-        where: {
-          projectId,
-          startedAt: {
-            gte: dateRange.from,
-            lte: dateRange.to,
+    const [browserStats, osStats, languageStats, deviceStats] =
+      await Promise.all([
+        // Browsers with versions
+        prisma.projectSession.groupBy({
+          by: ["browser", "browserVersion"],
+          where: {
+            projectId,
+            startedAt: {
+              gte: dateRange.from,
+              lte: dateRange.to,
+            },
           },
-        },
-        _count: {
-          id: true,
-        },
-      }),
-      // Operating systems with versions
-      prisma.projectSession.groupBy({
-        by: ["os", "osVersion"],
-        where: {
-          projectId,
-          startedAt: {
-            gte: dateRange.from,
-            lte: dateRange.to,
+          _count: {
+            id: true,
           },
-        },
-        _count: {
-          id: true,
-        },
-      }),
-      // Languages
-      prisma.projectSession.groupBy({
-        by: ["language"],
-        where: {
-          projectId,
-          startedAt: {
-            gte: dateRange.from,
-            lte: dateRange.to,
+        }),
+        // Operating systems with versions
+        prisma.projectSession.groupBy({
+          by: ["os", "osVersion"],
+          where: {
+            projectId,
+            startedAt: {
+              gte: dateRange.from,
+              lte: dateRange.to,
+            },
           },
-        },
-        _count: {
-          id: true,
-        },
-      }),
-      // Devices/platforms
-      prisma.projectSession.groupBy({
-        by: ["device"],
-        where: {
-          projectId,
-          startedAt: {
-            gte: dateRange.from,
-            lte: dateRange.to,
+          _count: {
+            id: true,
           },
-        },
-        _count: {
-          id: true,
-        },
-      }),
-    ]);
+        }),
+        // Languages
+        prisma.projectSession.groupBy({
+          by: ["language"],
+          where: {
+            projectId,
+            startedAt: {
+              gte: dateRange.from,
+              lte: dateRange.to,
+            },
+          },
+          _count: {
+            id: true,
+          },
+        }),
+        // Devices/platforms
+        prisma.projectSession.groupBy({
+          by: ["device"],
+          where: {
+            projectId,
+            startedAt: {
+              gte: dateRange.from,
+              lte: dateRange.to,
+            },
+          },
+          _count: {
+            id: true,
+          },
+        }),
+      ]);
 
     // Sort by count descending and take top items
     const sortedBrowsers = browserStats
       .sort((a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0))
       .slice(0, 20);
-    const sortedOS = osStats.sort((a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0)).slice(0, 20);
+    const sortedOS = osStats
+      .sort((a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0))
+      .slice(0, 20);
     const sortedLanguages = languageStats
       .filter((l) => l.language !== null)
       .sort((a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0))
       .slice(0, 15);
-    const sortedDevices = deviceStats.sort((a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0));
+    const sortedDevices = deviceStats.sort(
+      (a, b) => (b._count?.id ?? 0) - (a._count?.id ?? 0),
+    );
 
     // Calculate totals
-    const browserTotal = sortedBrowsers.reduce((sum, b) => sum + (b._count?.id ?? 0), 0);
+    const browserTotal = sortedBrowsers.reduce(
+      (sum, b) => sum + (b._count?.id ?? 0),
+      0,
+    );
     const osTotal = sortedOS.reduce((sum, o) => sum + (o._count?.id ?? 0), 0);
-    const languageTotal = sortedLanguages.reduce((sum, l) => sum + (l._count?.id ?? 0), 0);
-    const deviceTotal = sortedDevices.reduce((sum, d) => sum + (d._count?.id ?? 0), 0);
+    const languageTotal = sortedLanguages.reduce(
+      (sum, l) => sum + (l._count?.id ?? 0),
+      0,
+    );
+    const deviceTotal = sortedDevices.reduce(
+      (sum, d) => sum + (d._count?.id ?? 0),
+      0,
+    );
 
     const data: TechnologyStats = {
       browsers: sortedBrowsers.map((b) => ({
         name: b.browser || "Unknown",
         version: b.browserVersion || "",
         users: b._count?.id ?? 0,
-        percentage: browserTotal > 0 ? ((b._count?.id ?? 0) / browserTotal) * 100 : 0,
+        percentage:
+          browserTotal > 0 ? ((b._count?.id ?? 0) / browserTotal) * 100 : 0,
       })),
       operatingSystems: sortedOS.map((o) => ({
         name: o.os || "Unknown",
@@ -633,12 +686,14 @@ export async function getTechnologyStatsAction(
       languages: sortedLanguages.map((l) => ({
         language: l.language || "Unknown",
         users: l._count?.id ?? 0,
-        percentage: languageTotal > 0 ? ((l._count?.id ?? 0) / languageTotal) * 100 : 0,
+        percentage:
+          languageTotal > 0 ? ((l._count?.id ?? 0) / languageTotal) * 100 : 0,
       })),
       platforms: sortedDevices.map((d) => ({
         platform: d.device || "Unknown",
         users: d._count?.id ?? 0,
-        percentage: deviceTotal > 0 ? ((d._count?.id ?? 0) / deviceTotal) * 100 : 0,
+        percentage:
+          deviceTotal > 0 ? ((d._count?.id ?? 0) / deviceTotal) * 100 : 0,
       })),
     };
 
@@ -673,7 +728,7 @@ export interface PagePerformanceStats {
 export async function getPagePerformanceAction(
   projectId: number,
   dateRange: DateRange,
-  pagination: { page: number; perPage: number } = { page: 1, perPage: 20 }
+  pagination: { page: number; perPage: number } = { page: 1, perPage: 20 },
 ): Promise<ActionResult<PagePerformanceStats>> {
   try {
     const isOwner = await hasProjectAccess(projectId);
@@ -763,12 +818,20 @@ export async function getPagePerformanceAction(
     ]);
 
     // Create lookup maps
-    const entryMap = new Map(entryPages.map((e) => [e.entryPage, e._count?.id ?? 0]));
-    const exitMap = new Map(exitPages.map((e) => [e.exitPage, e._count?.id ?? 0]));
-    const bounceMap = new Map(bounceEntries.map((b) => [b.entryPage, b._count?.id ?? 0]));
+    const entryMap = new Map(
+      entryPages.map((e) => [e.entryPage, e._count?.id ?? 0]),
+    );
+    const exitMap = new Map(
+      exitPages.map((e) => [e.exitPage, e._count?.id ?? 0]),
+    );
+    const bounceMap = new Map(
+      bounceEntries.map((b) => [b.entryPage, b._count?.id ?? 0]),
+    );
 
     // Calculate total entries per page for bounce rate
-    const totalEntriesMap = new Map(entryPages.map((e) => [e.entryPage, e._count?.id ?? 0]));
+    const totalEntriesMap = new Map(
+      entryPages.map((e) => [e.entryPage, e._count?.id ?? 0]),
+    );
 
     const pages = pageStats.map((p) => {
       const pageviews = Number(p._sum?.count ?? 0);

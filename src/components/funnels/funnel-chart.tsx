@@ -20,7 +20,11 @@ export function FunnelChart({ steps }: FunnelChartProps) {
   const t = useTranslations("funnels");
 
   if (steps.length === 0) {
-    return <div className="text-center py-8 text-muted-foreground">{t("noData")}</div>;
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        {t("noData")}
+      </div>
+    );
   }
 
   const maxVisitors = Math.max(...steps.map((s) => s.visitors), 1);
@@ -53,7 +57,9 @@ export function FunnelChart({ steps }: FunnelChartProps) {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg text-green-600">{step.conversionRate}%</p>
+                  <p className="font-bold text-lg text-green-600">
+                    {step.conversionRate}%
+                  </p>
                   {step.position > 1 && step.dropOff > 0 && (
                     <p className="text-xs text-destructive">
                       -{step.dropOff.toLocaleString()} ({step.dropOffRate}%)
@@ -81,7 +87,9 @@ export function FunnelChart({ steps }: FunnelChartProps) {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded bg-green-600" />
-          <span className="text-sm text-muted-foreground">{t("conversionRate")}</span>
+          <span className="text-sm text-muted-foreground">
+            {t("conversionRate")}
+          </span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded bg-destructive" />

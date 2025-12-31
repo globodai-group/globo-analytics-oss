@@ -62,7 +62,11 @@ export class NotFoundError extends Error {
       alert: { fr: "Alerte non trouvée", en: "Alert not found" },
       report: { fr: "Rapport non trouvé", en: "Report not found" },
     };
-    super(messages[resource]?.[locale] || messages[resource]?.["en"] || `${resource} not found`);
+    super(
+      messages[resource]?.[locale] ||
+        messages[resource]?.["en"] ||
+        `${resource} not found`,
+    );
     this.name = "NotFoundError";
   }
 }
@@ -70,7 +74,10 @@ export class NotFoundError extends Error {
 /**
  * Get website with ownership check
  */
-export async function getWebsiteWithAuth(websiteId: number, locale: string = "en") {
+export async function getWebsiteWithAuth(
+  websiteId: number,
+  locale: string = "en",
+) {
   const session = await requireAuth(locale);
 
   const website = await prisma.website.findFirst({
@@ -182,7 +189,7 @@ export function t(key: string, locale: string = "en"): string {
  */
 export async function withErrorHandler<T>(
   action: () => Promise<ActionResult<T>>,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<T>> {
   try {
     return await action();
@@ -206,7 +213,10 @@ export async function withErrorHandler<T>(
 /**
  * Get project with ownership check (with session and locale support)
  */
-export async function getProjectWithAuth(projectId: number, locale: string = "en") {
+export async function getProjectWithAuth(
+  projectId: number,
+  locale: string = "en",
+) {
   const session = await requireAuth(locale);
 
   const project = await prisma.project.findFirst({
@@ -229,7 +239,7 @@ export function withAuth<T, Args extends unknown[]>(
   action: (
     session: Awaited<ReturnType<typeof requireAuth>>,
     ...args: Args
-  ) => Promise<ActionResult<T>>
+  ) => Promise<ActionResult<T>>,
 ) {
   return async (locale: string, ...args: Args): Promise<ActionResult<T>> => {
     return withErrorHandler(async () => {
@@ -246,7 +256,10 @@ export function withAuth<T, Args extends unknown[]>(
 /**
  * Verify goal ownership (through project)
  */
-export async function verifyGoalOwnership(goalId: number, userId: string): Promise<boolean> {
+export async function verifyGoalOwnership(
+  goalId: number,
+  userId: string,
+): Promise<boolean> {
   const goal = await prisma.goal.findFirst({
     where: {
       id: goalId,
@@ -284,7 +297,10 @@ export async function getGoalWithAuth(goalId: number, locale: string = "en") {
 /**
  * Verify funnel ownership (through project)
  */
-export async function verifyFunnelOwnership(funnelId: number, userId: string): Promise<boolean> {
+export async function verifyFunnelOwnership(
+  funnelId: number,
+  userId: string,
+): Promise<boolean> {
   const funnel = await prisma.funnel.findFirst({
     where: {
       id: funnelId,
@@ -297,7 +313,10 @@ export async function verifyFunnelOwnership(funnelId: number, userId: string): P
 /**
  * Get funnel with ownership check
  */
-export async function getFunnelWithAuth(funnelId: number, locale: string = "en") {
+export async function getFunnelWithAuth(
+  funnelId: number,
+  locale: string = "en",
+) {
   const session = await requireAuth(locale);
 
   const funnel = await prisma.funnel.findFirst({
@@ -322,7 +341,10 @@ export async function getFunnelWithAuth(funnelId: number, locale: string = "en")
 /**
  * Verify segment ownership (through project or user)
  */
-export async function verifySegmentOwnership(segmentId: number, userId: string): Promise<boolean> {
+export async function verifySegmentOwnership(
+  segmentId: number,
+  userId: string,
+): Promise<boolean> {
   const segment = await prisma.segment.findFirst({
     where: {
       id: segmentId,
@@ -335,13 +357,19 @@ export async function verifySegmentOwnership(segmentId: number, userId: string):
 /**
  * Get segment with ownership check
  */
-export async function getSegmentWithAuth(segmentId: number, locale: string = "en") {
+export async function getSegmentWithAuth(
+  segmentId: number,
+  locale: string = "en",
+) {
   const session = await requireAuth(locale);
 
   const segment = await prisma.segment.findFirst({
     where: {
       id: segmentId,
-      OR: [{ userId: session.user.id }, { project: { userId: session.user.id } }],
+      OR: [
+        { userId: session.user.id },
+        { project: { userId: session.user.id } },
+      ],
     },
     include: { project: true },
   });
@@ -371,7 +399,9 @@ export function parsePagination(params: PaginationParams, maxLimit = 100) {
 /**
  * Parse date range with defaults (last 30 days)
  */
-export function parseDateRange(params?: Partial<DateRangeParams>): DateRangeParams {
+export function parseDateRange(
+  params?: Partial<DateRangeParams>,
+): DateRangeParams {
   const to = params?.to || new Date();
   const from =
     params?.from ||
@@ -423,7 +453,7 @@ export async function auditAction(
   userId: string,
   resource: string,
   resourceId: string | number,
-  details?: Record<string, unknown>
+  details?: Record<string, unknown>,
 ) {
   logAudit(action, userId, resource, resourceId, details);
 }

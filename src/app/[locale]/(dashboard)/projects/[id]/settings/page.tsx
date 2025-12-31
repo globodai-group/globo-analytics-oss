@@ -4,8 +4,21 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Settings, Globe, Trash2, SlidersHorizontal, Shield } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ArrowLeft,
+  Settings,
+  Globe,
+  Trash2,
+  SlidersHorizontal,
+  Shield,
+} from "lucide-react";
 import { ProjectForm } from "@/components/projects/project-form";
 import { ProjectDeleteButton } from "@/components/projects/project-delete-button";
 
@@ -13,7 +26,9 @@ interface ProjectSettingsPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function ProjectSettingsPage({ params }: ProjectSettingsPageProps) {
+export default async function ProjectSettingsPage({
+  params,
+}: ProjectSettingsPageProps) {
   const { id } = await params;
   const session = await auth();
   const t = await getTranslations();
@@ -61,7 +76,8 @@ export default async function ProjectSettingsPage({ params }: ProjectSettingsPag
                 <span>{t("projects.domains")}</span>
               </CardTitle>
               <CardDescription className="line-clamp-2">
-                {project.domains.length} {project.domains.length === 1 ? "domain" : "domains"}
+                {project.domains.length}{" "}
+                {project.domains.length === 1 ? "domain" : "domains"}
               </CardDescription>
             </CardHeader>
           </Card>
@@ -79,25 +95,35 @@ export default async function ProjectSettingsPage({ params }: ProjectSettingsPag
             </CardHeader>
           </Card>
         </Link>
-        <Link href={`/projects/${project.id}/settings/dimensions`} className="block">
+        <Link
+          href={`/projects/${project.id}/settings/dimensions`}
+          className="block"
+        >
           <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <SlidersHorizontal className="h-4 w-4 shrink-0" />
                 <span>{t("dimensions.title")}</span>
               </CardTitle>
-              <CardDescription className="line-clamp-2">{t("dimensions.subtitle")}</CardDescription>
+              <CardDescription className="line-clamp-2">
+                {t("dimensions.subtitle")}
+              </CardDescription>
             </CardHeader>
           </Card>
         </Link>
-        <Link href={`/projects/${project.id}/settings/consent`} className="block">
+        <Link
+          href={`/projects/${project.id}/settings/consent`}
+          className="block"
+        >
           <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">
             <CardHeader className="space-y-2">
               <CardTitle className="flex items-center gap-2 text-base">
                 <Shield className="h-4 w-4 shrink-0" />
                 <span>{t("consent.title")}</span>
               </CardTitle>
-              <CardDescription className="line-clamp-2">{t("consent.subtitle")}</CardDescription>
+              <CardDescription className="line-clamp-2">
+                {t("consent.subtitle")}
+              </CardDescription>
             </CardHeader>
           </Card>
         </Link>
@@ -123,10 +149,15 @@ export default async function ProjectSettingsPage({ params }: ProjectSettingsPag
             <Trash2 className="h-5 w-5" />
             {t("projects.dangerZone")}
           </CardTitle>
-          <CardDescription>{t("projects.dangerZoneDescription")}</CardDescription>
+          <CardDescription>
+            {t("projects.dangerZoneDescription")}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <ProjectDeleteButton projectId={project.id} projectName={project.name} />
+          <ProjectDeleteButton
+            projectId={project.id}
+            projectName={project.name}
+          />
         </CardContent>
       </Card>
     </div>

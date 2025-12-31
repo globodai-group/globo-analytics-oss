@@ -107,7 +107,7 @@ export function categorizeUserAgent(
   userAgent: string,
   options?: {
     hasActiveSession?: boolean;
-  }
+  },
 ): {
   category: TrafficCategory;
   shouldExclude: boolean;
@@ -161,7 +161,12 @@ export function categorizeUserAgent(
   return { category: "human", shouldExclude: false };
 }
 
-const BOT_PATTERNS = [...MALICIOUS_BOT_PATTERNS, /\bbot[\s/\d]/i, /crawler[\s/]/i, /spider[\s/]/i];
+const BOT_PATTERNS = [
+  ...MALICIOUS_BOT_PATTERNS,
+  /\bbot[\s/\d]/i,
+  /crawler[\s/]/i,
+  /spider[\s/]/i,
+];
 
 const SEARCH_ENGINES = [
   "google",
@@ -355,14 +360,20 @@ export function isIpExcluded(ip: string, excludeList: string | null): boolean {
         (networkParts[1] << 16) |
         (networkParts[2] << 8) |
         networkParts[3];
-      const ipInt = (ipParts[0] << 24) | (ipParts[1] << 16) | (ipParts[2] << 8) | ipParts[3];
+      const ipInt =
+        (ipParts[0] << 24) |
+        (ipParts[1] << 16) |
+        (ipParts[2] << 8) |
+        ipParts[3];
       const maskInt = ~((1 << (32 - mask)) - 1);
 
       return (networkInt & maskInt) === (ipInt & maskInt);
     }
 
     if (excluded.includes("*")) {
-      const regex = new RegExp("^" + excluded.replace(/\./g, "\\.").replace(/\*/g, "\\d+") + "$");
+      const regex = new RegExp(
+        "^" + excluded.replace(/\./g, "\\.").replace(/\*/g, "\\d+") + "$",
+      );
       return regex.test(ip);
     }
 
@@ -372,11 +383,12 @@ export function isIpExcluded(ip: string, excludeList: string | null): boolean {
 
 export function classifyTrafficSource(
   referrer: string | undefined,
-  utm?: TrackingData["utm"]
+  utm?: TrackingData["utm"],
 ): string {
   if (utm?.medium) {
     const medium = utm.medium.toLowerCase();
-    if (medium === "cpc" || medium === "ppc" || medium === "paid") return "paid";
+    if (medium === "cpc" || medium === "ppc" || medium === "paid")
+      return "paid";
     if (medium === "email") return "email";
     if (medium === "social") return "social";
     if (medium === "referral") return "referral";
@@ -419,7 +431,7 @@ async function upsertStat(
   websiteId: number,
   name: StatType,
   value: string,
-  date: Date
+  date: Date,
 ): Promise<void> {
   await prisma.stat.upsert({
     where: {
@@ -434,7 +446,7 @@ async function trackPageview(
   websiteId: number,
   data: TrackingData,
   userAgent: string,
-  geoData?: GeoData
+  geoData?: GeoData,
 ): Promise<void> {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -479,10 +491,14 @@ async function trackPageview(
   }
 
   if (data.utm) {
-    if (data.utm.source) stats.push({ name: "utm_source", value: data.utm.source });
-    if (data.utm.medium) stats.push({ name: "utm_medium", value: data.utm.medium });
-    if (data.utm.campaign) stats.push({ name: "campaign", value: data.utm.campaign });
-    if (data.utm.content) stats.push({ name: "utm_content", value: data.utm.content });
+    if (data.utm.source)
+      stats.push({ name: "utm_source", value: data.utm.source });
+    if (data.utm.medium)
+      stats.push({ name: "utm_medium", value: data.utm.medium });
+    if (data.utm.campaign)
+      stats.push({ name: "campaign", value: data.utm.campaign });
+    if (data.utm.content)
+      stats.push({ name: "utm_content", value: data.utm.content });
     if (data.utm.term) stats.push({ name: "utm_term", value: data.utm.term });
   } else if (data.campaign) {
     stats.push({ name: "campaign", value: data.campaign });
@@ -501,19 +517,26 @@ async function trackPageview(
   }
 
   if (geoData) {
-    if (geoData.continent) stats.push({ name: "continent", value: geoData.continent });
-    if (geoData.country) stats.push({ name: "country", value: geoData.country });
+    if (geoData.continent)
+      stats.push({ name: "continent", value: geoData.continent });
+    if (geoData.country)
+      stats.push({ name: "country", value: geoData.country });
     if (geoData.city) stats.push({ name: "city", value: geoData.city });
   }
 
-  await Promise.all(stats.map((stat) => upsertStat(websiteId, stat.name, stat.value, today)));
+  await Promise.all(
+    stats.map((stat) => upsertStat(websiteId, stat.name, stat.value, today)),
+  );
 
   if (data.sessionId && data.visitorId) {
     await updateSession(websiteId, data, ua, geoData);
   }
 }
 
-async function trackEngagement(websiteId: number, data: TrackingData): Promise<void> {
+async function trackEngagement(
+  websiteId: number,
+  data: TrackingData,
+): Promise<void> {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -524,21 +547,29 @@ async function trackEngagement(websiteId: number, data: TrackingData): Promise<v
   }
 
   if (data.scrollDepth !== undefined) {
-    stats.push({ name: "scroll_depth", value: getScrollDepthBucket(data.scrollDepth) });
+    stats.push({
+      name: "scroll_depth",
+      value: getScrollDepthBucket(data.scrollDepth),
+    });
   }
 
   if (data.isExit && data.path) {
     stats.push({ name: "exit_page", value: data.path });
   }
 
-  await Promise.all(stats.map((stat) => upsertStat(websiteId, stat.name, stat.value, today)));
+  await Promise.all(
+    stats.map((stat) => upsertStat(websiteId, stat.name, stat.value, today)),
+  );
 
   if (data.sessionId && data.visitorId) {
     await updateSessionEngagement(websiteId, data);
   }
 }
 
-async function trackScroll(websiteId: number, data: TrackingData): Promise<void> {
+async function trackScroll(
+  websiteId: number,
+  data: TrackingData,
+): Promise<void> {
   if (data.scrollDepth === undefined) return;
 
   const today = new Date();
@@ -547,7 +578,10 @@ async function trackScroll(websiteId: number, data: TrackingData): Promise<void>
   await upsertStat(websiteId, "scroll_depth", `${data.scrollDepth}%`, today);
 }
 
-async function trackCustomEvent(websiteId: number, data: TrackingData): Promise<void> {
+async function trackCustomEvent(
+  websiteId: number,
+  data: TrackingData,
+): Promise<void> {
   const eventName = data.eventName || data.event;
   if (!eventName) return;
 
@@ -569,7 +603,7 @@ async function updateSession(
   websiteId: number,
   data: TrackingData,
   ua: ParsedUserAgent,
-  geoData?: GeoData
+  geoData?: GeoData,
 ): Promise<void> {
   const path = data.path || extractPath(data.page);
   const trafficSource = classifyTrafficSource(data.referrer, data.utm);
@@ -640,7 +674,10 @@ async function updateSession(
   }
 }
 
-async function updateSessionEngagement(websiteId: number, data: TrackingData): Promise<void> {
+async function updateSessionEngagement(
+  websiteId: number,
+  data: TrackingData,
+): Promise<void> {
   if (!data.sessionId || !data.visitorId) return;
 
   try {
@@ -660,7 +697,10 @@ async function updateSessionEngagement(websiteId: number, data: TrackingData): P
         lastActivityAt: new Date(),
       };
 
-      if (data.scrollDepth !== undefined && data.scrollDepth > session.maxScrollDepth) {
+      if (
+        data.scrollDepth !== undefined &&
+        data.scrollDepth > session.maxScrollDepth
+      ) {
         updateData.maxScrollDepth = data.scrollDepth;
       }
 
@@ -668,10 +708,17 @@ async function updateSessionEngagement(websiteId: number, data: TrackingData): P
         updateData.exitPage = data.path;
         updateData.endedAt = new Date();
 
-        const duration = Math.round((Date.now() - session.startedAt.getTime()) / 1000);
+        const duration = Math.round(
+          (Date.now() - session.startedAt.getTime()) / 1000,
+        );
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        await upsertStat(websiteId, "session_duration", getTimeBucket(duration), today);
+        await upsertStat(
+          websiteId,
+          "session_duration",
+          getTimeBucket(duration),
+          today,
+        );
       }
 
       await prisma.analyticsSession.update({
@@ -689,7 +736,7 @@ export async function trackEvent(
   data: TrackingData,
   userAgent: string,
   ip: string,
-  geoData?: GeoData
+  geoData?: GeoData,
 ): Promise<void> {
   const eventType = data.type || "pageview";
 
@@ -707,7 +754,12 @@ export async function trackEvent(
       await trackCustomEvent(websiteId, data);
       break;
     default:
-      await trackPageview(websiteId, { ...data, type: "pageview" }, userAgent, geoData);
+      await trackPageview(
+        websiteId,
+        { ...data, type: "pageview" },
+        userAgent,
+        geoData,
+      );
   }
 }
 

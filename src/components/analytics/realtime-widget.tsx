@@ -23,7 +23,10 @@ interface RealTimeWidgetProps {
   initialCount?: number;
 }
 
-export function RealTimeWidget({ projectId, initialCount = 0 }: RealTimeWidgetProps) {
+export function RealTimeWidget({
+  projectId,
+  initialCount = 0,
+}: RealTimeWidgetProps) {
   const t = useTranslations();
   const locale = useLocale();
   const [activeUsers, setActiveUsers] = useState(initialCount);
@@ -145,7 +148,9 @@ export function RealTimeWidget({ projectId, initialCount = 0 }: RealTimeWidgetPr
                   {locale === "fr" ? "Pages actives:" : "Active pages:"}
                 </p>
                 <p className="truncate max-w-[200px]">
-                  {[...new Set(realtimeUsers.map((u) => u.currentPage))].slice(0, 3).join(", ")}
+                  {[...new Set(realtimeUsers.map((u) => u.currentPage))]
+                    .slice(0, 3)
+                    .join(", ")}
                 </p>
               </div>
             </div>
@@ -162,10 +167,18 @@ export function RealTimeWidget({ projectId, initialCount = 0 }: RealTimeWidgetPr
                   {locale === "fr" ? "Pays" : "Countries"}
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {[...new Set(realtimeUsers.map((u) => u.country).filter(Boolean))]
+                  {[
+                    ...new Set(
+                      realtimeUsers.map((u) => u.country).filter(Boolean),
+                    ),
+                  ]
                     .slice(0, 3)
                     .map((country) => (
-                      <Badge key={country} variant="secondary" className="text-xs">
+                      <Badge
+                        key={country}
+                        variant="secondary"
+                        className="text-xs"
+                      >
                         {country}
                       </Badge>
                     ))}
@@ -178,10 +191,18 @@ export function RealTimeWidget({ projectId, initialCount = 0 }: RealTimeWidgetPr
                   {locale === "fr" ? "Appareils" : "Devices"}
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {[...new Set(realtimeUsers.map((u) => u.device).filter(Boolean))]
+                  {[
+                    ...new Set(
+                      realtimeUsers.map((u) => u.device).filter(Boolean),
+                    ),
+                  ]
                     .slice(0, 3)
                     .map((device) => (
-                      <Badge key={device} variant="secondary" className="text-xs">
+                      <Badge
+                        key={device}
+                        variant="secondary"
+                        className="text-xs"
+                      >
                         {device}
                       </Badge>
                     ))}
@@ -196,11 +217,17 @@ export function RealTimeWidget({ projectId, initialCount = 0 }: RealTimeWidgetPr
                 <div className="flex gap-4">
                   <div className="flex items-center gap-1">
                     <Monitor className="h-4 w-4" />
-                    <span>{realtimeUsers.filter((u) => u.platform === "web").length} Web</span>
+                    <span>
+                      {realtimeUsers.filter((u) => u.platform === "web").length}{" "}
+                      Web
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Smartphone className="h-4 w-4" />
-                    <span>{realtimeUsers.filter((u) => u.platform !== "web").length} Mobile</span>
+                    <span>
+                      {realtimeUsers.filter((u) => u.platform !== "web").length}{" "}
+                      Mobile
+                    </span>
                   </div>
                 </div>
               </div>

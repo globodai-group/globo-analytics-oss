@@ -49,7 +49,12 @@ function createTransporter() {
   });
 }
 
-export async function sendEmail({ to, subject, html, text }: EmailOptions): Promise<boolean> {
+export async function sendEmail({
+  to,
+  subject,
+  html,
+  text,
+}: EmailOptions): Promise<boolean> {
   const transporter = createTransporter();
 
   if (!transporter) {
@@ -74,7 +79,13 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions): Prom
       text: text || html.replace(/<[^>]*>/g, ""),
     });
 
-    logger.info({ type: "email", provider: "smtp", to, subject, host: SMTP_HOST });
+    logger.info({
+      type: "email",
+      provider: "smtp",
+      to,
+      subject,
+      host: SMTP_HOST,
+    });
     return true;
   } catch (error) {
     logError(error, { context: "email", provider: "smtp", to, subject });
@@ -83,7 +94,11 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions): Prom
 }
 
 // Email template helpers
-export function getVerifyEmailTemplate(name: string, verifyUrl: string, locale: string = "en") {
+export function getVerifyEmailTemplate(
+  name: string,
+  verifyUrl: string,
+  locale: string = "en",
+) {
   const translations = {
     en: {
       title: "Verify your email address",
@@ -91,21 +106,25 @@ export function getVerifyEmailTemplate(name: string, verifyUrl: string, locale: 
       message: "Please click the button below to verify your email address.",
       button: "Verify Email",
       expiry: "This link will expire in 24 hours.",
-      ignore: "If you didn't create an account, you can safely ignore this email.",
+      ignore:
+        "If you didn't create an account, you can safely ignore this email.",
       footer: "GloboAnalytics - Web Analytics",
     },
     fr: {
       title: "Verifiez votre adresse email",
       greeting: `Bonjour ${name},`,
-      message: "Veuillez cliquer sur le bouton ci-dessous pour verifier votre adresse email.",
+      message:
+        "Veuillez cliquer sur le bouton ci-dessous pour verifier votre adresse email.",
       button: "Verifier l'email",
       expiry: "Ce lien expirera dans 24 heures.",
-      ignore: "Si vous n'avez pas cree de compte, vous pouvez ignorer cet email.",
+      ignore:
+        "Si vous n'avez pas cree de compte, vous pouvez ignorer cet email.",
       footer: "GloboAnalytics - Analytics Web",
     },
   };
 
-  const t = translations[locale as keyof typeof translations] || translations.en;
+  const t =
+    translations[locale as keyof typeof translations] || translations.en;
 
   return `
 <!DOCTYPE html>
@@ -144,7 +163,11 @@ export function getVerifyEmailTemplate(name: string, verifyUrl: string, locale: 
   `.trim();
 }
 
-export function getResetPasswordTemplate(name: string, resetUrl: string, locale: string = "en") {
+export function getResetPasswordTemplate(
+  name: string,
+  resetUrl: string,
+  locale: string = "en",
+) {
   const translations = {
     en: {
       title: "Reset your password",
@@ -153,7 +176,8 @@ export function getResetPasswordTemplate(name: string, resetUrl: string, locale:
         "We received a request to reset your password. Click the button below to choose a new password.",
       button: "Reset Password",
       expiry: "This link will expire in 1 hour.",
-      ignore: "If you didn't request a password reset, you can safely ignore this email.",
+      ignore:
+        "If you didn't request a password reset, you can safely ignore this email.",
       footer: "GloboAnalytics - Web Analytics",
     },
     fr: {
@@ -169,7 +193,8 @@ export function getResetPasswordTemplate(name: string, resetUrl: string, locale:
     },
   };
 
-  const t = translations[locale as keyof typeof translations] || translations.en;
+  const t =
+    translations[locale as keyof typeof translations] || translations.en;
 
   return `
 <!DOCTYPE html>
@@ -208,14 +233,19 @@ export function getResetPasswordTemplate(name: string, resetUrl: string, locale:
   `.trim();
 }
 
-export function getTfaCodeTemplate(name: string, code: string, locale: string = "en") {
+export function getTfaCodeTemplate(
+  name: string,
+  code: string,
+  locale: string = "en",
+) {
   const translations = {
     en: {
       title: "Your verification code",
       greeting: `Hi ${name},`,
       message: "Use the following code to complete your sign-in:",
       expiry: "This code will expire in 10 minutes.",
-      warning: "If you didn't try to sign in, someone may be trying to access your account.",
+      warning:
+        "If you didn't try to sign in, someone may be trying to access your account.",
       footer: "GloboAnalytics - Web Analytics",
     },
     fr: {
@@ -229,7 +259,8 @@ export function getTfaCodeTemplate(name: string, code: string, locale: string = 
     },
   };
 
-  const t = translations[locale as keyof typeof translations] || translations.en;
+  const t =
+    translations[locale as keyof typeof translations] || translations.en;
 
   return `
 <!DOCTYPE html>
@@ -265,12 +296,18 @@ export function getTfaCodeTemplate(name: string, code: string, locale: string = 
 }
 
 // Helper to generate verification URL
-export function getVerifyEmailUrl(token: string, locale: string = "en"): string {
+export function getVerifyEmailUrl(
+  token: string,
+  locale: string = "en",
+): string {
   return `${APP_URL}/${locale}/verify-email?token=${token}`;
 }
 
 // Helper to generate reset password URL
-export function getResetPasswordUrl(token: string, locale: string = "en"): string {
+export function getResetPasswordUrl(
+  token: string,
+  locale: string = "en",
+): string {
   return `${APP_URL}/${locale}/reset-password?token=${token}`;
 }
 
@@ -297,7 +334,7 @@ export function getAnalyticsReportTemplate(
     topCountries: { country: string; visitors: number }[];
   },
   dashboardUrl: string,
-  locale: string = "en"
+  locale: string = "en",
 ) {
   const translations = {
     en: {
@@ -315,9 +352,11 @@ export function getAnalyticsReportTemplate(
       footer: "GloboAnalytics - Web Analytics",
     },
     fr: {
-      title: reportType === "weekly" ? "Rapport Hebdomadaire" : "Rapport Mensuel",
+      title:
+        reportType === "weekly" ? "Rapport Hebdomadaire" : "Rapport Mensuel",
       greeting: `Bonjour ${name},`,
-      period: reportType === "weekly" ? "7 derniers jours" : "30 derniers jours",
+      period:
+        reportType === "weekly" ? "7 derniers jours" : "30 derniers jours",
       visitors: "Visiteurs",
       pageviews: "Pages vues",
       topPages: "Pages populaires",
@@ -330,13 +369,14 @@ export function getAnalyticsReportTemplate(
     },
   };
 
-  const t = translations[locale as keyof typeof translations] || translations.en;
+  const t =
+    translations[locale as keyof typeof translations] || translations.en;
 
   const topPagesRows = stats.topPages
     .slice(0, 5)
     .map(
       (p) =>
-        `<tr><td style="padding: 8px; border-bottom: 1px solid #e4e4e7;">${p.page}</td><td style="padding: 8px; border-bottom: 1px solid #e4e4e7; text-align: right;">${p.views.toLocaleString()}</td></tr>`
+        `<tr><td style="padding: 8px; border-bottom: 1px solid #e4e4e7;">${p.page}</td><td style="padding: 8px; border-bottom: 1px solid #e4e4e7; text-align: right;">${p.views.toLocaleString()}</td></tr>`,
     )
     .join("");
 
@@ -344,7 +384,7 @@ export function getAnalyticsReportTemplate(
     .slice(0, 5)
     .map(
       (c) =>
-        `<tr><td style="padding: 8px; border-bottom: 1px solid #e4e4e7;">${c.country}</td><td style="padding: 8px; border-bottom: 1px solid #e4e4e7; text-align: right;">${c.visitors.toLocaleString()}</td></tr>`
+        `<tr><td style="padding: 8px; border-bottom: 1px solid #e4e4e7;">${c.country}</td><td style="padding: 8px; border-bottom: 1px solid #e4e4e7; text-align: right;">${c.visitors.toLocaleString()}</td></tr>`,
     )
     .join("");
 

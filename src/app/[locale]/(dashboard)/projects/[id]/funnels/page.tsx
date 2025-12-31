@@ -5,7 +5,13 @@ import { prisma } from "@/lib/prisma";
 import { features } from "@/lib/env";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Plus, GitBranch, ArrowRight, EyeOff } from "lucide-react";
 import { FunnelDeleteButton } from "@/components/funnels/funnel-delete-button";
@@ -90,7 +96,10 @@ export default async function FunnelsPage({ params }: PageProps) {
       ) : (
         <div className="space-y-4">
           {project.funnels.map((funnel) => (
-            <Card key={funnel.id} className="hover:border-primary/30 transition-colors">
+            <Card
+              key={funnel.id}
+              className="hover:border-primary/30 transition-colors"
+            >
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <div>
@@ -103,7 +112,9 @@ export default async function FunnelsPage({ params }: PageProps) {
                         </Badge>
                       )}
                     </div>
-                    {funnel.description && <CardDescription>{funnel.description}</CardDescription>}
+                    {funnel.description && (
+                      <CardDescription>{funnel.description}</CardDescription>
+                    )}
                   </div>
                   <div className="flex items-center gap-2">
                     <Link href={`/projects/${projectId}/funnels/${funnel.id}`}>

@@ -91,13 +91,22 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
   const goalsWithStats = goals.map((goal) => ({
     ...goal,
     conversionsCount: goal.conversions.length,
-    totalRevenue: goal.conversions.reduce((sum, c) => sum + (c.revenue || 0), 0),
+    totalRevenue: goal.conversions.reduce(
+      (sum, c) => sum + (c.revenue || 0),
+      0,
+    ),
     conversions: undefined, // Remove raw conversions from the object
   }));
 
   // Total conversions across all goals
-  const totalConversions = goalsWithStats.reduce((sum, g) => sum + g.conversionsCount, 0);
-  const totalRevenue = goalsWithStats.reduce((sum, g) => sum + g.totalRevenue, 0);
+  const totalConversions = goalsWithStats.reduce(
+    (sum, g) => sum + g.conversionsCount,
+    0,
+  );
+  const totalRevenue = goalsWithStats.reduce(
+    (sum, g) => sum + g.totalRevenue,
+    0,
+  );
   const activeGoals = goalsWithStats.filter((g) => g.isActive).length;
 
   return (
@@ -140,11 +149,15 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("conversions")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("conversions")}
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalConversions.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {totalConversions.toLocaleString()}
+            </div>
             <p className="text-xs text-muted-foreground">
               {locale === "fr" ? "30 derniers jours" : "Last 30 days"}
             </p>
@@ -153,7 +166,9 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("revenue")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("revenue")}
+            </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -171,7 +186,9 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("avgRevenue")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("avgRevenue")}
+            </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -179,7 +196,9 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
               {new Intl.NumberFormat(locale, {
                 style: "currency",
                 currency: "EUR",
-              }).format(totalConversions > 0 ? totalRevenue / totalConversions : 0)}
+              }).format(
+                totalConversions > 0 ? totalRevenue / totalConversions : 0,
+              )}
             </div>
             <p className="text-xs text-muted-foreground">
               {locale === "fr" ? "Par conversion" : "Per conversion"}
@@ -212,16 +231,22 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-4">
-                    <div className="p-2 bg-muted rounded-lg">{goalTypeIcons[goal.type]}</div>
+                    <div className="p-2 bg-muted rounded-lg">
+                      {goalTypeIcons[goal.type]}
+                    </div>
                     <div>
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold">{goal.name}</h3>
-                        <Badge variant={goal.isActive ? "default" : "secondary"}>
+                        <Badge
+                          variant={goal.isActive ? "default" : "secondary"}
+                        >
                           {goal.isActive ? t("active") : t("inactive")}
                         </Badge>
                       </div>
                       {goal.description && (
-                        <p className="text-sm text-muted-foreground mt-1">{goal.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {goal.description}
+                        </p>
                       )}
                       <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
                         <span>{t(`typeOptions.${goal.type}`)}</span>
@@ -241,7 +266,9 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
                       <div className="text-2xl font-bold">
                         {goal.conversionsCount.toLocaleString()}
                       </div>
-                      <div className="text-sm text-muted-foreground">{t("conversions")}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {t("conversions")}
+                      </div>
                     </div>
 
                     {goal.revenueTracking && (
@@ -252,7 +279,9 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
                             currency: "EUR",
                           }).format(goal.totalRevenue)}
                         </div>
-                        <div className="text-sm text-muted-foreground">{t("revenue")}</div>
+                        <div className="text-sm text-muted-foreground">
+                          {t("revenue")}
+                        </div>
                       </div>
                     )}
 
@@ -265,13 +294,22 @@ export default async function GoalsPage({ params }: GoalsPageProps) {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild>
-                          <Link href={`/projects/${projectId}/goals/${goal.id}`}>
+                          <Link
+                            href={`/projects/${projectId}/goals/${goal.id}`}
+                          >
                             <Pencil className="h-4 w-4 mr-2" />
                             {t("edit")}
                           </Link>
                         </DropdownMenuItem>
-                        <GoalToggleButton goalId={goal.id} isActive={goal.isActive} />
-                        <GoalDeleteButton goalId={goal.id} goalName={goal.name} locale={locale} />
+                        <GoalToggleButton
+                          goalId={goal.id}
+                          isActive={goal.isActive}
+                        />
+                        <GoalDeleteButton
+                          goalId={goal.id}
+                          goalName={goal.name}
+                          locale={locale}
+                        />
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

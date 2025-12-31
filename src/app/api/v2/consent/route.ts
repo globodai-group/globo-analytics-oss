@@ -20,12 +20,19 @@ export async function OPTIONS() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { projectId, analytics, marketing, preferences, expires, consentedAt } = body;
+    const {
+      projectId,
+      analytics,
+      marketing,
+      preferences,
+      expires,
+      consentedAt,
+    } = body;
 
     if (!projectId) {
       return NextResponse.json(
         { error: "Project ID required" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -38,7 +45,7 @@ export async function POST(request: NextRequest) {
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },
-        { status: 404, headers: corsHeaders }
+        { status: 404, headers: corsHeaders },
       );
     }
 
@@ -58,7 +65,11 @@ export async function POST(request: NextRequest) {
       .substring(0, 32);
 
     // Hash the IP for proof of consent
-    const ipHash = crypto.createHash("sha256").update(ip).digest("hex").substring(0, 16);
+    const ipHash = crypto
+      .createHash("sha256")
+      .update(ip)
+      .digest("hex")
+      .substring(0, 16);
 
     // Calculate expiration
     const expiresAt = expires ? new Date(expires) : null;
@@ -92,12 +103,15 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json({ success: true, visitorId }, { headers: corsHeaders });
+    return NextResponse.json(
+      { success: true, visitorId },
+      { headers: corsHeaders },
+    );
   } catch (error) {
     logError(error, { context: "consent", operation: "post" });
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }
@@ -112,7 +126,7 @@ export async function GET(request: NextRequest) {
     if (!projectId || !visitorId) {
       return NextResponse.json(
         { error: "Project ID and Visitor ID required" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -124,7 +138,7 @@ export async function GET(request: NextRequest) {
     if (!project) {
       return NextResponse.json(
         { error: "Project not found" },
-        { status: 404, headers: corsHeaders }
+        { status: 404, headers: corsHeaders },
       );
     }
 
@@ -150,7 +164,10 @@ export async function GET(request: NextRequest) {
 
     // Check if consent has expired
     if (consent.expiresAt && new Date(consent.expiresAt) < new Date()) {
-      return NextResponse.json({ hasConsent: false, expired: true }, { headers: corsHeaders });
+      return NextResponse.json(
+        { hasConsent: false, expired: true },
+        { headers: corsHeaders },
+      );
     }
 
     return NextResponse.json(
@@ -162,13 +179,13 @@ export async function GET(request: NextRequest) {
         consentedAt: consent.consentedAt,
         expiresAt: consent.expiresAt,
       },
-      { headers: corsHeaders }
+      { headers: corsHeaders },
     );
   } catch (error) {
     logError(error, { context: "consent", operation: "get" });
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }

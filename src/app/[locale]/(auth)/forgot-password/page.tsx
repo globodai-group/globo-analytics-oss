@@ -5,7 +5,10 @@ import { Link } from "@/i18n/routing";
 import { useTranslations, useLocale } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema, type ForgotPasswordInput } from "@/lib/validations/auth";
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordInput,
+} from "@/lib/validations/auth";
 import { forgotPasswordAction } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +22,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, AlertCircle, CheckCircle2, ArrowLeft, Globe } from "lucide-react";
+import {
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  ArrowLeft,
+  Globe,
+} from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const t = useTranslations();
@@ -80,7 +89,9 @@ export default function ForgotPasswordPage() {
             <div className="space-y-4">
               <Alert className="border-green-500 bg-green-50 dark:bg-green-950">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
-                <AlertDescription className="text-green-600">{success}</AlertDescription>
+                <AlertDescription className="text-green-600">
+                  {success}
+                </AlertDescription>
               </Alert>
               <p className="text-sm text-muted-foreground text-center">
                 {locale === "fr"
@@ -106,7 +117,11 @@ export default function ForgotPasswordPage() {
                   disabled={isLoading}
                   {...register("email")}
                 />
-                {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-sm text-destructive">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>

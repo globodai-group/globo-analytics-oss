@@ -49,7 +49,7 @@ export function ActionError(error: string): ActionResult<never> {
  * Type guard to check if result is successful
  */
 export function isActionSuccess<T>(
-  result: ActionResult<T>
+  result: ActionResult<T>,
 ): result is { success: true; data: T; message?: string } {
   return result.success === true;
 }
@@ -58,7 +58,7 @@ export function isActionSuccess<T>(
  * Type guard to check if result is an error
  */
 export function isActionError<T>(
-  result: ActionResult<T>
+  result: ActionResult<T>,
 ): result is { success: false; error: string } {
   return result.success === false;
 }
@@ -69,7 +69,7 @@ export function isActionError<T>(
  */
 export async function withActionErrorHandling<T>(
   fn: () => Promise<ActionResult<T>>,
-  errorMessage: string = "An error occurred"
+  errorMessage: string = "An error occurred",
 ): Promise<ActionResult<T>> {
   try {
     return await fn();
@@ -83,11 +83,14 @@ export async function withActionErrorHandling<T>(
  * Common error messages (i18n-ready)
  */
 export const ActionErrors = {
-  unauthorized: (locale: string) => (locale === "fr" ? "Non autorise" : "Unauthorized"),
+  unauthorized: (locale: string) =>
+    locale === "fr" ? "Non autorise" : "Unauthorized",
   notFound: (locale: string, resource = "Resource") =>
     locale === "fr" ? `${resource} non trouve` : `${resource} not found`,
-  serverError: (locale: string) => (locale === "fr" ? "Erreur serveur" : "Server error"),
-  invalidInput: (locale: string) => (locale === "fr" ? "Donnees invalides" : "Invalid input"),
+  serverError: (locale: string) =>
+    locale === "fr" ? "Erreur serveur" : "Server error",
+  invalidInput: (locale: string) =>
+    locale === "fr" ? "Donnees invalides" : "Invalid input",
   projectNotFound: (locale: string) =>
     locale === "fr" ? "Projet non trouve" : "Project not found",
 } as const;

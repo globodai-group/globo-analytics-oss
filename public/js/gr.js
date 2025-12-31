@@ -2,7 +2,10 @@
   var c = function () {
     var v = localStorage.getItem("gr_vid");
     if (!v) {
-      v = "v_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      v =
+        "v_" +
+        Math.random().toString(36).substr(2, 9) +
+        Date.now().toString(36);
       localStorage.setItem("gr_vid", v);
     }
     return v;
@@ -10,7 +13,10 @@
   var i = function () {
     var s = sessionStorage.getItem("gr_sid");
     if (!s) {
-      s = "s_" + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      s =
+        "s_" +
+        Math.random().toString(36).substr(2, 9) +
+        Date.now().toString(36);
       sessionStorage.setItem("gr_sid", s);
     }
     return s;
@@ -32,7 +38,7 @@
         ul: navigator.language,
         pl: "web",
       },
-      a || {}
+      a || {},
     );
     if (n) {
       p.sc = "start";

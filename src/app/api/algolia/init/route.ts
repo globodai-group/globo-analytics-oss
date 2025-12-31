@@ -21,10 +21,12 @@ export async function POST(request: NextRequest) {
   // Validate Algolia configuration
   const validation = validateAlgoliaConfig();
   if (!validation.valid) {
-    logger.error(`Algolia not configured. Missing: ${validation.missing.join(", ")}`);
+    logger.error(
+      `Algolia not configured. Missing: ${validation.missing.join(", ")}`,
+    );
     return NextResponse.json(
       { error: "Algolia not configured", missing: validation.missing },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
     logger.error(`Failed to initialize Algolia indices: ${error}`);
     return NextResponse.json(
       { error: "Failed to initialize indices", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -11,7 +11,9 @@ interface EditWebsitePageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function EditWebsitePage({ params }: EditWebsitePageProps) {
+export default async function EditWebsitePage({
+  params,
+}: EditWebsitePageProps) {
   const { id } = await params;
   const session = await auth();
   const t = await getTranslations();

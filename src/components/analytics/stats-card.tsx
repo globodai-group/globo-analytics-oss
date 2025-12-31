@@ -33,7 +33,11 @@ export function StatsCard({
   let changePercent: number | null = null;
   let trend: "up" | "down" | "neutral" = "neutral";
 
-  if (typeof value === "number" && typeof previousValue === "number" && previousValue > 0) {
+  if (
+    typeof value === "number" &&
+    typeof previousValue === "number" &&
+    previousValue > 0
+  ) {
     changePercent = ((value - previousValue) / previousValue) * 100;
     trend = changePercent > 0 ? "up" : changePercent < 0 ? "down" : "neutral";
   }
@@ -41,7 +45,9 @@ export function StatsCard({
   return (
     <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {title}
+        </CardTitle>
         {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
       </CardHeader>
       <CardContent>
@@ -53,7 +59,7 @@ export function StatsCard({
                 "flex items-center text-xs font-medium",
                 trend === "up" && "text-green-600 dark:text-green-500",
                 trend === "down" && "text-red-600 dark:text-red-500",
-                trend === "neutral" && "text-muted-foreground"
+                trend === "neutral" && "text-muted-foreground",
               )}
             >
               {trend === "up" && <TrendingUp className="h-3 w-3 mr-0.5" />}
@@ -64,7 +70,9 @@ export function StatsCard({
             </div>
           )}
         </div>
-        {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
+        {description && (
+          <p className="text-xs text-muted-foreground mt-1">{description}</p>
+        )}
       </CardContent>
     </Card>
   );

@@ -29,7 +29,9 @@ export function ApiTokenManager({ hasToken, locale }: ApiTokenManagerProps) {
       if (result.success && result.token) {
         setToken(result.token);
         toast.success(
-          locale === "fr" ? "Token généré avec succès" : "Token generated successfully"
+          locale === "fr"
+            ? "Token généré avec succès"
+            : "Token generated successfully",
         );
       } else {
         toast.error(result.error || "Failed to generate token");
@@ -69,7 +71,11 @@ export function ApiTokenManager({ hasToken, locale }: ApiTokenManagerProps) {
           <div className="flex gap-2">
             <Input value={token} readOnly className="font-mono text-sm" />
             <Button variant="outline" size="icon" onClick={handleCopy}>
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+              {copied ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
@@ -106,7 +112,11 @@ export function ApiTokenManager({ hasToken, locale }: ApiTokenManagerProps) {
         ) : (
           <RefreshCw className="mr-2 h-4 w-4" />
         )}
-        {hasToken ? t("generateNew") : locale === "fr" ? "Générer un token" : "Generate token"}
+        {hasToken
+          ? t("generateNew")
+          : locale === "fr"
+            ? "Générer un token"
+            : "Generate token"}
       </Button>
     </div>
   );

@@ -34,7 +34,11 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { APP_VERSION } from "@/lib/version";
 
 const mainNavItems = [
@@ -76,7 +80,11 @@ const navGroups: NavGroup[] = [
     defaultOpen: true,
     items: [
       { titleKey: "projects.segments.title", href: "/segments", icon: Users },
-      { titleKey: "projects.technology.title", href: "/technology", icon: MonitorSmartphone },
+      {
+        titleKey: "projects.technology.title",
+        href: "/technology",
+        icon: MonitorSmartphone,
+      },
     ],
   },
   {
@@ -85,8 +93,16 @@ const navGroups: NavGroup[] = [
     items: [
       { titleKey: "projects.pages.title", href: "/pages", icon: FileText },
       { titleKey: "projects.flow.title", href: "/stats/flow", icon: Workflow },
-      { titleKey: "projects.search.title", href: "/stats/search", icon: Search },
-      { titleKey: "projects.content.title", href: "/stats/content", icon: ScrollText },
+      {
+        titleKey: "projects.search.title",
+        href: "/stats/search",
+        icon: Search,
+      },
+      {
+        titleKey: "projects.content.title",
+        href: "/stats/content",
+        icon: ScrollText,
+      },
       { titleKey: "projects.videos.title", href: "/stats/videos", icon: Video },
     ],
   },
@@ -94,8 +110,16 @@ const navGroups: NavGroup[] = [
     titleKey: "nav.acquisition",
     icon: Megaphone,
     items: [
-      { titleKey: "projects.acquisition.title", href: "/acquisition", icon: TrendingUp },
-      { titleKey: "projects.attribution.title", href: "/attribution", icon: Share2 },
+      {
+        titleKey: "projects.acquisition.title",
+        href: "/acquisition",
+        icon: TrendingUp,
+      },
+      {
+        titleKey: "projects.attribution.title",
+        href: "/attribution",
+        icon: Share2,
+      },
     ],
   },
   {
@@ -104,7 +128,11 @@ const navGroups: NavGroup[] = [
     items: [
       { titleKey: "projects.goals.title", href: "/goals", icon: Target },
       { titleKey: "projects.funnels.title", href: "/funnels", icon: GitBranch },
-      { titleKey: "projects.ecommerce.title", href: "/stats/ecommerce", icon: ShoppingCart },
+      {
+        titleKey: "projects.ecommerce.title",
+        href: "/stats/ecommerce",
+        icon: ShoppingCart,
+      },
     ],
   },
   {
@@ -113,7 +141,11 @@ const navGroups: NavGroup[] = [
     items: [
       { titleKey: "projects.alerts.title", href: "/alerts", icon: Bell },
       { titleKey: "projects.reports.title", href: "/reports", icon: FileText },
-      { titleKey: "projects.settings.title", href: "/settings", icon: Settings },
+      {
+        titleKey: "projects.settings.title",
+        href: "/settings",
+        icon: Settings,
+      },
     ],
   },
 ];
@@ -132,7 +164,7 @@ function NavGroupSection({
 }) {
   // Check if any item in this group is active
   const hasActiveItem = group.items.some((item) =>
-    pathname.includes(`/projects/${projectId}${item.href}`)
+    pathname.includes(`/projects/${projectId}${item.href}`),
   );
 
   const [isOpen, setIsOpen] = useState(group.defaultOpen || hasActiveItem);
@@ -145,13 +177,18 @@ function NavGroupSection({
           {t(group.titleKey)}
         </span>
         <ChevronDown
-          className={cn("h-4 w-4 transition-transform duration-200", isOpen && "rotate-180")}
+          className={cn(
+            "h-4 w-4 transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
         />
       </CollapsibleTrigger>
       <CollapsibleContent className="pl-4 space-y-1">
         {group.items.map((item) => {
           const fullHref = `/projects/${projectId}${item.href}`;
-          const isActive = pathname.includes(`/projects/${projectId}${item.href}`);
+          const isActive = pathname.includes(
+            `/projects/${projectId}${item.href}`,
+          );
           return (
             <Link
               key={item.href}
@@ -160,7 +197,7 @@ function NavGroupSection({
                 "flex items-center gap-3 rounded-md px-3 py-2 min-h-[40px] text-sm font-medium transition-colors",
                 isActive
                   ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               <item.icon className="h-4 w-4" />
@@ -221,7 +258,7 @@ export function DashboardSidebar() {
                         "flex items-center gap-3 rounded-md px-3 py-2.5 min-h-[44px] text-sm font-medium transition-colors",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
                       )}
                     >
                       <item.icon className="h-4 w-4" />
@@ -253,9 +290,10 @@ export function DashboardSidebar() {
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-md px-3 py-2.5 min-h-[44px] text-sm font-medium transition-colors",
-                    pathname === item.href || pathname.startsWith(item.href + "/")
+                    pathname === item.href ||
+                      pathname.startsWith(item.href + "/")
                       ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -275,13 +313,15 @@ export function DashboardSidebar() {
             "flex items-center gap-3 rounded-md px-3 py-2.5 min-h-[44px] text-sm font-medium transition-colors",
             pathname === "/account/api"
               ? "bg-primary text-primary-foreground"
-              : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              : "text-muted-foreground hover:bg-muted hover:text-foreground",
           )}
         >
           <Key className="h-4 w-4" />
           {t("account.api.title")}
         </Link>
-        <div className="px-3 py-1 text-xs text-muted-foreground/60">v{APP_VERSION}</div>
+        <div className="px-3 py-1 text-xs text-muted-foreground/60">
+          v{APP_VERSION}
+        </div>
       </div>
     </aside>
   );

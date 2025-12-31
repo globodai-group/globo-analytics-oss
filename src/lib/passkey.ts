@@ -49,7 +49,7 @@ export interface PasskeyCredential {
  */
 export async function generatePasskeyRegistrationOptions(
   userId: string,
-  email: string
+  email: string,
 ): Promise<PublicKeyCredentialCreationOptionsJSON> {
   // Get existing passkeys for this user to exclude
   const existingPasskeys = await prisma.passkey.findMany({
@@ -96,21 +96,23 @@ export async function verifyPasskeyRegistration(
   userId: string,
   response: RegistrationResponseJSON,
   challenge: string,
-  passkeyName?: string
+  passkeyName?: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const verification: VerifiedRegistrationResponse = await verifyRegistrationResponse({
-      response,
-      expectedChallenge: challenge,
-      expectedOrigin: origin,
-      expectedRPID: rpID,
-    });
+    const verification: VerifiedRegistrationResponse =
+      await verifyRegistrationResponse({
+        response,
+        expectedChallenge: challenge,
+        expectedOrigin: origin,
+        expectedRPID: rpID,
+      });
 
     if (!verification.verified || !verification.registrationInfo) {
       return { success: false, error: "Verification failed" };
     }
 
-    const { credential, credentialDeviceType, credentialBackedUp } = verification.registrationInfo;
+    const { credential, credentialDeviceType, credentialBackedUp } =
+      verification.registrationInfo;
 
     // Save the passkey to the database
     // credential.id and credential.publicKey are Uint8Array in v13
@@ -156,9 +158,12 @@ export async function verifyPasskeyRegistration(
  * Generate authentication options for passkey login
  */
 export async function generatePasskeyAuthenticationOptions(
-  userId?: string
+  userId?: string,
 ): Promise<PublicKeyCredentialRequestOptionsJSON> {
-  let allowCredentials: { id: string; transports?: AuthenticatorTransportFuture[] }[] = [];
+  let allowCredentials: {
+    id: string;
+    transports?: AuthenticatorTransportFuture[];
+  }[] = [];
 
   if (userId) {
     // If we know the user, only allow their passkeys
@@ -176,7 +181,8 @@ export async function generatePasskeyAuthenticationOptions(
   const options = await generateAuthenticationOptions({
     rpID,
     userVerification: "preferred",
-    allowCredentials: allowCredentials.length > 0 ? allowCredentials : undefined,
+    allowCredentials:
+      allowCredentials.length > 0 ? allowCredentials : undefined,
   });
 
   return options;
@@ -188,7 +194,7 @@ export async function generatePasskeyAuthenticationOptions(
 export async function verifyPasskeyAuthentication(
   response: AuthenticationResponseJSON,
   challenge: string,
-  userId?: string
+  userId?: string,
 ): Promise<{ success: boolean; userId?: string; error?: string }> {
   try {
     // Find the passkey by credential ID
@@ -206,18 +212,21 @@ export async function verifyPasskeyAuthentication(
       return { success: false, error: "Passkey does not belong to this user" };
     }
 
-    const verification: VerifiedAuthenticationResponse = await verifyAuthenticationResponse({
-      response,
-      expectedChallenge: challenge,
-      expectedOrigin: origin,
-      expectedRPID: rpID,
-      credential: {
-        id: passkey.credentialId,
-        publicKey: base64urlToUint8Array(passkey.publicKey) as Uint8Array<ArrayBuffer>,
-        counter: Number(passkey.counter),
-        transports: passkey.transports as AuthenticatorTransportFuture[],
-      },
-    });
+    const verification: VerifiedAuthenticationResponse =
+      await verifyAuthenticationResponse({
+        response,
+        expectedChallenge: challenge,
+        expectedOrigin: origin,
+        expectedRPID: rpID,
+        credential: {
+          id: passkey.credentialId,
+          publicKey: base64urlToUint8Array(
+            passkey.publicKey,
+          ) as Uint8Array<ArrayBuffer>,
+          counter: Number(passkey.counter),
+          transports: passkey.transports as AuthenticatorTransportFuture[],
+        },
+      });
 
     if (!verification.verified) {
       return { success: false, error: "Verification failed" };
@@ -242,7 +251,9 @@ export async function verifyPasskeyAuthentication(
 /**
  * Get all passkeys for a user
  */
-export async function getUserPasskeys(userId: string): Promise<PasskeyCredential[]> {
+export async function getUserPasskeys(
+  userId: string,
+): Promise<PasskeyCredential[]> {
   const passkeys = await prisma.passkey.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
@@ -265,7 +276,7 @@ export async function getUserPasskeys(userId: string): Promise<PasskeyCredential
  */
 export async function deletePasskey(
   userId: string,
-  passkeyId: string
+  passkeyId: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     // Verify the passkey belongs to the user
@@ -321,7 +332,7 @@ export async function deletePasskey(
 export async function renamePasskey(
   userId: string,
   passkeyId: string,
-  name: string
+  name: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const passkey = await prisma.passkey.findFirst({

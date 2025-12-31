@@ -49,7 +49,12 @@ export async function POST(request: NextRequest) {
       create: { name: "cleanup-users", lastRunAt: now },
     });
 
-    logger.info({ type: "cron", job: "cleanup-users", event: "completed", ...results });
+    logger.info({
+      type: "cron",
+      job: "cleanup-users",
+      event: "completed",
+      ...results,
+    });
 
     return NextResponse.json({
       success: true,
@@ -58,6 +63,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     logError(error, { context: "cron", job: "cleanup-users" });
-    return NextResponse.json({ error: "Failed to run cleanup" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to run cleanup" },
+      { status: 500 },
+    );
   }
 }

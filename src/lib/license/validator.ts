@@ -49,7 +49,8 @@ Fk5U4bV3xQdVLyKf5V8L5VFw5Z3Q0Q0F0w0F0w0F0w0F0w0F0w0F0w0F0w0F0w0F
 /**
  * License server URL for online validation
  */
-const LICENSE_SERVER_URL = process.env.LICENSE_SERVER_URL || "https://license.globoanalytics.com";
+const LICENSE_SERVER_URL =
+  process.env.LICENSE_SERVER_URL || "https://license.globoanalytics.com";
 
 /**
  * Singleton license instance
@@ -68,13 +69,19 @@ function getInstanceId(): string {
   const hostname = process.env.HOSTNAME || "localhost";
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || "";
 
-  return crypto.createHash("sha256").update(`${hostname}:${appUrl}`).digest("hex").slice(0, 16);
+  return crypto
+    .createHash("sha256")
+    .update(`${hostname}:${appUrl}`)
+    .digest("hex")
+    .slice(0, 16);
 }
 
 /**
  * Parse license key into parts
  */
-function parseLicenseKey(key: string): { tier: string; data: string; signature: string } | null {
+function parseLicenseKey(
+  key: string,
+): { tier: string; data: string; signature: string } | null {
   try {
     // Format: GLOB-[TIER]-[base64data].[base64signature]
     const match = key.match(/^GLOB-(COMMUNITY|PRO|ENTERPRISE)-(.+)\.(.+)$/i);
@@ -117,7 +124,13 @@ function decodeLicenseData(base64Data: string): LicenseData | null {
     const data = JSON.parse(json) as LicenseData;
 
     // Validate required fields
-    if (!data.id || !data.tier || !data.organization || !data.email || !data.expiresAt) {
+    if (
+      !data.id ||
+      !data.tier ||
+      !data.organization ||
+      !data.email ||
+      !data.expiresAt
+    ) {
       return null;
     }
 
@@ -154,7 +167,9 @@ function calculateDaysRemaining(expiresAt: string): number {
 /**
  * Validate license key locally (offline validation)
  */
-export async function validateLicenseOffline(licenseKey: string): Promise<LicenseValidationResult> {
+export async function validateLicenseOffline(
+  licenseKey: string,
+): Promise<LicenseValidationResult> {
   // Parse key
   const parsed = parseLicenseKey(licenseKey);
   if (!parsed) {
@@ -194,7 +209,9 @@ export async function validateLicenseOffline(licenseKey: string): Promise<Licens
 /**
  * Validate license online (contact license server)
  */
-export async function validateLicenseOnline(licenseKey: string): Promise<LicenseValidationResult> {
+export async function validateLicenseOnline(
+  licenseKey: string,
+): Promise<LicenseValidationResult> {
   try {
     const response = await fetch(`${LICENSE_SERVER_URL}/api/validate`, {
       method: "POST",
@@ -247,7 +264,9 @@ export async function validateLicenseOnline(licenseKey: string): Promise<License
 /**
  * Main validation function - uses cache, then online, then offline
  */
-export async function validateLicense(licenseKey?: string): Promise<LicenseValidationResult> {
+export async function validateLicense(
+  licenseKey?: string,
+): Promise<LicenseValidationResult> {
   // Use provided key or environment variable
   const key = licenseKey || process.env.LICENSE_KEY;
 
@@ -274,7 +293,9 @@ export async function validateLicense(licenseKey?: string): Promise<LicenseValid
           maxPageviews: 10000,
           maxUsers: 1,
           issuedAt: new Date().toISOString(),
-          expiresAt: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString(), // 100 years
+          expiresAt: new Date(
+            Date.now() + 100 * 365 * 24 * 60 * 60 * 1000,
+          ).toISOString(), // 100 years
           version: 1,
         },
         status: "active",
@@ -290,7 +311,8 @@ export async function validateLicense(licenseKey?: string): Promise<LicenseValid
   if (cached) {
     // Check if revalidation is needed
     const lastValidated = new Date(cached.lastValidated);
-    const needsRevalidation = Date.now() - lastValidated.getTime() > REVALIDATION_INTERVAL_MS;
+    const needsRevalidation =
+      Date.now() - lastValidated.getTime() > REVALIDATION_INTERVAL_MS;
 
     if (!needsRevalidation) {
       // Recalculate status in case of expiration
@@ -349,7 +371,9 @@ export async function hasFeature(feature: LicenseFeature): Promise<boolean> {
 /**
  * Check multiple features at once
  */
-export async function hasFeatures(features: LicenseFeature[]): Promise<boolean> {
+export async function hasFeatures(
+  features: LicenseFeature[],
+): Promise<boolean> {
   const license = await getLicense();
   if (!license) {
     return false;
@@ -361,7 +385,9 @@ export async function hasFeatures(features: LicenseFeature[]): Promise<boolean> 
 /**
  * Check if any of the features is available
  */
-export async function hasAnyFeature(features: LicenseFeature[]): Promise<boolean> {
+export async function hasAnyFeature(
+  features: LicenseFeature[],
+): Promise<boolean> {
   const license = await getLicense();
   if (!license) {
     return false;
@@ -397,11 +423,17 @@ export async function checkUsageLimits(usage: {
   const exceeded: ("domains" | "pageviews" | "users")[] = [];
 
   // 0 means unlimited
-  if (license.data.maxDomains > 0 && (usage.domains || 0) > license.data.maxDomains) {
+  if (
+    license.data.maxDomains > 0 &&
+    (usage.domains || 0) > license.data.maxDomains
+  ) {
     exceeded.push("domains");
   }
 
-  if (license.data.maxPageviews > 0 && (usage.pageviews || 0) > license.data.maxPageviews) {
+  if (
+    license.data.maxPageviews > 0 &&
+    (usage.pageviews || 0) > license.data.maxPageviews
+  ) {
     exceeded.push("pageviews");
   }
 
@@ -418,7 +450,9 @@ export async function checkUsageLimits(usage: {
 /**
  * Activate a new license key
  */
-export async function activateLicense(licenseKey: string): Promise<LicenseValidationResult> {
+export async function activateLicense(
+  licenseKey: string,
+): Promise<LicenseValidationResult> {
   // Validate the new key
   const result = await validateLicenseOnline(licenseKey);
 
@@ -427,7 +461,11 @@ export async function activateLicense(licenseKey: string): Promise<LicenseValida
     currentLicense = result.license;
 
     // Cache it
-    await cacheSet(`license:${getInstanceId()}`, result.license, LICENSE_CACHE_TTL);
+    await cacheSet(
+      `license:${getInstanceId()}`,
+      result.license,
+      LICENSE_CACHE_TTL,
+    );
 
     logger.info({
       type: "license",
@@ -477,7 +515,9 @@ export async function getLicenseStatus(): Promise<{
       status: "active",
       organization: "Self-Hosted",
       daysRemaining: 36500,
-      expiresAt: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000).toISOString(),
+      expiresAt: new Date(
+        Date.now() + 100 * 365 * 24 * 60 * 60 * 1000,
+      ).toISOString(),
       features: [
         "analytics_basic",
         "pageviews",

@@ -16,7 +16,7 @@ interface ActionResult {
 }
 
 export async function sendContactMessageAction(
-  data: z.infer<typeof contactSchema>
+  data: z.infer<typeof contactSchema>,
 ): Promise<ActionResult> {
   try {
     const validated = contactSchema.parse(data);

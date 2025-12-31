@@ -4,9 +4,18 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/routing";
-import { verifyEmailAction, resendVerificationEmailAction } from "@/lib/actions/auth";
+import {
+  verifyEmailAction,
+  resendVerificationEmailAction,
+} from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CheckCircle2, XCircle, Loader2, Mail } from "lucide-react";
@@ -18,9 +27,9 @@ export default function VerifyEmailPage() {
   const token = searchParams.get("token");
   const emailParam = searchParams.get("email");
 
-  const [status, setStatus] = useState<"loading" | "success" | "error" | "resend">(
-    token ? "loading" : "resend"
-  );
+  const [status, setStatus] = useState<
+    "loading" | "success" | "error" | "resend"
+  >(token ? "loading" : "resend");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState(emailParam || "");
   const [isResending, setIsResending] = useState(false);
@@ -92,13 +101,17 @@ export default function VerifyEmailPage() {
         <Card className="w-full max-w-md">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <XCircle className="h-16 w-16 text-red-500" />
-            <h2 className="mt-4 text-xl font-semibold">{t("verificationFailed")}</h2>
+            <h2 className="mt-4 text-xl font-semibold">
+              {t("verificationFailed")}
+            </h2>
             <p className="mt-2 text-center text-muted-foreground">{message}</p>
             <div className="mt-6 flex gap-4">
               <Button variant="outline" asChild>
                 <Link href="/login">{t("backToLogin")}</Link>
               </Button>
-              <Button onClick={() => setStatus("resend")}>{t("resendCode")}</Button>
+              <Button onClick={() => setStatus("resend")}>
+                {t("resendCode")}
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -149,7 +162,10 @@ export default function VerifyEmailPage() {
             </Button>
           </form>
           <div className="mt-4 text-center">
-            <Link href="/login" className="text-sm text-primary hover:underline">
+            <Link
+              href="/login"
+              className="text-sm text-primary hover:underline"
+            >
               {t("backToLogin")}
             </Link>
           </div>

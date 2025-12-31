@@ -49,8 +49,12 @@ export async function globalSearch({
 
   // Build filters based on context
   const userFilter = `userId:${context.userId}`;
-  const projectFilter = context.projectId ? `projectId:${context.projectId}` : "";
-  const combinedFilter = projectFilter ? `${userFilter} AND ${projectFilter}` : userFilter;
+  const projectFilter = context.projectId
+    ? `projectId:${context.projectId}`
+    : "";
+  const combinedFilter = projectFilter
+    ? `${userFilter} AND ${projectFilter}`
+    : userFilter;
 
   // Determine which indices to search based on context
   const indicesToSearch = context.types
@@ -75,14 +79,23 @@ export async function globalSearch({
           indexName,
           searchParams: {
             query,
-            filters: indexName === algoliaConfig.indices.projects ? userFilter : combinedFilter,
+            filters:
+              indexName === algoliaConfig.indices.projects
+                ? userFilter
+                : combinedFilter,
             hitsPerPage,
-            attributesToHighlight: ["name", "title", "description", "url", "eventName"],
+            attributesToHighlight: [
+              "name",
+              "title",
+              "description",
+              "url",
+              "eventName",
+            ],
             highlightPreTag: "<mark>",
             highlightPostTag: "</mark>",
           },
-        })
-      )
+        }),
+      ),
     );
 
     // Group results by type
@@ -95,7 +108,8 @@ export async function globalSearch({
       for (const hit of response.hits as AlgoliaRecord[]) {
         const result = {
           hit,
-          highlightResult: (hit as unknown as { _highlightResult?: object })._highlightResult,
+          highlightResult: (hit as unknown as { _highlightResult?: object })
+            ._highlightResult,
         };
 
         switch (hit.type) {
@@ -135,7 +149,7 @@ export async function globalSearch({
 export async function searchProjects(
   query: string,
   userId: string,
-  limit = 10
+  limit = 10,
 ): Promise<AlgoliaProjectRecord[]> {
   const validation = validateAlgoliaConfig();
   if (!validation.valid) return [];
@@ -166,7 +180,7 @@ export async function searchProjects(
  */
 export async function getRecentItems(
   context: SearchContext,
-  limit = 5
+  limit = 5,
 ): Promise<GroupedSearchResults> {
   const validation = validateAlgoliaConfig();
   if (!validation.valid) return createEmptyResults();
@@ -186,9 +200,11 @@ export async function getRecentItems(
     });
 
     const results = createEmptyResults();
-    results.projects = (projectsResponse.hits as AlgoliaProjectRecord[]).map((hit) => ({
-      hit,
-    }));
+    results.projects = (projectsResponse.hits as AlgoliaProjectRecord[]).map(
+      (hit) => ({
+        hit,
+      }),
+    );
     results.totalHits = projectsResponse.nbHits || 0;
 
     return results;

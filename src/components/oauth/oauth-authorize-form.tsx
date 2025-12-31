@@ -72,7 +72,12 @@ export function OAuthAuthorizeForm({
 
   return (
     <div className="flex gap-3">
-      <Button variant="outline" className="flex-1" onClick={handleDeny} disabled={isLoading}>
+      <Button
+        variant="outline"
+        className="flex-1"
+        onClick={handleDeny}
+        disabled={isLoading}
+      >
         {locale === "fr" ? "Refuser" : "Deny"}
       </Button>
       <Button className="flex-1" onClick={handleAuthorize} disabled={isLoading}>

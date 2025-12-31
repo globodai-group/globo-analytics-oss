@@ -109,19 +109,27 @@ export default function HomePage() {
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get powerful insights without cookies, consent banners, or compromising your
-              visitors&apos; privacy. Simple setup, real-time data, 100% GDPR compliant.
+              Get powerful insights without cookies, consent banners, or
+              compromising your visitors&apos; privacy. Simple setup, real-time
+              data, 100% GDPR compliant.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/register">
-                <Button size="lg" className="h-12 px-8 text-base gap-2 shadow-lg shadow-primary/25">
+                <Button
+                  size="lg"
+                  className="h-12 px-8 text-base gap-2 shadow-lg shadow-primary/25"
+                >
                   Start Free Trial
                   <ArrowRight className="h-5 w-5" />
                 </Button>
               </Link>
               <Link href="#demo">
-                <Button variant="outline" size="lg" className="h-12 px-8 text-base gap-2">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="h-12 px-8 text-base gap-2"
+                >
                   <Play className="h-5 w-5" />
                   Watch Demo
                 </Button>
@@ -132,7 +140,10 @@ export default function HomePage() {
             <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  <Star
+                    key={i}
+                    className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                  />
                 ))}
                 <span className="ml-2">4.9/5 from 500+ reviews</span>
               </div>
@@ -156,7 +167,9 @@ export default function HomePage() {
               <div className="aspect-[16/9] bg-gradient-to-br from-muted/50 to-muted flex items-center justify-center">
                 <div className="text-center p-8">
                   <BarChart3 className="h-24 w-24 text-primary/30 mx-auto mb-4" />
-                  <p className="text-muted-foreground">Interactive Dashboard Preview</p>
+                  <p className="text-muted-foreground">
+                    Interactive Dashboard Preview
+                  </p>
                 </div>
               </div>
             </div>
@@ -179,7 +192,10 @@ export default function HomePage() {
               "SaaS Labs",
               "Digital Co",
             ].map((company) => (
-              <div key={company} className="text-xl font-bold text-muted-foreground">
+              <div
+                key={company}
+                className="text-xl font-bold text-muted-foreground"
+              >
                 {company}
               </div>
             ))}
@@ -193,10 +209,13 @@ export default function HomePage() {
           <Badge variant="outline" className="mb-4">
             The Problem
           </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Google Analytics is broken</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            Google Analytics is broken
+          </h2>
           <p className="text-lg text-muted-foreground">
-            Complex interfaces, privacy violations, blocked by ad blockers, and banned in multiple
-            EU countries. It&apos;s time for something better.
+            Complex interfaces, privacy violations, blocked by ad blockers, and
+            banned in multiple EU countries. It&apos;s time for something
+            better.
           </p>
         </div>
 
@@ -226,10 +245,12 @@ export default function HomePage() {
             <Badge variant="secondary" className="mb-4">
               The Solution
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Analytics that respect privacy</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+              Analytics that respect privacy
+            </h2>
             <p className="text-lg opacity-90">
-              GloboAnalytics gives you all the insights you need without compromising your
-              visitors&apos; privacy or breaking any laws.
+              GloboAnalytics gives you all the insights you need without
+              compromising your visitors&apos; privacy or breaking any laws.
             </p>
           </div>
 
@@ -254,7 +275,10 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section
+        id="features"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24"
+      >
         <div className="mx-auto max-w-3xl text-center mb-16">
           <Badge variant="outline" className="mb-4">
             Features
@@ -263,7 +287,8 @@ export default function HomePage() {
             Everything you need, nothing you don&apos;t
           </h2>
           <p className="text-lg text-muted-foreground">
-            Powerful analytics without the complexity. See what matters at a glance.
+            Powerful analytics without the complexity. See what matters at a
+            glance.
           </p>
         </div>
 
@@ -324,11 +349,17 @@ export default function HomePage() {
                   <th className="p-4 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <Globe className="h-5 w-5 text-primary" />
-                      <span className="font-bold text-primary">GloboAnalytics</span>
+                      <span className="font-bold text-primary">
+                        GloboAnalytics
+                      </span>
                     </div>
                   </th>
-                  <th className="p-4 text-center text-muted-foreground">Google Analytics</th>
-                  <th className="p-4 text-center text-muted-foreground">Matomo</th>
+                  <th className="p-4 text-center text-muted-foreground">
+                    Google Analytics
+                  </th>
+                  <th className="p-4 text-center text-muted-foreground">
+                    Matomo
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -344,7 +375,12 @@ export default function HomePage() {
                   google={false}
                   matomo="partial"
                 />
-                <ComparisonRow feature="Script size" globo="< 1KB" google="45KB+" matomo="22KB" />
+                <ComparisonRow
+                  feature="Script size"
+                  globo="< 1KB"
+                  google="45KB+"
+                  matomo="22KB"
+                />
                 <ComparisonRow
                   feature="Real-time analytics"
                   globo={true}
@@ -369,17 +405,25 @@ export default function HomePage() {
                   google={false}
                   matomo={true}
                 />
-                <ComparisonRow feature="Pricing" globo="From $0" google="Free*" matomo="From $0" />
+                <ComparisonRow
+                  feature="Pricing"
+                  globo="From $0"
+                  google="Free*"
+                  matomo="From $0"
+                />
               </tbody>
             </table>
             <p className="text-xs text-muted-foreground mt-4 text-center">
-              * Google Analytics is free but you pay with your visitors&apos; data
+              * Google Analytics is free but you pay with your visitors&apos;
+              data
             </p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 mt-12">
             <Link href="/compare/google-analytics">
-              <Button variant="outline">GloboAnalytics vs Google Analytics</Button>
+              <Button variant="outline">
+                GloboAnalytics vs Google Analytics
+              </Button>
             </Link>
             <Link href="/compare/matomo">
               <Button variant="outline">GloboAnalytics vs Matomo</Button>
@@ -397,7 +441,9 @@ export default function HomePage() {
           <Badge variant="outline" className="mb-4">
             Testimonials
           </Badge>
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6">Loved by developers and marketers</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            Loved by developers and marketers
+          </h2>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -429,45 +475,59 @@ export default function HomePage() {
             <Badge variant="outline" className="mb-4">
               FAQ
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-6">Frequently Asked Questions</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+              Frequently Asked Questions
+            </h2>
           </div>
 
           <div className="max-w-2xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="gdpr">
-                <AccordionTrigger>Is GloboAnalytics really GDPR compliant?</AccordionTrigger>
+                <AccordionTrigger>
+                  Is GloboAnalytics really GDPR compliant?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Yes! We don&apos;t use cookies or collect any personal data. We don&apos;t track
-                  users across websites. No consent banner is required. We&apos;re also CCPA and
-                  PECR compliant.
+                  Yes! We don&apos;t use cookies or collect any personal data.
+                  We don&apos;t track users across websites. No consent banner
+                  is required. We&apos;re also CCPA and PECR compliant.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="migrate">
-                <AccordionTrigger>Can I migrate from Google Analytics?</AccordionTrigger>
+                <AccordionTrigger>
+                  Can I migrate from Google Analytics?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Absolutely. You can run both tools in parallel during migration. We also offer
-                  historical data import from GA (coming soon).
+                  Absolutely. You can run both tools in parallel during
+                  migration. We also offer historical data import from GA
+                  (coming soon).
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="script">
-                <AccordionTrigger>How does the tracking script work?</AccordionTrigger>
+                <AccordionTrigger>
+                  How does the tracking script work?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Our script is less than 1KB and loads asynchronously. It collects anonymous
-                  pageviews, referrers, and events without using cookies or fingerprinting.
+                  Our script is less than 1KB and loads asynchronously. It
+                  collects anonymous pageviews, referrers, and events without
+                  using cookies or fingerprinting.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="accuracy">
-                <AccordionTrigger>Why is your data more accurate than GA?</AccordionTrigger>
+                <AccordionTrigger>
+                  Why is your data more accurate than GA?
+                </AccordionTrigger>
                 <AccordionContent>
-                  Since we don&apos;t use cookies, we&apos;re not blocked by ad blockers or privacy
-                  extensions. You typically see 20-40% more traffic than GA reports.
+                  Since we don&apos;t use cookies, we&apos;re not blocked by ad
+                  blockers or privacy extensions. You typically see 20-40% more
+                  traffic than GA reports.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="pricing">
                 <AccordionTrigger>Is there a free plan?</AccordionTrigger>
                 <AccordionContent>
-                  Yes! Our free plan includes up to 10,000 pageviews/month, perfect for small sites
-                  and personal projects. No credit card required.
+                  Yes! Our free plan includes up to 10,000 pageviews/month,
+                  perfect for small sites and personal projects. No credit card
+                  required.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -488,12 +548,16 @@ export default function HomePage() {
             Ready to take back control?
           </h2>
           <p className="text-lg sm:text-xl opacity-90 max-w-2xl mx-auto mb-8">
-            Join thousands of websites using privacy-friendly analytics. Start your free trial
-            today.
+            Join thousands of websites using privacy-friendly analytics. Start
+            your free trial today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/register">
-              <Button size="lg" variant="secondary" className="h-12 px-8 text-base gap-2">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="h-12 px-8 text-base gap-2"
+              >
                 Get Started Free
                 <ArrowRight className="h-5 w-5" />
               </Button>
@@ -509,7 +573,8 @@ export default function HomePage() {
             </Link>
           </div>
           <p className="mt-6 text-sm opacity-75">
-            No credit card required &bull; 14-day free trial &bull; Cancel anytime
+            No credit card required &bull; 14-day free trial &bull; Cancel
+            anytime
           </p>
         </div>
       </section>
@@ -551,17 +616,26 @@ export default function HomePage() {
               <h4 className="font-semibold mb-4">Compare</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>
-                  <Link href="/compare/google-analytics" className="hover:text-foreground">
+                  <Link
+                    href="/compare/google-analytics"
+                    className="hover:text-foreground"
+                  >
                     vs Google Analytics
                   </Link>
                 </li>
                 <li>
-                  <Link href="/compare/matomo" className="hover:text-foreground">
+                  <Link
+                    href="/compare/matomo"
+                    className="hover:text-foreground"
+                  >
                     vs Matomo
                   </Link>
                 </li>
                 <li>
-                  <Link href="/compare/plausible" className="hover:text-foreground">
+                  <Link
+                    href="/compare/plausible"
+                    className="hover:text-foreground"
+                  >
                     vs Plausible
                   </Link>
                 </li>
@@ -590,7 +664,8 @@ export default function HomePage() {
           </div>
           <div className="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} GloboAnalytics. All rights reserved.
+              &copy; {new Date().getFullYear()} GloboAnalytics. All rights
+              reserved.
             </p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>Made with</span>
@@ -677,9 +752,11 @@ function ComparisonRow({
   matomo: boolean | string;
 }) {
   const renderValue = (value: boolean | string) => {
-    if (value === true) return <Check className="h-5 w-5 text-green-500 mx-auto" />;
+    if (value === true)
+      return <Check className="h-5 w-5 text-green-500 mx-auto" />;
     if (value === false) return <X className="h-5 w-5 text-red-500 mx-auto" />;
-    if (value === "partial") return <span className="text-yellow-600">Partial</span>;
+    if (value === "partial")
+      return <span className="text-yellow-600">Partial</span>;
     if (value === "coming")
       return <span className="text-muted-foreground text-sm">Coming soon</span>;
     return <span className="text-sm">{value}</span>;

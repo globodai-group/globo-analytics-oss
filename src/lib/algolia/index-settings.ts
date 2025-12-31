@@ -80,7 +80,11 @@ export const pageIndexSettings: IndexSettings = {
     "url",
     "projectName",
   ],
-  attributesForFaceting: ["filterOnly(userId)", "filterOnly(projectId)", "searchable(projectName)"],
+  attributesForFaceting: [
+    "filterOnly(userId)",
+    "filterOnly(projectId)",
+    "searchable(projectName)",
+  ],
   customRanking: ["desc(pageviews)", "desc(updatedAt)"],
   attributesToRetrieve: [
     "objectID",
@@ -141,7 +145,11 @@ export const segmentIndexSettings: IndexSettings = {
     "conditions",
     "projectName",
   ],
-  attributesForFaceting: ["filterOnly(userId)", "filterOnly(projectId)", "searchable(projectName)"],
+  attributesForFaceting: [
+    "filterOnly(userId)",
+    "filterOnly(projectId)",
+    "searchable(projectName)",
+  ],
   customRanking: ["desc(userCount)", "desc(updatedAt)"],
   attributesToRetrieve: [
     "objectID",
@@ -172,7 +180,11 @@ export const goalIndexSettings: IndexSettings = {
     "searchable(goalType)",
     "searchable(projectName)",
   ],
-  customRanking: ["desc(totalConversions)", "desc(conversionRate)", "desc(updatedAt)"],
+  customRanking: [
+    "desc(totalConversions)",
+    "desc(conversionRate)",
+    "desc(updatedAt)",
+  ],
   attributesToRetrieve: [
     "objectID",
     "name",
@@ -197,7 +209,11 @@ export const funnelIndexSettings: IndexSettings = {
     "steps",
     "projectName",
   ],
-  attributesForFaceting: ["filterOnly(userId)", "filterOnly(projectId)", "searchable(projectName)"],
+  attributesForFaceting: [
+    "filterOnly(userId)",
+    "filterOnly(projectId)",
+    "searchable(projectName)",
+  ],
   customRanking: ["desc(conversionRate)", "desc(updatedAt)"],
   attributesToRetrieve: [
     "objectID",

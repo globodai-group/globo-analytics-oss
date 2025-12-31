@@ -5,14 +5,26 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWebsiteSchema, type CreateWebsiteInput } from "@/lib/validations/website";
-import { createWebsiteAction, updateWebsiteAction } from "@/lib/actions/websites";
+import {
+  createWebsiteSchema,
+  type CreateWebsiteInput,
+} from "@/lib/validations/website";
+import {
+  createWebsiteAction,
+  updateWebsiteAction,
+} from "@/lib/actions/websites";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
@@ -85,7 +97,12 @@ export function WebsiteForm({ website }: WebsiteFormProps) {
 
     if (result.success) {
       toast.success(result.message);
-      if (!isEditing && result.data && typeof result.data === "object" && "id" in result.data) {
+      if (
+        !isEditing &&
+        result.data &&
+        typeof result.data === "object" &&
+        "id" in result.data
+      ) {
         router.push(`/websites/${result.data.id}/tracking`);
       } else {
         router.push("/websites");
@@ -130,7 +147,9 @@ export function WebsiteForm({ website }: WebsiteFormProps) {
             />
           </div>
           {errors.domain && (
-            <p className="text-sm text-destructive mt-2">{errors.domain.message}</p>
+            <p className="text-sm text-destructive mt-2">
+              {errors.domain.message}
+            </p>
           )}
         </CardContent>
       </Card>
@@ -161,16 +180,24 @@ export function WebsiteForm({ website }: WebsiteFormProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">{t("websites.privacyOptions.public")}</SelectItem>
-              <SelectItem value="1">{t("websites.privacyOptions.private")}</SelectItem>
-              <SelectItem value="2">{t("websites.privacyOptions.password")}</SelectItem>
+              <SelectItem value="0">
+                {t("websites.privacyOptions.public")}
+              </SelectItem>
+              <SelectItem value="1">
+                {t("websites.privacyOptions.private")}
+              </SelectItem>
+              <SelectItem value="2">
+                {t("websites.privacyOptions.password")}
+              </SelectItem>
             </SelectContent>
           </Select>
 
           {showPassword && (
             <div className="space-y-2">
               <Label htmlFor="password">
-                {locale === "fr" ? "Mot de passe pour les statistiques" : "Password for statistics"}
+                {locale === "fr"
+                  ? "Mot de passe pour les statistiques"
+                  : "Password for statistics"}
               </Label>
               <Input
                 id="password"
@@ -200,7 +227,9 @@ export function WebsiteForm({ website }: WebsiteFormProps) {
         <CardContent>
           <div className="flex items-center justify-between">
             <Label htmlFor="excludeBots" className="flex-1">
-              {locale === "fr" ? "Activer le filtrage des bots" : "Enable bot filtering"}
+              {locale === "fr"
+                ? "Activer le filtrage des bots"
+                : "Enable bot filtering"}
             </Label>
             <Switch
               id="excludeBots"
@@ -260,7 +289,12 @@ export function WebsiteForm({ website }: WebsiteFormProps) {
 
       {/* Submit */}
       <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          disabled={isLoading}
+        >
           {t("common.cancel")}
         </Button>
         <Button type="submit" disabled={isLoading}>

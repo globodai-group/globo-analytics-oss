@@ -43,13 +43,18 @@ export function PasskeySetupDialog({
   const [isRegistering, setIsRegistering] = useState(false);
 
   const t = {
-    title: locale === "fr" ? "Ajouter une clé de sécurité" : "Add a Security Key",
+    title:
+      locale === "fr" ? "Ajouter une clé de sécurité" : "Add a Security Key",
     description:
       locale === "fr"
         ? "Utilisez Touch ID, Face ID, Windows Hello ou une clé de sécurité USB"
         : "Use Touch ID, Face ID, Windows Hello, or a USB security key",
-    nameLabel: locale === "fr" ? "Nom de la clé (optionnel)" : "Key name (optional)",
-    namePlaceholder: locale === "fr" ? "ex: MacBook Pro Touch ID" : "e.g., MacBook Pro Touch ID",
+    nameLabel:
+      locale === "fr" ? "Nom de la clé (optionnel)" : "Key name (optional)",
+    namePlaceholder:
+      locale === "fr"
+        ? "ex: MacBook Pro Touch ID"
+        : "e.g., MacBook Pro Touch ID",
     nameHint:
       locale === "fr"
         ? "Donnez un nom à cette clé pour l'identifier facilement"
@@ -65,7 +70,8 @@ export function PasskeySetupDialog({
         ? "Utilisez votre empreinte digitale, reconnaissance faciale ou clé de sécurité"
         : "Use your fingerprint, face recognition, or security key",
     tryAgain: locale === "fr" ? "Réessayer" : "Try again",
-    success: locale === "fr" ? "Clé ajoutée avec succès !" : "Key added successfully!",
+    success:
+      locale === "fr" ? "Clé ajoutée avec succès !" : "Key added successfully!",
   };
 
   async function handleOpen(isOpen: boolean) {
@@ -86,7 +92,9 @@ export function PasskeySetupDialog({
       const optionsResult = await startPasskeyRegistrationAction(locale);
 
       if (!optionsResult.success || !optionsResult.data) {
-        throw new Error(optionsResult.error || "Failed to get registration options");
+        throw new Error(
+          optionsResult.error || "Failed to get registration options",
+        );
       }
 
       const { options, challenge } = optionsResult.data;
@@ -103,7 +111,7 @@ export function PasskeySetupDialog({
         registration,
         challenge,
         passkeyName || "Passkey",
-        locale
+        locale,
       );
 
       if (!verifyResult.success) {
@@ -119,7 +127,7 @@ export function PasskeySetupDialog({
           ? err.message
           : locale === "fr"
             ? "Échec de l'enregistrement"
-            : "Registration failed"
+            : "Registration failed",
       );
       setStep("error");
     } finally {
@@ -155,8 +163,13 @@ export function PasskeySetupDialog({
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 {t.cancel}
               </Button>
-              <Button onClick={handleStartRegistration} disabled={isRegistering}>
-                {isRegistering && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              <Button
+                onClick={handleStartRegistration}
+                disabled={isRegistering}
+              >
+                {isRegistering && (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                )}
                 {t.continue}
               </Button>
             </div>
@@ -169,7 +182,9 @@ export function PasskeySetupDialog({
               <Fingerprint className="h-10 w-10 text-primary" />
             </div>
             <p className="text-center font-medium">{t.registering}</p>
-            <p className="text-center text-sm text-muted-foreground">{t.registeringHint}</p>
+            <p className="text-center text-sm text-muted-foreground">
+              {t.registeringHint}
+            </p>
           </div>
         )}
 

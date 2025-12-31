@@ -90,6 +90,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     logError(error, { context: "cron", operation: "verifyLimits" });
-    return NextResponse.json({ error: "Failed to verify limits" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to verify limits" },
+      { status: 500 },
+    );
   }
 }

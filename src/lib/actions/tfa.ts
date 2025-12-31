@@ -19,7 +19,10 @@ import {
   renamePasskey,
 } from "@/lib/passkey";
 import { checkRateLimitOrError } from "@/lib/security/rate-limit";
-import type { RegistrationResponseJSON, AuthenticationResponseJSON } from "@simplewebauthn/types";
+import type {
+  RegistrationResponseJSON,
+  AuthenticationResponseJSON,
+} from "@simplewebauthn/types";
 import {
   ActionResult,
   ActionSuccess,
@@ -34,8 +37,10 @@ import {
  * Start TOTP setup - generate secret and QR code
  */
 export async function startTotpSetupAction(
-  locale: string = "en"
-): Promise<ActionResult<{ secret: string; qrCode: string; recoveryCodes: string[] }>> {
+  locale: string = "en",
+): Promise<
+  ActionResult<{ secret: string; qrCode: string; recoveryCodes: string[] }>
+> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -55,7 +60,7 @@ export async function startTotpSetupAction(
     return ActionError(
       locale === "fr"
         ? "L'authentification TOTP est déjà activée"
-        : "TOTP authentication is already enabled"
+        : "TOTP authentication is already enabled",
     );
   }
 
@@ -77,7 +82,9 @@ export async function startTotpSetupAction(
   } catch (error) {
     console.error("TOTP setup error:", error);
     return ActionError(
-      locale === "fr" ? "Erreur lors de la configuration TOTP" : "Error setting up TOTP"
+      locale === "fr"
+        ? "Erreur lors de la configuration TOTP"
+        : "Error setting up TOTP",
     );
   }
 }
@@ -87,7 +94,7 @@ export async function startTotpSetupAction(
  */
 export async function verifyTotpSetupAction(
   code: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   const session = await auth();
 
@@ -108,13 +115,15 @@ export async function verifyTotpSetupAction(
     return ActionError(
       locale === "fr"
         ? "L'authentification TOTP est déjà activée"
-        : "TOTP authentication is already enabled"
+        : "TOTP authentication is already enabled",
     );
   }
 
   if (!user.totpSecret) {
     return ActionError(
-      locale === "fr" ? "Veuillez d'abord configurer TOTP" : "Please set up TOTP first"
+      locale === "fr"
+        ? "Veuillez d'abord configurer TOTP"
+        : "Please set up TOTP first",
     );
   }
 
@@ -141,7 +150,9 @@ export async function verifyTotpSetupAction(
 /**
  * Disable TOTP
  */
-export async function disableTotpAction(locale: string = "en"): Promise<ActionResult<void>> {
+export async function disableTotpAction(
+  locale: string = "en",
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -158,7 +169,9 @@ export async function disableTotpAction(locale: string = "en"): Promise<ActionRe
   ]);
 
   if (!user?.totpVerified) {
-    return ActionError(locale === "fr" ? "TOTP n'est pas activé" : "TOTP is not enabled");
+    return ActionError(
+      locale === "fr" ? "TOTP n'est pas activé" : "TOTP is not enabled",
+    );
   }
 
   // Disable TOTP
@@ -184,10 +197,14 @@ export async function disableTotpAction(locale: string = "en"): Promise<ActionRe
 export async function verifyTotpLoginAction(
   userId: string,
   code: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   // SECURITY: Rate limit by userId to prevent brute-force
-  const rateLimitError = await checkRateLimitOrError("TFA_VERIFY", userId, locale);
+  const rateLimitError = await checkRateLimitOrError(
+    "TFA_VERIFY",
+    userId,
+    locale,
+  );
   if (rateLimitError) {
     return ActionError(rateLimitError);
   }
@@ -198,7 +215,9 @@ export async function verifyTotpLoginAction(
   });
 
   if (!user || !user.totpSecret || !user.totpVerified) {
-    return ActionError(locale === "fr" ? "TOTP non configuré" : "TOTP not configured");
+    return ActionError(
+      locale === "fr" ? "TOTP non configuré" : "TOTP not configured",
+    );
   }
 
   const isValid = verifyTotpCode(user.totpSecret, user.email, code);
@@ -219,10 +238,14 @@ export async function verifyTotpLoginAction(
 export async function verifyRecoveryCodeAction(
   userId: string,
   code: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   // SECURITY: Rate limit by userId - stricter than TOTP
-  const rateLimitError = await checkRateLimitOrError("RECOVERY_CODE", userId, locale);
+  const rateLimitError = await checkRateLimitOrError(
+    "RECOVERY_CODE",
+    userId,
+    locale,
+  );
   if (rateLimitError) {
     return ActionError(rateLimitError);
   }
@@ -234,14 +257,20 @@ export async function verifyRecoveryCodeAction(
 
   if (!user || user.recoveryCodes.length === 0) {
     return ActionError(
-      locale === "fr" ? "Aucun code de récupération disponible" : "No recovery codes available"
+      locale === "fr"
+        ? "Aucun code de récupération disponible"
+        : "No recovery codes available",
     );
   }
 
   const { valid, index } = verifyRecoveryCode(user.recoveryCodes, code);
 
   if (!valid) {
-    return ActionError(locale === "fr" ? "Code de récupération invalide" : "Invalid recovery code");
+    return ActionError(
+      locale === "fr"
+        ? "Code de récupération invalide"
+        : "Invalid recovery code",
+    );
   }
 
   // Remove the used recovery code
@@ -260,7 +289,7 @@ export async function verifyRecoveryCodeAction(
  * Regenerate recovery codes
  */
 export async function regenerateRecoveryCodesAction(
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ recoveryCodes: string[] }>> {
   const session = await auth();
 
@@ -277,7 +306,7 @@ export async function regenerateRecoveryCodesAction(
     return ActionError(
       locale === "fr"
         ? "La double authentification n'est pas activée"
-        : "Two-factor authentication is not enabled"
+        : "Two-factor authentication is not enabled",
     );
   }
 
@@ -297,7 +326,7 @@ export async function regenerateRecoveryCodesAction(
  * Start passkey registration
  */
 export async function startPasskeyRegistrationAction(
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ options: unknown; challenge: string }>> {
   const session = await auth();
 
@@ -315,13 +344,18 @@ export async function startPasskeyRegistrationAction(
   }
 
   try {
-    const options = await generatePasskeyRegistrationOptions(session.user.id, user.email);
+    const options = await generatePasskeyRegistrationOptions(
+      session.user.id,
+      user.email,
+    );
 
     return ActionSuccess({ options, challenge: options.challenge });
   } catch (error) {
     console.error("Passkey registration options error:", error);
     return ActionError(
-      locale === "fr" ? "Erreur lors de la configuration du passkey" : "Error setting up passkey"
+      locale === "fr"
+        ? "Erreur lors de la configuration du passkey"
+        : "Error setting up passkey",
     );
   }
 }
@@ -333,7 +367,7 @@ export async function completePasskeyRegistrationAction(
   response: RegistrationResponseJSON,
   challenge: string,
   passkeyName: string = "Passkey",
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ recoveryCodes?: string[] }>> {
   const session = await auth();
 
@@ -351,13 +385,21 @@ export async function completePasskeyRegistrationAction(
   ]);
 
   const needsRecoveryCodes =
-    passkeyCount === 0 && !user?.totpVerified && user?.recoveryCodes.length === 0;
+    passkeyCount === 0 &&
+    !user?.totpVerified &&
+    user?.recoveryCodes.length === 0;
 
-  const result = await verifyPasskeyRegistration(session.user.id, response, challenge, passkeyName);
+  const result = await verifyPasskeyRegistration(
+    session.user.id,
+    response,
+    challenge,
+    passkeyName,
+  );
 
   if (!result.success) {
     return ActionError(
-      result.error || (locale === "fr" ? "Échec de l'enregistrement" : "Registration failed")
+      result.error ||
+        (locale === "fr" ? "Échec de l'enregistrement" : "Registration failed"),
     );
   }
 
@@ -379,7 +421,7 @@ export async function completePasskeyRegistrationAction(
  */
 export async function getPasskeyAuthOptionsAction(
   userId?: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ options: unknown; challenge: string }>> {
   try {
     const options = await generatePasskeyAuthenticationOptions(userId);
@@ -390,7 +432,7 @@ export async function getPasskeyAuthOptionsAction(
     return ActionError(
       locale === "fr"
         ? "Erreur lors de la récupération des options"
-        : "Error getting authentication options"
+        : "Error getting authentication options",
     );
   }
 }
@@ -402,13 +444,14 @@ export async function verifyPasskeyAuthAction(
   response: AuthenticationResponseJSON,
   challenge: string,
   userId?: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ userId: string }>> {
   const result = await verifyPasskeyAuthentication(response, challenge, userId);
 
   if (!result.success || !result.userId) {
     return ActionError(
-      result.error || (locale === "fr" ? "Échec de la vérification" : "Verification failed")
+      result.error ||
+        (locale === "fr" ? "Échec de la vérification" : "Verification failed"),
     );
   }
 
@@ -419,7 +462,7 @@ export async function verifyPasskeyAuthAction(
  * Get user's passkeys
  */
 export async function getUserPasskeysAction(
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<{ passkeys: unknown[] }>> {
   const session = await auth();
 
@@ -437,7 +480,7 @@ export async function getUserPasskeysAction(
  */
 export async function deletePasskeyAction(
   passkeyId: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   const session = await auth();
 
@@ -449,7 +492,10 @@ export async function deletePasskeyAction(
 
   if (!result.success) {
     return ActionError(
-      result.error || (locale === "fr" ? "Erreur lors de la suppression" : "Error deleting passkey")
+      result.error ||
+        (locale === "fr"
+          ? "Erreur lors de la suppression"
+          : "Error deleting passkey"),
     );
   }
 
@@ -462,7 +508,7 @@ export async function deletePasskeyAction(
 export async function renamePasskeyAction(
   passkeyId: string,
   name: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   const session = await auth();
 
@@ -474,7 +520,10 @@ export async function renamePasskeyAction(
 
   if (!result.success) {
     return ActionError(
-      result.error || (locale === "fr" ? "Erreur lors du renommage" : "Error renaming passkey")
+      result.error ||
+        (locale === "fr"
+          ? "Erreur lors du renommage"
+          : "Error renaming passkey"),
     );
   }
 
@@ -488,7 +537,7 @@ export async function renamePasskeyAction(
  */
 export async function setDefault2FAMethodAction(
   method: "totp" | "passkey" | "email",
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   const session = await auth();
 
@@ -508,17 +557,21 @@ export async function setDefault2FAMethodAction(
     return ActionError(
       locale === "fr"
         ? "La double authentification n'est pas activée"
-        : "Two-factor authentication is not enabled"
+        : "Two-factor authentication is not enabled",
     );
   }
 
   // Validate the method is available
   if (method === "totp" && !user.totpVerified) {
-    return ActionError(locale === "fr" ? "TOTP n'est pas configuré" : "TOTP is not configured");
+    return ActionError(
+      locale === "fr" ? "TOTP n'est pas configuré" : "TOTP is not configured",
+    );
   }
 
   if (method === "passkey" && passkeyCount === 0) {
-    return ActionError(locale === "fr" ? "Aucun passkey configuré" : "No passkeys configured");
+    return ActionError(
+      locale === "fr" ? "Aucun passkey configuré" : "No passkeys configured",
+    );
   }
 
   await prisma.user.update({

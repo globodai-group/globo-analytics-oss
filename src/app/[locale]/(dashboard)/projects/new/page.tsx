@@ -18,7 +18,9 @@ export default async function NewProjectPage() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold">{t("projects.addNew")}</h1>
-          <p className="text-muted-foreground">{t("projects.addNewDescription")}</p>
+          <p className="text-muted-foreground">
+            {t("projects.addNewDescription")}
+          </p>
         </div>
       </div>
 

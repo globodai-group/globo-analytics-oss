@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,18 +25,30 @@ import { getGeoStatsAction } from "@/lib/actions/stats";
 // Lazy load Leaflet components to avoid SSR issues
 import dynamic from "next/dynamic";
 
-const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), {
-  ssr: false,
-});
-const TileLayer = dynamic(() => import("react-leaflet").then((mod) => mod.TileLayer), {
-  ssr: false,
-});
-const CircleMarker = dynamic(() => import("react-leaflet").then((mod) => mod.CircleMarker), {
-  ssr: false,
-});
-const Tooltip = dynamic(() => import("react-leaflet").then((mod) => mod.Tooltip), {
-  ssr: false,
-});
+const MapContainer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  {
+    ssr: false,
+  },
+);
+const TileLayer = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  {
+    ssr: false,
+  },
+);
+const CircleMarker = dynamic(
+  () => import("react-leaflet").then((mod) => mod.CircleMarker),
+  {
+    ssr: false,
+  },
+);
+const Tooltip = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Tooltip),
+  {
+    ssr: false,
+  },
+);
 
 interface GeoMapProps {
   projectId: number;
@@ -122,7 +140,11 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
       setLoading(true);
       setError(null);
 
-      const result = await getGeoStatsAction(projectId, dateRange, selectedCountry || undefined);
+      const result = await getGeoStatsAction(
+        projectId,
+        dateRange,
+        selectedCountry || undefined,
+      );
 
       if (result.success && result.data) {
         setData(result.data);
@@ -177,7 +199,9 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5" />
-            {locale === "fr" ? "Répartition géographique" : "Geographic Distribution"}
+            {locale === "fr"
+              ? "Répartition géographique"
+              : "Geographic Distribution"}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -196,7 +220,9 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5" />
-            {locale === "fr" ? "Répartition géographique" : "Geographic Distribution"}
+            {locale === "fr"
+              ? "Répartition géographique"
+              : "Geographic Distribution"}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -215,7 +241,9 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
           <div>
             <CardTitle className="flex items-center gap-2">
               <Globe className="h-5 w-5" />
-              {locale === "fr" ? "Répartition géographique" : "Geographic Distribution"}
+              {locale === "fr"
+                ? "Répartition géographique"
+                : "Geographic Distribution"}
             </CardTitle>
             <CardDescription>
               {selectedCountry ? (
@@ -241,7 +269,8 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
             </CardDescription>
           </div>
           <Badge variant="outline" className="font-mono">
-            {formatNumber(data.total)} {locale === "fr" ? "visiteurs" : "visitors"}
+            {formatNumber(data.total)}{" "}
+            {locale === "fr" ? "visiteurs" : "visitors"}
           </Badge>
         </div>
       </CardHeader>
@@ -342,7 +371,9 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
                         <div className="flex items-center gap-2">
                           <div
                             className="h-3 w-3 rounded-full"
-                            style={{ backgroundColor: getCircleColor(country.visitors) }}
+                            style={{
+                              backgroundColor: getCircleColor(country.visitors),
+                            }}
                           />
                           <span className="font-medium">{country.name}</span>
                           <Badge variant="outline" className="text-xs">
@@ -354,13 +385,20 @@ export function GeoMap({ projectId, dateRange }: GeoMapProps) {
                         {formatNumber(country.visitors)}
                       </TableCell>
                       <TableCell className="text-right font-mono">
-                        {formatPercentage((country.visitors / data.total) * 100)}
+                        {formatPercentage(
+                          (country.visitors / data.total) * 100,
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
-              {(selectedCountry ? !data.cities?.length : !data.countries.length) && (
+              {(selectedCountry
+                ? !data.cities?.length
+                : !data.countries.length) && (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-muted-foreground">
+                  <TableCell
+                    colSpan={3}
+                    className="text-center text-muted-foreground"
+                  >
                     {locale === "fr" ? "Aucune donnée" : "No data"}
                   </TableCell>
                 </TableRow>

@@ -92,6 +92,7 @@ git checkout -b type/short-description
 ```
 
 Types:
+
 - `feat/` - New feature
 - `fix/` - Bug fix
 - `docs/` - Documentation only
@@ -100,6 +101,7 @@ Types:
 - `chore/` - Maintenance tasks
 
 Examples:
+
 - `feat/add-session-recording`
 - `fix/chart-rendering-issue`
 - `docs/improve-api-reference`
@@ -117,6 +119,7 @@ type(scope): description
 ```
 
 Examples:
+
 ```
 feat(dashboard): add real-time visitor counter
 fix(tracker): resolve cookie consent detection
@@ -126,16 +129,19 @@ docs(readme): update installation instructions
 ### Before Submitting
 
 1. **Run tests**
+
    ```bash
    pnpm test
    ```
 
 2. **Run linting**
+
    ```bash
    pnpm lint
    ```
 
 3. **Run type checking**
+
    ```bash
    pnpm type-check
    ```
@@ -148,12 +154,14 @@ docs(readme): update installation instructions
 ## Pull Request Process
 
 1. **Update your branch**
+
    ```bash
    git fetch upstream
    git rebase upstream/dev
    ```
 
 2. **Push your changes**
+
    ```bash
    git push origin your-branch-name
    ```

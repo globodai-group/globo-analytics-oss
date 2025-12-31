@@ -40,7 +40,7 @@ interface RateLimitResult {
  */
 export async function checkActionRateLimit(
   type: RateLimitType,
-  identifier: string
+  identifier: string,
 ): Promise<RateLimitResult> {
   const config = RATE_LIMITS[type];
   const key = `action:${type}:${identifier}`;
@@ -91,14 +91,16 @@ export function withRateLimit<TArgs extends unknown[], TReturn>(
   type: RateLimitType,
   getIdentifier: (...args: TArgs) => string,
   action: (...args: TArgs) => Promise<TReturn>,
-  errorMessage = "Too many attempts. Please try again later."
+  errorMessage = "Too many attempts. Please try again later.",
 ): (...args: TArgs) => Promise<TReturn | { success: false; error: string }> {
   return async (...args: TArgs) => {
     const identifier = getIdentifier(...args);
     const rateLimitResult = await checkActionRateLimit(type, identifier);
 
     if (!rateLimitResult.allowed) {
-      const retryAfterSeconds = Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000);
+      const retryAfterSeconds = Math.ceil(
+        (rateLimitResult.resetAt - Date.now()) / 1000,
+      );
       return {
         success: false,
         error: `${errorMessage} Retry after ${Math.ceil(retryAfterSeconds / 60)} minutes.`,
@@ -117,7 +119,7 @@ export function withRateLimit<TArgs extends unknown[], TReturn>(
 export async function checkRateLimitOrError(
   type: RateLimitType,
   identifier: string,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<string | undefined> {
   const result = await checkActionRateLimit(type, identifier);
 

@@ -13,7 +13,11 @@ interface ReportToggleButtonProps {
   locale: string;
 }
 
-export function ReportToggleButton({ reportId, isActive, locale }: ReportToggleButtonProps) {
+export function ReportToggleButton({
+  reportId,
+  isActive,
+  locale,
+}: ReportToggleButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +43,11 @@ export function ReportToggleButton({ reportId, isActive, locale }: ReportToggleB
       disabled={isLoading}
       className={isActive ? "text-primary" : "text-muted-foreground"}
     >
-      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Power className="h-4 w-4" />}
+      {isLoading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Power className="h-4 w-4" />
+      )}
     </Button>
   );
 }

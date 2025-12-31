@@ -9,7 +9,11 @@ interface AlertDeleteButtonProps {
   locale: string;
 }
 
-export function AlertDeleteButton({ alertId, alertName, locale }: AlertDeleteButtonProps) {
+export function AlertDeleteButton({
+  alertId,
+  alertName,
+  locale,
+}: AlertDeleteButtonProps) {
   return (
     <DeleteResourceDialog
       resourceId={alertId}

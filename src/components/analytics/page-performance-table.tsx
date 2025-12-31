@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -26,17 +32,29 @@ import {
   Clock,
   TrendingDown,
 } from "lucide-react";
-import { getPagePerformanceAction, type PagePerformanceStats } from "@/lib/actions/stats";
+import {
+  getPagePerformanceAction,
+  type PagePerformanceStats,
+} from "@/lib/actions/stats";
 
 interface PagePerformanceTableProps {
   projectId: number;
   dateRange: { from: Date; to: Date };
 }
 
-type SortField = "pageviews" | "entrances" | "exits" | "bounceRate" | "exitRate" | "avgTimeOnPage";
+type SortField =
+  | "pageviews"
+  | "entrances"
+  | "exits"
+  | "bounceRate"
+  | "exitRate"
+  | "avgTimeOnPage";
 type SortOrder = "asc" | "desc";
 
-export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTableProps) {
+export function PagePerformanceTable({
+  projectId,
+  dateRange,
+}: PagePerformanceTableProps) {
   const locale = useLocale();
   const [data, setData] = useState<PagePerformanceStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -52,7 +70,10 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
       setLoading(true);
       setError(null);
 
-      const result = await getPagePerformanceAction(projectId, dateRange, { page, perPage });
+      const result = await getPagePerformanceAction(projectId, dateRange, {
+        page,
+        perPage,
+      });
 
       if (result.success && result.data) {
         setData(result.data);
@@ -90,7 +111,8 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
   };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <ArrowUpDown className="h-3 w-3 ml-1 opacity-50" />;
+    if (sortField !== field)
+      return <ArrowUpDown className="h-3 w-3 ml-1 opacity-50" />;
     return <ArrowUpDown className="h-3 w-3 ml-1" />;
   };
 
@@ -143,7 +165,9 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={locale === "fr" ? "Rechercher une page..." : "Search pages..."}
+                placeholder={
+                  locale === "fr" ? "Rechercher une page..." : "Search pages..."
+                }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="pl-8 w-64"
@@ -158,7 +182,9 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
           <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
             <FileText className="h-8 w-8 text-blue-500" />
             <div>
-              <div className="text-2xl font-bold">{formatNumber(data.total)}</div>
+              <div className="text-2xl font-bold">
+                {formatNumber(data.total)}
+              </div>
               <div className="text-xs text-muted-foreground">
                 {locale === "fr" ? "Pages uniques" : "Unique pages"}
               </div>
@@ -168,7 +194,9 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
             <ArrowRightFromLine className="h-8 w-8 text-green-500" />
             <div>
               <div className="text-2xl font-bold">
-                {formatNumber(data.pages.reduce((sum, p) => sum + p.entrances, 0))}
+                {formatNumber(
+                  data.pages.reduce((sum, p) => sum + p.entrances, 0),
+                )}
               </div>
               <div className="text-xs text-muted-foreground">
                 {locale === "fr" ? "Entrées totales" : "Total entrances"}
@@ -192,8 +220,9 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
               <div className="text-2xl font-bold">
                 {formatPercentage(
                   data.pages.length > 0
-                    ? data.pages.reduce((sum, p) => sum + p.bounceRate, 0) / data.pages.length
-                    : 0
+                    ? data.pages.reduce((sum, p) => sum + p.bounceRate, 0) /
+                        data.pages.length
+                    : 0,
                 )}
               </div>
               <div className="text-xs text-muted-foreground">
@@ -208,7 +237,9 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[40%]">{locale === "fr" ? "Page" : "Page"}</TableHead>
+                <TableHead className="w-[40%]">
+                  {locale === "fr" ? "Page" : "Page"}
+                </TableHead>
                 <TableHead
                   className="text-right cursor-pointer hover:bg-muted/50"
                   onClick={() => handleSort("pageviews")}
@@ -315,7 +346,10 @@ export function PagePerformanceTable({ projectId, dateRange }: PagePerformanceTa
               ))}
               {filteredAndSortedPages.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center text-muted-foreground py-8">
+                  <TableCell
+                    colSpan={7}
+                    className="text-center text-muted-foreground py-8"
+                  >
                     {search
                       ? locale === "fr"
                         ? "Aucune page trouvée"

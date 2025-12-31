@@ -75,7 +75,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   for (const s of dailySessions) {
     const date = format(new Date(s.startedAt), "yyyy-MM-dd");
     sessionsMap.set(date, (sessionsMap.get(date) || 0) + s._count.id);
-    pageviewsMap.set(date, (pageviewsMap.get(date) || 0) + (s._sum.pageviews || 0));
+    pageviewsMap.set(
+      date,
+      (pageviewsMap.get(date) || 0) + (s._sum.pageviews || 0),
+    );
   }
 
   // Build chart data

@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Copy, Check, ChevronDown, ChevronUp } from "lucide-react";
@@ -35,7 +41,8 @@ interface Endpoint {
 const methodColors = {
   GET: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
   POST: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
-  PATCH: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
+  PATCH:
+    "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
   DELETE: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
 };
 
@@ -100,7 +107,10 @@ account = response.json()`,
         name: "page",
         type: "number",
         required: false,
-        description: { en: "Page number (default: 1)", fr: "Numéro de page (défaut: 1)" },
+        description: {
+          en: "Page number (default: 1)",
+          fr: "Numéro de page (défaut: 1)",
+        },
       },
       {
         name: "limit",
@@ -321,7 +331,10 @@ website = response.json()`,
         name: "excludeBots",
         type: "boolean",
         required: false,
-        description: { en: "Exclude bot traffic", fr: "Exclure le trafic des bots" },
+        description: {
+          en: "Exclude bot traffic",
+          fr: "Exclure le trafic des bots",
+        },
       },
       {
         name: "excludeIps",
@@ -333,7 +346,10 @@ website = response.json()`,
         name: "excludeParams",
         type: "string",
         required: false,
-        description: { en: "URL params to exclude", fr: "Paramètres URL à exclure" },
+        description: {
+          en: "URL params to exclude",
+          fr: "Paramètres URL à exclure",
+        },
       },
     ],
     response: `{
@@ -467,7 +483,10 @@ result = response.json()`,
         name: "limit",
         type: "number",
         required: false,
-        description: { en: "Items per page (max: 100)", fr: "Éléments par page (max: 100)" },
+        description: {
+          en: "Items per page (max: 100)",
+          fr: "Éléments par page (max: 100)",
+        },
       },
     ],
     response: `// Overview (no type specified)
@@ -571,20 +590,35 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
   );
 }
 
-function EndpointCard({ endpoint, locale }: { endpoint: Endpoint; locale: string }) {
+function EndpointCard({
+  endpoint,
+  locale,
+}: {
+  endpoint: Endpoint;
+  locale: string;
+}) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <Card className="mb-4">
-      <CardHeader className="cursor-pointer" onClick={() => setExpanded(!expanded)}>
+      <CardHeader
+        className="cursor-pointer"
+        onClick={() => setExpanded(!expanded)}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Badge className={cn("font-mono text-xs", methodColors[endpoint.method])}>
+            <Badge
+              className={cn("font-mono text-xs", methodColors[endpoint.method])}
+            >
               {endpoint.method}
             </Badge>
             <code className="text-sm font-mono">{endpoint.path}</code>
           </div>
-          {expanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+          {expanded ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
         </div>
         <CardDescription>
           {locale === "fr" ? endpoint.description.fr : endpoint.description.en}
@@ -601,16 +635,26 @@ function EndpointCard({ endpoint, locale }: { endpoint: Endpoint; locale: string
               </h4>
               <div className="space-y-2">
                 {endpoint.params.map((param) => (
-                  <div key={param.name} className="flex items-start gap-2 text-sm">
-                    <code className="bg-muted px-2 py-1 rounded font-mono">{param.name}</code>
-                    <span className="text-muted-foreground">({param.type})</span>
+                  <div
+                    key={param.name}
+                    className="flex items-start gap-2 text-sm"
+                  >
+                    <code className="bg-muted px-2 py-1 rounded font-mono">
+                      {param.name}
+                    </code>
+                    <span className="text-muted-foreground">
+                      ({param.type})
+                    </span>
                     {param.required && (
                       <Badge variant="outline" className="text-xs">
                         {locale === "fr" ? "requis" : "required"}
                       </Badge>
                     )}
                     <span className="text-muted-foreground">
-                      — {locale === "fr" ? param.description.fr : param.description.en}
+                      —{" "}
+                      {locale === "fr"
+                        ? param.description.fr
+                        : param.description.en}
                     </span>
                   </div>
                 ))}
@@ -626,16 +670,26 @@ function EndpointCard({ endpoint, locale }: { endpoint: Endpoint; locale: string
               </h4>
               <div className="space-y-2">
                 {endpoint.body.map((field) => (
-                  <div key={field.name} className="flex items-start gap-2 text-sm">
-                    <code className="bg-muted px-2 py-1 rounded font-mono">{field.name}</code>
-                    <span className="text-muted-foreground">({field.type})</span>
+                  <div
+                    key={field.name}
+                    className="flex items-start gap-2 text-sm"
+                  >
+                    <code className="bg-muted px-2 py-1 rounded font-mono">
+                      {field.name}
+                    </code>
+                    <span className="text-muted-foreground">
+                      ({field.type})
+                    </span>
                     {field.required && (
                       <Badge variant="outline" className="text-xs">
                         {locale === "fr" ? "requis" : "required"}
                       </Badge>
                     )}
                     <span className="text-muted-foreground">
-                      — {locale === "fr" ? field.description.fr : field.description.en}
+                      —{" "}
+                      {locale === "fr"
+                        ? field.description.fr
+                        : field.description.en}
                     </span>
                   </div>
                 ))}
@@ -645,13 +699,17 @@ function EndpointCard({ endpoint, locale }: { endpoint: Endpoint; locale: string
 
           {/* Response */}
           <div>
-            <h4 className="font-semibold mb-2">{locale === "fr" ? "Réponse" : "Response"}</h4>
+            <h4 className="font-semibold mb-2">
+              {locale === "fr" ? "Réponse" : "Response"}
+            </h4>
             <CodeBlock code={endpoint.response} language="json" />
           </div>
 
           {/* Examples */}
           <div>
-            <h4 className="font-semibold mb-2">{locale === "fr" ? "Exemples" : "Examples"}</h4>
+            <h4 className="font-semibold mb-2">
+              {locale === "fr" ? "Exemples" : "Examples"}
+            </h4>
             <Tabs defaultValue="curl">
               <TabsList>
                 <TabsTrigger value="curl">cURL</TabsTrigger>
@@ -662,7 +720,10 @@ function EndpointCard({ endpoint, locale }: { endpoint: Endpoint; locale: string
                 <CodeBlock code={endpoint.example.curl} language="bash" />
               </TabsContent>
               <TabsContent value="javascript" className="mt-2">
-                <CodeBlock code={endpoint.example.javascript} language="javascript" />
+                <CodeBlock
+                  code={endpoint.example.javascript}
+                  language="javascript"
+                />
               </TabsContent>
               <TabsContent value="python" className="mt-2">
                 <CodeBlock code={endpoint.example.python} language="python" />
@@ -688,8 +749,12 @@ export function ApiDocumentation({ locale }: ApiDocumentationProps) {
         <Card>
           <CardContent className="pt-6 space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">{locale === "fr" ? "URL de base" : "Base URL"}</h3>
-              <code className="bg-muted px-3 py-2 rounded block">{baseUrl}</code>
+              <h3 className="font-semibold mb-2">
+                {locale === "fr" ? "URL de base" : "Base URL"}
+              </h3>
+              <code className="bg-muted px-3 py-2 rounded block">
+                {baseUrl}
+              </code>
             </div>
             <div>
               <h3 className="font-semibold mb-2">
@@ -700,7 +765,10 @@ export function ApiDocumentation({ locale }: ApiDocumentationProps) {
                   ? "Toutes les requêtes API nécessitent un token Bearer dans l'en-tête Authorization. Vous pouvez générer un token API dans les paramètres de votre compte."
                   : "All API requests require a Bearer token in the Authorization header. You can generate an API token in your account settings."}
               </p>
-              <CodeBlock code="Authorization: Bearer YOUR_API_TOKEN" language="text" />
+              <CodeBlock
+                code="Authorization: Bearer YOUR_API_TOKEN"
+                language="text"
+              />
             </div>
             <div>
               <h3 className="font-semibold mb-2">
@@ -749,7 +817,9 @@ export function ApiDocumentation({ locale }: ApiDocumentationProps) {
 
       {/* Endpoints */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">{locale === "fr" ? "Endpoints" : "Endpoints"}</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          {locale === "fr" ? "Endpoints" : "Endpoints"}
+        </h2>
 
         {/* Account */}
         <div className="mb-8">

@@ -116,7 +116,10 @@ export async function deleteProjectFromIndex(projectId: number): Promise<void> {
 /**
  * Sync top pages for a project
  */
-export async function syncProjectPages(projectId: number, userId: string): Promise<number> {
+export async function syncProjectPages(
+  projectId: number,
+  userId: string,
+): Promise<number> {
   if (!isAlgoliaAdminConfigured()) return 0;
 
   const project = await prisma.project.findUnique({
@@ -169,7 +172,10 @@ export async function syncProjectPages(projectId: number, userId: string): Promi
 /**
  * Sync custom events for a project
  */
-export async function syncProjectEvents(projectId: number, userId: string): Promise<number> {
+export async function syncProjectEvents(
+  projectId: number,
+  userId: string,
+): Promise<number> {
   if (!isAlgoliaAdminConfigured()) return 0;
 
   const project = await prisma.project.findUnique({
@@ -221,7 +227,10 @@ export async function syncProjectEvents(projectId: number, userId: string): Prom
 /**
  * Sync segments for a project
  */
-export async function syncProjectSegments(projectId: number, userId: string): Promise<number> {
+export async function syncProjectSegments(
+  projectId: number,
+  userId: string,
+): Promise<number> {
   if (!isAlgoliaAdminConfigured()) return 0;
 
   const project = await prisma.project.findUnique({
@@ -259,7 +268,10 @@ export async function syncProjectSegments(projectId: number, userId: string): Pr
 /**
  * Sync goals for a project
  */
-export async function syncProjectGoals(projectId: number, userId: string): Promise<number> {
+export async function syncProjectGoals(
+  projectId: number,
+  userId: string,
+): Promise<number> {
   if (!isAlgoliaAdminConfigured()) return 0;
 
   const project = await prisma.project.findUnique({
@@ -297,7 +309,10 @@ export async function syncProjectGoals(projectId: number, userId: string): Promi
 /**
  * Sync funnels for a project
  */
-export async function syncProjectFunnels(projectId: number, userId: string): Promise<number> {
+export async function syncProjectFunnels(
+  projectId: number,
+  userId: string,
+): Promise<number> {
   if (!isAlgoliaAdminConfigured()) return 0;
 
   const project = await prisma.project.findUnique({
@@ -378,7 +393,9 @@ export async function fullSyncForUser(userId: string): Promise<{
     stats.funnels += await syncProjectFunnels(project.id, userId);
   }
 
-  logger.info(`Full Algolia sync completed for user ${userId}: ${JSON.stringify(stats)}`);
+  logger.info(
+    `Full Algolia sync completed for user ${userId}: ${JSON.stringify(stats)}`,
+  );
   return stats;
 }
 
@@ -405,12 +422,21 @@ function categorizeEvent(eventName: string): string {
 
   if (name.includes("click") || name.includes("tap")) return "Interaction";
   if (name.includes("submit") || name.includes("form")) return "Form";
-  if (name.includes("purchase") || name.includes("checkout") || name.includes("buy"))
+  if (
+    name.includes("purchase") ||
+    name.includes("checkout") ||
+    name.includes("buy")
+  )
     return "E-commerce";
-  if (name.includes("signup") || name.includes("register") || name.includes("login"))
+  if (
+    name.includes("signup") ||
+    name.includes("register") ||
+    name.includes("login")
+  )
     return "Authentication";
   if (name.includes("search")) return "Search";
-  if (name.includes("video") || name.includes("play") || name.includes("watch")) return "Media";
+  if (name.includes("video") || name.includes("play") || name.includes("watch"))
+    return "Media";
   if (name.includes("download")) return "Download";
   if (name.includes("share") || name.includes("social")) return "Social";
   if (name.includes("error") || name.includes("fail")) return "Error";

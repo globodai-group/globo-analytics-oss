@@ -5,7 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { FunnelStepType } from "@prisma/client";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { verifyProjectOwnership } from "./with-project-ownership";
 
 interface FunnelStepInput {
@@ -30,7 +35,7 @@ interface FunnelInput {
 export async function createFunnelAction(
   projectId: number,
   input: FunnelInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   const t = await getTranslations({ locale, namespace: "funnels" });
   const session = await auth();
@@ -86,7 +91,7 @@ export async function createFunnelAction(
 export async function updateFunnelAction(
   funnelId: number,
   input: Partial<FunnelInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "funnels" });
   const session = await auth();
@@ -154,7 +159,7 @@ export async function updateFunnelAction(
  */
 export async function deleteFunnelAction(
   funnelId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "funnels" });
   const session = await auth();
@@ -185,7 +190,9 @@ export async function deleteFunnelAction(
 /**
  * Toggle funnel active status
  */
-export async function toggleFunnelActiveAction(funnelId: number): Promise<ActionResult<void>> {
+export async function toggleFunnelActiveAction(
+  funnelId: number,
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -216,7 +223,7 @@ export async function toggleFunnelActiveAction(funnelId: number): Promise<Action
 export async function getFunnelAnalysisAction(
   funnelId: number,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<ActionResult<unknown>> {
   const t = await getTranslations({ locale, namespace: "funnels" });
   const session = await auth();
@@ -281,7 +288,7 @@ export async function getFunnelAnalysisAction(
         dropOffRate: 0,
         conversionRate: 0,
       };
-    })
+    }),
   );
 
   // Calculate drop-off and conversion rates
@@ -292,23 +299,35 @@ export async function getFunnelAnalysisAction(
       const previousVisitors = stepsWithMetrics[i - 1].visitors;
       const currentVisitors = stepsWithMetrics[i].visitors;
 
-      stepsWithMetrics[i].dropOff = Math.max(0, previousVisitors - currentVisitors);
+      stepsWithMetrics[i].dropOff = Math.max(
+        0,
+        previousVisitors - currentVisitors,
+      );
       stepsWithMetrics[i].dropOffRate =
         previousVisitors > 0
-          ? Math.round(((previousVisitors - currentVisitors) / previousVisitors) * 100 * 100) / 100
+          ? Math.round(
+              ((previousVisitors - currentVisitors) / previousVisitors) *
+                100 *
+                100,
+            ) / 100
           : 0;
       stepsWithMetrics[i].conversionRate =
         stepsWithMetrics[0].visitors > 0
-          ? Math.round((currentVisitors / stepsWithMetrics[0].visitors) * 100 * 100) / 100
+          ? Math.round(
+              (currentVisitors / stepsWithMetrics[0].visitors) * 100 * 100,
+            ) / 100
           : 0;
     }
   }
 
   // Overall funnel stats
   const totalEntrants = stepsWithMetrics[0]?.visitors || 0;
-  const totalConversions = stepsWithMetrics[stepsWithMetrics.length - 1]?.visitors || 0;
+  const totalConversions =
+    stepsWithMetrics[stepsWithMetrics.length - 1]?.visitors || 0;
   const overallConversionRate =
-    totalEntrants > 0 ? Math.round((totalConversions / totalEntrants) * 100 * 100) / 100 : 0;
+    totalEntrants > 0
+      ? Math.round((totalConversions / totalEntrants) * 100 * 100) / 100
+      : 0;
 
   return ActionSuccess({
     funnel: {

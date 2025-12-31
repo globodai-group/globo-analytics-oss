@@ -17,7 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Loader2, Plus, Trash2, Filter } from "lucide-react";
-import { createSegmentAction, updateSegmentAction } from "@/lib/actions/segments";
+import {
+  createSegmentAction,
+  updateSegmentAction,
+} from "@/lib/actions/segments";
 import { SEGMENT_FIELDS, OPERATORS_BY_TYPE } from "@/lib/analytics/segments";
 import { toast } from "sonner";
 import type {
@@ -49,18 +52,23 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
   const [isShared, setIsShared] = useState(segment?.isShared || false);
 
   // Parse existing conditions or create default
-  const existingConditions = segment?.conditions as SegmentCondition | undefined;
+  const existingConditions = segment?.conditions as
+    | SegmentCondition
+    | undefined;
   const [conditionType, setConditionType] = useState<"AND" | "OR">(
-    existingConditions?.type || "AND"
+    existingConditions?.type || "AND",
   );
   const [rules, setRules] = useState<SegmentRule[]>(
     existingConditions?.rules || [
       { id: generateId(), field: "country", operator: "equals", value: "" },
-    ]
+    ],
   );
 
   const addRule = () => {
-    setRules([...rules, { id: generateId(), field: "country", operator: "equals", value: "" }]);
+    setRules([
+      ...rules,
+      { id: generateId(), field: "country", operator: "equals", value: "" },
+    ]);
   };
 
   const removeRule = (id: string) => {
@@ -86,7 +94,7 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
           return updated;
         }
         return r;
-      })
+      }),
     );
   };
 
@@ -105,13 +113,23 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
 
     const conditions: SegmentCondition = {
       type: conditionType,
-      rules: rules.filter((r) => r.value !== "" || ["is_set", "is_not_set"].includes(r.operator)),
+      rules: rules.filter(
+        (r) => r.value !== "" || ["is_set", "is_not_set"].includes(r.operator),
+      ),
     };
 
     try {
       const result = segment
-        ? await updateSegmentAction(segment.id, { name, description, conditions, isShared }, locale)
-        : await createSegmentAction(projectId, { name, description, conditions, isShared }, locale);
+        ? await updateSegmentAction(
+            segment.id,
+            { name, description, conditions, isShared },
+            locale,
+          )
+        : await createSegmentAction(
+            projectId,
+            { name, description, conditions, isShared },
+            locale,
+          );
 
       if (result.success) {
         toast.success(result.message);
@@ -121,7 +139,9 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
         toast.error(result.error);
       }
     } catch {
-      toast.error(locale === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        locale === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -136,7 +156,7 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
       acc[field.category].push(field);
       return acc;
     },
-    {} as Record<string, Array<(typeof SEGMENT_FIELDS)[number]>>
+    {} as Record<string, Array<(typeof SEGMENT_FIELDS)[number]>>,
   );
 
   const categoryLabels: Record<string, { en: string; fr: string }> = {
@@ -165,7 +185,11 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={locale === "fr" ? "Ex: Visiteurs français" : "E.g.: French visitors"}
+              placeholder={
+                locale === "fr"
+                  ? "Ex: Visiteurs français"
+                  : "E.g.: French visitors"
+              }
               required
             />
           </div>
@@ -177,7 +201,9 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder={
-                locale === "fr" ? "Description optionnelle..." : "Optional description..."
+                locale === "fr"
+                  ? "Description optionnelle..."
+                  : "Optional description..."
               }
               rows={2}
             />
@@ -236,25 +262,30 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
                     <Label className="text-xs">{t("field")}</Label>
                     <Select
                       value={rule.field}
-                      onValueChange={(value) => updateRule(rule.id, "field", value as SegmentField)}
+                      onValueChange={(value) =>
+                        updateRule(rule.id, "field", value as SegmentField)
+                      }
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {Object.entries(fieldsByCategory).map(([category, fields]) => (
-                          <div key={category}>
-                            <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                              {categoryLabels[category]?.[locale === "fr" ? "fr" : "en"] ||
-                                category}
+                        {Object.entries(fieldsByCategory).map(
+                          ([category, fields]) => (
+                            <div key={category}>
+                              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                                {categoryLabels[category]?.[
+                                  locale === "fr" ? "fr" : "en"
+                                ] || category}
+                              </div>
+                              {fields.map((field) => (
+                                <SelectItem key={field.id} value={field.id}>
+                                  {field.label}
+                                </SelectItem>
+                              ))}
                             </div>
-                            {fields.map((field) => (
-                              <SelectItem key={field.id} value={field.id}>
-                                {field.label}
-                              </SelectItem>
-                            ))}
-                          </div>
-                        ))}
+                          ),
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -265,18 +296,24 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
                     <Select
                       value={rule.operator}
                       onValueChange={(value) =>
-                        updateRule(rule.id, "operator", value as SegmentOperator)
+                        updateRule(
+                          rule.id,
+                          "operator",
+                          value as SegmentOperator,
+                        )
                       }
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {OPERATORS_BY_TYPE[getFieldType(rule.field)]?.map((op) => (
-                          <SelectItem key={op.id} value={op.id}>
-                            {op.label}
-                          </SelectItem>
-                        ))}
+                        {OPERATORS_BY_TYPE[getFieldType(rule.field)]?.map(
+                          (op) => (
+                            <SelectItem key={op.id} value={op.id}>
+                              {op.label}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
@@ -288,7 +325,9 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
                       {getFieldOptions(rule.field) ? (
                         <Select
                           value={rule.value as string}
-                          onValueChange={(value) => updateRule(rule.id, "value", value)}
+                          onValueChange={(value) =>
+                            updateRule(rule.id, "value", value)
+                          }
                         >
                           <SelectTrigger>
                             <SelectValue placeholder={t("value")} />
@@ -305,13 +344,17 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
                         <Input
                           type="number"
                           value={rule.value as string}
-                          onChange={(e) => updateRule(rule.id, "value", e.target.value)}
+                          onChange={(e) =>
+                            updateRule(rule.id, "value", e.target.value)
+                          }
                           placeholder="0"
                         />
                       ) : (
                         <Input
                           value={rule.value as string}
-                          onChange={(e) => updateRule(rule.id, "value", e.target.value)}
+                          onChange={(e) =>
+                            updateRule(rule.id, "value", e.target.value)
+                          }
                           placeholder={t("value")}
                         />
                       )}
@@ -336,7 +379,12 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
           </div>
 
           {/* Add Rule Button */}
-          <Button type="button" variant="outline" onClick={addRule} className="w-full gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={addRule}
+            className="w-full gap-2"
+          >
             <Plus className="h-4 w-4" />
             {t("addCondition")}
           </Button>

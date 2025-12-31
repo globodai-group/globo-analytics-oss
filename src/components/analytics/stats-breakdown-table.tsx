@@ -63,7 +63,9 @@ export function StatsBreakdownTable({
               {/* Content */}
               <div className="relative flex items-center justify-between py-2 px-3">
                 <div className="flex items-center gap-2 min-w-0">
-                  {row.icon && <span className="flex-shrink-0">{row.icon}</span>}
+                  {row.icon && (
+                    <span className="flex-shrink-0">{row.icon}</span>
+                  )}
                   <span className="text-sm truncate">{row.label}</span>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0">
@@ -84,7 +86,9 @@ export function StatsBreakdownTable({
 
       {data.length > maxRows && (
         <p className="text-xs text-muted-foreground text-center pt-2">
-          {locale === "fr" ? `+${data.length - maxRows} autres` : `+${data.length - maxRows} more`}
+          {locale === "fr"
+            ? `+${data.length - maxRows} autres`
+            : `+${data.length - maxRows} more`}
         </p>
       )}
     </div>

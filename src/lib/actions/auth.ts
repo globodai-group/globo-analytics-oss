@@ -2,7 +2,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { hashPassword, signIn, signOut } from "@/lib/auth";
-import { registerSchema, forgotPasswordSchema, resetPasswordSchema } from "@/lib/validations/auth";
+import {
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from "@/lib/validations/auth";
 import { redirect } from "next/navigation";
 import {
   sendEmail,
@@ -16,7 +20,10 @@ import {
 } from "@/lib/email";
 import { checkRateLimitOrError } from "@/lib/security/rate-limit";
 
-export async function registerAction(formData: FormData, locale: string = "en") {
+export async function registerAction(
+  formData: FormData,
+  locale: string = "en",
+) {
   const rawData = {
     firstName: formData.get("firstName") as string,
     lastName: formData.get("lastName") as string,
@@ -76,7 +83,10 @@ export async function registerAction(formData: FormData, locale: string = "en") 
 
     await sendEmail({
       to: email,
-      subject: locale === "fr" ? "Vérifiez votre adresse email" : "Verify your email address",
+      subject:
+        locale === "fr"
+          ? "Vérifiez votre adresse email"
+          : "Verify your email address",
       html: emailHtml,
     });
 
@@ -105,7 +115,11 @@ export async function loginAction(formData: FormData, locale: string = "en") {
   const password = formData.get("password") as string;
 
   // SECURITY: Rate limit by email to prevent brute-force attacks
-  const rateLimitError = await checkRateLimitOrError("LOGIN", email.toLowerCase(), locale);
+  const rateLimitError = await checkRateLimitOrError(
+    "LOGIN",
+    email.toLowerCase(),
+    locale,
+  );
   if (rateLimitError) {
     return { error: rateLimitError };
   }
@@ -132,7 +146,10 @@ export async function loginAction(formData: FormData, locale: string = "en") {
 
     if (!user) {
       return {
-        error: locale === "fr" ? "Email ou mot de passe incorrect" : "Invalid email or password",
+        error:
+          locale === "fr"
+            ? "Email ou mot de passe incorrect"
+            : "Invalid email or password",
       };
     }
 
@@ -177,11 +194,18 @@ export async function loginAction(formData: FormData, locale: string = "en") {
         });
 
         // Envoyer le code par email
-        const emailHtml = getTfaCodeTemplate(user.firstName, tfaCode, user.locale || locale);
+        const emailHtml = getTfaCodeTemplate(
+          user.firstName,
+          tfaCode,
+          user.locale || locale,
+        );
 
         await sendEmail({
           to: email,
-          subject: locale === "fr" ? "Votre code de vérification" : "Your verification code",
+          subject:
+            locale === "fr"
+              ? "Votre code de vérification"
+              : "Your verification code",
           html: emailHtml,
         });
       }
@@ -206,7 +230,10 @@ export async function loginAction(formData: FormData, locale: string = "en") {
     return { success: true };
   } catch {
     return {
-      error: locale === "fr" ? "Email ou mot de passe incorrect" : "Invalid email or password",
+      error:
+        locale === "fr"
+          ? "Email ou mot de passe incorrect"
+          : "Invalid email or password",
     };
   }
 }
@@ -216,7 +243,10 @@ export async function logoutAction() {
   redirect("/login");
 }
 
-export async function forgotPasswordAction(formData: FormData, locale: string = "en") {
+export async function forgotPasswordAction(
+  formData: FormData,
+  locale: string = "en",
+) {
   const rawData = {
     email: formData.get("email") as string,
   };
@@ -232,7 +262,11 @@ export async function forgotPasswordAction(formData: FormData, locale: string = 
   const { email } = validatedFields.data;
 
   // SECURITY: Rate limit by email to prevent abuse
-  const rateLimitError = await checkRateLimitOrError("PASSWORD_RESET", email.toLowerCase(), locale);
+  const rateLimitError = await checkRateLimitOrError(
+    "PASSWORD_RESET",
+    email.toLowerCase(),
+    locale,
+  );
   if (rateLimitError) {
     return { error: rateLimitError };
   }
@@ -269,11 +303,18 @@ export async function forgotPasswordAction(formData: FormData, locale: string = 
 
   // Envoyer l'email
   const resetUrl = getResetPasswordUrl(token, user.locale || locale);
-  const emailHtml = getResetPasswordTemplate(user.firstName, resetUrl, user.locale || locale);
+  const emailHtml = getResetPasswordTemplate(
+    user.firstName,
+    resetUrl,
+    user.locale || locale,
+  );
 
   await sendEmail({
     to: email,
-    subject: locale === "fr" ? "Réinitialisez votre mot de passe" : "Reset your password",
+    subject:
+      locale === "fr"
+        ? "Réinitialisez votre mot de passe"
+        : "Reset your password",
     html: emailHtml,
   });
 
@@ -283,7 +324,10 @@ export async function forgotPasswordAction(formData: FormData, locale: string = 
   };
 }
 
-export async function resetPasswordAction(formData: FormData, locale: string = "en") {
+export async function resetPasswordAction(
+  formData: FormData,
+  locale: string = "en",
+) {
   const rawData = {
     token: formData.get("token") as string,
     password: formData.get("password") as string,
@@ -375,7 +419,10 @@ export async function verifyEmailAction(token: string, locale: string = "en") {
   };
 }
 
-export async function resendVerificationEmailAction(email: string, locale: string = "en") {
+export async function resendVerificationEmailAction(
+  email: string,
+  locale: string = "en",
+) {
   const user = await prisma.user.findUnique({
     where: { email },
     select: { id: true, firstName: true, emailVerified: true },
@@ -384,13 +431,18 @@ export async function resendVerificationEmailAction(email: string, locale: strin
   if (!user) {
     return {
       error:
-        locale === "fr" ? "Aucun compte trouvé avec cet email" : "No account found with this email",
+        locale === "fr"
+          ? "Aucun compte trouvé avec cet email"
+          : "No account found with this email",
     };
   }
 
   if (user.emailVerified) {
     return {
-      error: locale === "fr" ? "Cet email est déjà vérifié" : "This email is already verified",
+      error:
+        locale === "fr"
+          ? "Cet email est déjà vérifié"
+          : "This email is already verified",
     };
   }
 
@@ -410,13 +462,19 @@ export async function resendVerificationEmailAction(email: string, locale: strin
 
   await sendEmail({
     to: email,
-    subject: locale === "fr" ? "Vérifiez votre adresse email" : "Verify your email address",
+    subject:
+      locale === "fr"
+        ? "Vérifiez votre adresse email"
+        : "Verify your email address",
     html: emailHtml,
   });
 
   return {
     success: true,
-    message: locale === "fr" ? "Email de vérification envoyé" : "Verification email sent",
+    message:
+      locale === "fr"
+        ? "Email de vérification envoyé"
+        : "Verification email sent",
   };
 }
 
@@ -443,21 +501,30 @@ export async function sendTfaCodeAction(userId: string, locale: string = "en") {
     },
   });
 
-  const emailHtml = getTfaCodeTemplate(user.firstName, tfaCode, user.locale || locale);
+  const emailHtml = getTfaCodeTemplate(
+    user.firstName,
+    tfaCode,
+    user.locale || locale,
+  );
 
   await sendEmail({
     to: user.email,
-    subject: locale === "fr" ? "Votre code de vérification" : "Your verification code",
+    subject:
+      locale === "fr" ? "Votre code de vérification" : "Your verification code",
     html: emailHtml,
   });
 
   return {
     success: true,
-    message: locale === "fr" ? "Code envoyé avec succès" : "Code sent successfully",
+    message:
+      locale === "fr" ? "Code envoyé avec succès" : "Code sent successfully",
   };
 }
 
-export async function verifyTfaAction(formData: FormData, locale: string = "en") {
+export async function verifyTfaAction(
+  formData: FormData,
+  locale: string = "en",
+) {
   const code = formData.get("code") as string;
   const userId = formData.get("userId") as string;
   const email = formData.get("email") as string;
@@ -470,7 +537,11 @@ export async function verifyTfaAction(formData: FormData, locale: string = "en")
   }
 
   // SECURITY: Rate limit by userId to prevent brute-force
-  const rateLimitError = await checkRateLimitOrError("TFA_VERIFY", userId, locale);
+  const rateLimitError = await checkRateLimitOrError(
+    "TFA_VERIFY",
+    userId,
+    locale,
+  );
   if (rateLimitError) {
     return { error: rateLimitError };
   }
@@ -500,7 +571,10 @@ export async function verifyTfaAction(formData: FormData, locale: string = "en")
   // Vérifier le code
   if (user.tfaCode !== code) {
     return {
-      error: locale === "fr" ? "Code de vérification invalide" : "Invalid verification code",
+      error:
+        locale === "fr"
+          ? "Code de vérification invalide"
+          : "Invalid verification code",
     };
   }
 
@@ -524,7 +598,8 @@ export async function verifyTfaAction(formData: FormData, locale: string = "en")
     return { success: true };
   } catch {
     return {
-      error: locale === "fr" ? "Erreur lors de la connexion" : "Error signing in",
+      error:
+        locale === "fr" ? "Erreur lors de la connexion" : "Error signing in",
     };
   }
 }

@@ -4,7 +4,10 @@ import { auth } from "@/lib/auth";
 import { subMinutes } from "date-fns";
 import { logError } from "@/lib/logger";
 
-export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
   try {
     const { id } = await params;
     const session = await auth();
@@ -15,7 +18,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     const projectId = parseInt(id);
     if (isNaN(projectId)) {
-      return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid project ID" },
+        { status: 400 },
+      );
     }
 
     // Check project ownership
@@ -56,6 +62,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     });
   } catch (error) {
     logError(error, { context: "api", operation: "realtime" });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }
