@@ -10,20 +10,20 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml">
-    <img src="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml/badge.svg" alt="CI"/>
+  <a href="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml?query=branch%3Amain">
+    <img src="https://github.com/globodai-group/globo-analytics-oss/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"/>
   </a>
   <a href="https://codecov.io/gh/globodai-group/globo-analytics-oss">
-    <img src="https://codecov.io/gh/globodai-group/globo-analytics-oss/branch/main/graph/badge.svg" alt="Coverage"/>
+    <img src="https://codecov.io/gh/globodai-group/globo-analytics-oss/branch/main/graph/badge.svg?token=CODECOV_TOKEN" alt="Coverage"/>
   </a>
-  <a href="https://github.com/globodai-group/globo-analytics-oss/releases">
-    <img src="https://img.shields.io/github/v/release/globodai-group/globo-analytics-oss?color=blue" alt="Release"/>
+  <a href="https://github.com/globodai-group/globo-analytics-oss/releases/latest">
+    <img src="https://img.shields.io/github/v/release/globodai-group/globo-analytics-oss?color=blue&cacheSeconds=3600" alt="Release"/>
   </a>
   <a href="./LICENSE">
     <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License"/>
   </a>
   <a href="https://hub.docker.com/r/artik0din/globo-analytics-oss">
-    <img src="https://img.shields.io/docker/pulls/artik0din/globo-analytics-oss" alt="Docker Pulls"/>
+    <img src="https://img.shields.io/docker/pulls/artik0din/globo-analytics-oss?cacheSeconds=3600" alt="Docker Pulls"/>
   </a>
 </p>
 
