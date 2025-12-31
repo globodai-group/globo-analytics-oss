@@ -126,28 +126,31 @@ docker-compose up -d
 
 ### Option 3: Manual Installation
 
-**Prerequisites:** Node.js 20+, PostgreSQL 16+, pnpm
+**Prerequisites:** Node.js 20+, PostgreSQL 16+, [Bun](https://bun.sh)
 
 ```bash
+# Install Bun (if not already installed)
+curl -fsSL https://bun.sh/install | bash
+
 # Clone the repository
 git clone https://github.com/globodai-group/globo-analytics-oss.git
 cd globo-analytics-oss
 
 # Install dependencies
-pnpm install
+bun install
 
 # Configure environment
 cp .env.example .env
 # Edit .env with your database URL and settings
 
 # Run database migrations
-pnpm db:migrate
+bun run db:migrate
 
 # Build for production
-pnpm build
+bun run build
 
 # Start the server
-pnpm start
+bun run start
 ```
 
 ### First Run: Setup Wizard
