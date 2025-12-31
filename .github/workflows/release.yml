@@ -15,8 +15,8 @@ jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    # Only run on merge commits from dev branch
-    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'dev')
+    # Only run on merge commits from rec branch (release candidate)
+    if: contains(github.event.head_commit.message, 'Merge pull request') && contains(github.event.head_commit.message, 'rec')
 
     steps:
       - uses: actions/checkout@v4
