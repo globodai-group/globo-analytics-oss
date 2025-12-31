@@ -14,12 +14,10 @@ import {
   X,
   Star,
   TrendingUp,
-  Lock,
   Eye,
   Code,
   Sparkles,
   Target,
-  ChevronDown,
   Play,
 } from "lucide-react";
 import {

@@ -289,7 +289,7 @@ export default async function ProjectStatsPage({
       : 0;
   const pagesPerSession =
     totalSessions > 0 ? pageviewsCount / totalSessions : 0;
-  const prevPagesPerSession =
+  const _prevPagesPerSession =
     prevSessions > 0 ? prevPageviewsCount / prevSessions : 0;
 
   // KPI metrics for the bar
@@ -350,7 +350,7 @@ export default async function ProjectStatsPage({
   };
 
   // Format date range display
-  const dateRangeLabel = `${format(startDate, "d MMM", { locale: dateLocale })} - ${format(endDate, "d MMM yyyy", { locale: dateLocale })}`;
+  const _dateRangeLabel = `${format(startDate, "d MMM", { locale: dateLocale })} - ${format(endDate, "d MMM yyyy", { locale: dateLocale })}`;
 
   return (
     <div className="space-y-4 sm:space-y-6">

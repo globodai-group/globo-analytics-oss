@@ -10,7 +10,7 @@ import { logger } from "@/lib/logger";
  * Sync current user's data to Algolia.
  * Requires authentication.
  */
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   const session = await auth();
 
   if (!session?.user?.id) {

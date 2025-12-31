@@ -97,7 +97,12 @@ export function FunnelForm({
     },
   });
 
-  const { fields, append, remove, move } = useFieldArray({
+  const {
+    fields,
+    append,
+    remove,
+    move: _move,
+  } = useFieldArray({
     control,
     name: "steps",
   });
