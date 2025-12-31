@@ -24,7 +24,11 @@ export const updateProjectSchema = z.object({
 const DOMAIN_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}$/;
 
 export const addDomainSchema = z.object({
-  domain: z.string().min(1, "Domain is required").max(255).regex(DOMAIN_PATTERN, "Invalid domain"),
+  domain: z
+    .string()
+    .min(1, "Domain is required")
+    .max(255)
+    .regex(DOMAIN_PATTERN, "Invalid domain"),
   type: z.enum(["primary", "secondary"]),
 });
 
@@ -36,4 +40,6 @@ export const validateProjectPasswordSchema = z.object({
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
 export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
 export type AddDomainInput = z.infer<typeof addDomainSchema>;
-export type ValidateProjectPasswordInput = z.infer<typeof validateProjectPasswordSchema>;
+export type ValidateProjectPasswordInput = z.infer<
+  typeof validateProjectPasswordSchema
+>;

@@ -221,7 +221,9 @@ export function DeleteResourceDialog({
         toast.error(result.error);
       }
     } catch {
-      toast.error(lang === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        lang === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsDeleting(false);
       setShowDialog(false);
@@ -254,7 +256,11 @@ export function DeleteResourceDialog({
         <Icon className="h-4 w-4" />
       </Button>
     ) : (
-      <Button variant="destructive" size="sm" onClick={() => setShowDialog(true)}>
+      <Button
+        variant="destructive"
+        size="sm"
+        onClick={() => setShowDialog(true)}
+      >
         <Icon className="h-4 w-4 mr-2" />
         {deleteLabel}
       </Button>
@@ -273,7 +279,9 @@ export function DeleteResourceDialog({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>{cancelLabel}</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>
+              {cancelLabel}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

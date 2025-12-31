@@ -1,5 +1,11 @@
 import { getTranslations } from "next-intl/server";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { ContactForm } from "./contact-form";
 
 export default async function ContactPage() {

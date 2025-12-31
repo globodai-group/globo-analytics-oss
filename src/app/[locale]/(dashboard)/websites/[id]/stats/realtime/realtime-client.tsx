@@ -71,9 +71,13 @@ export function RealtimeClient({ websiteId, locale }: RealtimeClientProps) {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-primary">{activeVisitors}</div>
+            <div className="text-4xl font-bold text-primary">
+              {activeVisitors}
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
-              {locale === "fr" ? "Sur votre site en ce moment" : "On your site right now"}
+              {locale === "fr"
+                ? "Sur votre site en ce moment"
+                : "On your site right now"}
             </p>
           </CardContent>
         </Card>
@@ -81,14 +85,18 @@ export function RealtimeClient({ websiteId, locale }: RealtimeClientProps) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              {locale === "fr" ? "Pages vues (dernière heure)" : "Pageviews (last hour)"}
+              {locale === "fr"
+                ? "Pages vues (dernière heure)"
+                : "Pageviews (last hour)"}
             </CardTitle>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-bold">{pageviewsLastHour}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {locale === "fr" ? "Dans les 60 dernières minutes" : "In the last 60 minutes"}
+              {locale === "fr"
+                ? "Dans les 60 dernières minutes"
+                : "In the last 60 minutes"}
             </p>
           </CardContent>
         </Card>

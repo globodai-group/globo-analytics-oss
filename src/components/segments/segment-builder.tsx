@@ -2,14 +2,23 @@
 
 import { useState } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Users, Filter, Save, Loader2 } from "lucide-react";
-import { SegmentConditionRow, type SegmentCondition } from "./segment-condition-row";
+import {
+  SegmentConditionRow,
+  type SegmentCondition,
+} from "./segment-condition-row";
 
 interface SegmentBuilderProps {
   projectId: number;
@@ -41,12 +50,16 @@ export function SegmentBuilder({
 }: SegmentBuilderProps) {
   const locale = useLocale();
   const [name, setName] = useState(initialSegment?.name || "");
-  const [description, setDescription] = useState(initialSegment?.description || "");
-  const [matchType, setMatchType] = useState<"all" | "any">(initialSegment?.matchType || "all");
+  const [description, setDescription] = useState(
+    initialSegment?.description || "",
+  );
+  const [matchType, setMatchType] = useState<"all" | "any">(
+    initialSegment?.matchType || "all",
+  );
   const [conditions, setConditions] = useState<SegmentCondition[]>(
     initialSegment?.conditions || [
       { id: generateId(), field: "country", operator: "equals", value: "" },
-    ]
+    ],
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -79,7 +92,8 @@ export function SegmentBuilder({
     // Validate conditions
     const invalidConditions = conditions.filter((c) => {
       if (!c.field || !c.operator) return true;
-      if (!["is_set", "is_not_set"].includes(c.operator) && !c.value.trim()) return true;
+      if (!["is_set", "is_not_set"].includes(c.operator) && !c.value.trim())
+        return true;
       return false;
     });
 
@@ -87,7 +101,7 @@ export function SegmentBuilder({
       setError(
         locale === "fr"
           ? "Veuillez compléter toutes les conditions"
-          : "Please complete all conditions"
+          : "Please complete all conditions",
       );
       return;
     }
@@ -103,7 +117,11 @@ export function SegmentBuilder({
         matchType,
       });
     } catch (err) {
-      setError(locale === "fr" ? "Erreur lors de la sauvegarde" : "Error saving segment");
+      setError(
+        locale === "fr"
+          ? "Erreur lors de la sauvegarde"
+          : "Error saving segment",
+      );
     } finally {
       setSaving(false);
     }
@@ -118,28 +136,42 @@ export function SegmentBuilder({
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            {locale === "fr" ? "Informations du segment" : "Segment Information"}
+            {locale === "fr"
+              ? "Informations du segment"
+              : "Segment Information"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">{locale === "fr" ? "Nom du segment" : "Segment Name"}</Label>
+            <Label htmlFor="name">
+              {locale === "fr" ? "Nom du segment" : "Segment Name"}
+            </Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={locale === "fr" ? "Ex: Visiteurs français" : "E.g., French Visitors"}
+              placeholder={
+                locale === "fr"
+                  ? "Ex: Visiteurs français"
+                  : "E.g., French Visitors"
+              }
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="description">
-              {locale === "fr" ? "Description (optionnel)" : "Description (optional)"}
+              {locale === "fr"
+                ? "Description (optionnel)"
+                : "Description (optional)"}
             </Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder={locale === "fr" ? "Décrivez ce segment..." : "Describe this segment..."}
+              placeholder={
+                locale === "fr"
+                  ? "Décrivez ce segment..."
+                  : "Describe this segment..."
+              }
               rows={2}
             />
           </div>
@@ -209,7 +241,11 @@ export function SegmentBuilder({
             </div>
           ))}
 
-          <Button variant="outline" onClick={addCondition} className="w-full mt-4">
+          <Button
+            variant="outline"
+            onClick={addCondition}
+            className="w-full mt-4"
+          >
             <Plus className="h-4 w-4 mr-2" />
             {locale === "fr" ? "Ajouter une condition" : "Add Condition"}
           </Button>
@@ -219,7 +255,9 @@ export function SegmentBuilder({
       {/* Preview */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">{locale === "fr" ? "Aperçu" : "Preview"}</CardTitle>
+          <CardTitle className="text-lg">
+            {locale === "fr" ? "Aperçu" : "Preview"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
@@ -227,7 +265,9 @@ export function SegmentBuilder({
               <p className="text-sm text-muted-foreground">
                 {locale === "fr" ? "Utilisateurs estimés" : "Estimated Users"}
               </p>
-              <p className="text-2xl font-bold">{estimatedUsers.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {estimatedUsers.toLocaleString()}
+              </p>
             </div>
             <Badge variant="secondary" className="text-lg px-4 py-2">
               {conditions.length}{" "}

@@ -7,9 +7,11 @@ Complete guide to implementing the GloboAnalytics tracker on your website.
 Add this script to your website, just before `</head>`:
 
 ```html
-<script defer src="https://your-analytics-domain.com/tracker.js"
-        data-project-id="YOUR_PROJECT_ID">
-</script>
+<script
+  defer
+  src="https://your-analytics-domain.com/tracker.js"
+  data-project-id="YOUR_PROJECT_ID"
+></script>
 ```
 
 That's it! Pageviews will be tracked automatically.
@@ -18,26 +20,28 @@ That's it! Pageviews will be tracked automatically.
 
 ## Script Attributes
 
-| Attribute | Required | Description | Default |
-|-----------|----------|-------------|---------|
-| `data-project-id` | Yes | Your project identifier | - |
-| `data-track-outbound` | No | Track outbound link clicks | `false` |
-| `data-track-downloads` | No | Track file downloads | `false` |
-| `data-honor-dnt` | No | Respect Do Not Track | `false` |
-| `data-hash-mode` | No | Track hash changes (SPA) | `false` |
-| `data-domain` | No | Override tracked domain | Current domain |
-| `data-api` | No | Custom API endpoint | `/api/event` |
+| Attribute              | Required | Description                | Default        |
+| ---------------------- | -------- | -------------------------- | -------------- |
+| `data-project-id`      | Yes      | Your project identifier    | -              |
+| `data-track-outbound`  | No       | Track outbound link clicks | `false`        |
+| `data-track-downloads` | No       | Track file downloads       | `false`        |
+| `data-honor-dnt`       | No       | Respect Do Not Track       | `false`        |
+| `data-hash-mode`       | No       | Track hash changes (SPA)   | `false`        |
+| `data-domain`          | No       | Override tracked domain    | Current domain |
+| `data-api`             | No       | Custom API endpoint        | `/api/event`   |
 
 ### Example with All Options
 
 ```html
-<script defer src="https://analytics.example.com/tracker.js"
-        data-project-id="proj_abc123"
-        data-track-outbound="true"
-        data-track-downloads="true"
-        data-honor-dnt="true"
-        data-hash-mode="true">
-</script>
+<script
+  defer
+  src="https://analytics.example.com/tracker.js"
+  data-project-id="proj_abc123"
+  data-track-outbound="true"
+  data-track-downloads="true"
+  data-honor-dnt="true"
+  data-hash-mode="true"
+></script>
 ```
 
 ---
@@ -52,13 +56,13 @@ Pageviews are tracked automatically on page load. For SPAs, you can manually tri
 
 ```javascript
 // Track a pageview
-gr('pageview');
+gr("pageview");
 
 // Track with custom URL
-gr('pageview', { url: '/custom/path' });
+gr("pageview", { url: "/custom/path" });
 
 // Track with custom title
-gr('pageview', { url: '/page', title: 'Custom Title' });
+gr("pageview", { url: "/page", title: "Custom Title" });
 ```
 
 ### Event Tracking
@@ -67,23 +71,23 @@ Track custom events for user interactions:
 
 ```javascript
 // Basic event
-gr('event', 'Button Click');
+gr("event", "Button Click");
 
 // Event with category
-gr('event', 'signup', { category: 'conversion' });
+gr("event", "signup", { category: "conversion" });
 
 // Event with properties
-gr('event', 'purchase', {
-  category: 'ecommerce',
+gr("event", "purchase", {
+  category: "ecommerce",
   value: 99.99,
-  currency: 'EUR'
+  currency: "EUR",
 });
 
 // Event with custom dimensions (Pro)
-gr('event', 'video_play', {
-  cd1: 'homepage',      // Custom dimension 1
-  cd2: 'hero_video',    // Custom dimension 2
-  duration: 120
+gr("event", "video_play", {
+  cd1: "homepage", // Custom dimension 1
+  cd2: "hero_video", // Custom dimension 2
+  duration: 120,
 });
 ```
 
@@ -93,10 +97,10 @@ Track goal completions:
 
 ```javascript
 // Simple goal
-gr('goal', 'newsletter_signup');
+gr("goal", "newsletter_signup");
 
 // Goal with value
-gr('goal', 'purchase', { value: 149.99 });
+gr("goal", "purchase", { value: 149.99 });
 ```
 
 ### User Identification
@@ -105,10 +109,10 @@ For logged-in users (anonymized):
 
 ```javascript
 // Set user ID (hashed internally)
-gr('set', 'userId', 'user_12345');
+gr("set", "userId", "user_12345");
 
 // Clear on logout
-gr('set', 'userId', null);
+gr("set", "userId", null);
 ```
 
 ---
@@ -119,10 +123,10 @@ gr('set', 'userId', null);
 
 ```jsx
 // components/Analytics.jsx
-'use client';
+"use client";
 
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export function Analytics() {
   const pathname = usePathname();
@@ -130,8 +134,8 @@ export function Analytics() {
 
   useEffect(() => {
     // Track pageview on route change
-    if (typeof gr !== 'undefined') {
-      gr('pageview');
+    if (typeof gr !== "undefined") {
+      gr("pageview");
     }
   }, [pathname, searchParams]);
 
@@ -139,8 +143,8 @@ export function Analytics() {
 }
 
 // app/layout.jsx
-import Script from 'next/script';
-import { Analytics } from '@/components/Analytics';
+import Script from "next/script";
+import { Analytics } from "@/components/Analytics";
 
 export default function RootLayout({ children }) {
   return (
@@ -170,8 +174,8 @@ export default defineNuxtPlugin(() => {
   const router = useRouter();
 
   router.afterEach(() => {
-    if (typeof gr !== 'undefined') {
-      gr('pageview');
+    if (typeof gr !== "undefined") {
+      gr("pageview");
     }
   });
 });
@@ -180,15 +184,15 @@ export default defineNuxtPlugin(() => {
 ### React Router
 
 ```jsx
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 function usePageTracking() {
   const location = useLocation();
 
   useEffect(() => {
-    if (typeof gr !== 'undefined') {
-      gr('pageview');
+    if (typeof gr !== "undefined") {
+      gr("pageview");
     }
   }, [location]);
 }
@@ -201,39 +205,39 @@ function usePageTracking() {
 ### Product View
 
 ```javascript
-gr('event', 'view_product', {
-  category: 'ecommerce',
-  product_id: 'SKU123',
-  product_name: 'Blue T-Shirt',
+gr("event", "view_product", {
+  category: "ecommerce",
+  product_id: "SKU123",
+  product_name: "Blue T-Shirt",
   price: 29.99,
-  currency: 'EUR'
+  currency: "EUR",
 });
 ```
 
 ### Add to Cart
 
 ```javascript
-gr('event', 'add_to_cart', {
-  category: 'ecommerce',
-  product_id: 'SKU123',
+gr("event", "add_to_cart", {
+  category: "ecommerce",
+  product_id: "SKU123",
   quantity: 2,
-  value: 59.98
+  value: 59.98,
 });
 ```
 
 ### Purchase
 
 ```javascript
-gr('event', 'purchase', {
-  category: 'ecommerce',
-  transaction_id: 'TXN123456',
+gr("event", "purchase", {
+  category: "ecommerce",
+  transaction_id: "TXN123456",
   value: 149.99,
-  currency: 'EUR',
-  items: 3
+  currency: "EUR",
+  items: 3,
 });
 
 // Also track as goal
-gr('goal', 'purchase', { value: 149.99 });
+gr("goal", "purchase", { value: 149.99 });
 ```
 
 ---
@@ -247,6 +251,7 @@ https://yoursite.com/?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale
 ```
 
 Captured parameters:
+
 - `utm_source` - Traffic source
 - `utm_medium` - Marketing medium
 - `utm_campaign` - Campaign name
@@ -266,10 +271,12 @@ The tracker works without cookies by default, using a privacy-preserving visitor
 Enable DNT respect:
 
 ```html
-<script defer src="/tracker.js"
-        data-project-id="YOUR_ID"
-        data-honor-dnt="true">
-</script>
+<script
+  defer
+  src="/tracker.js"
+  data-project-id="YOUR_ID"
+  data-honor-dnt="true"
+></script>
 ```
 
 ### Exclude Tracking
@@ -278,7 +285,7 @@ Exclude yourself from tracking:
 
 ```javascript
 // In browser console
-localStorage.setItem('globo_exclude', 'true');
+localStorage.setItem("globo_exclude", "true");
 ```
 
 ### Consent Integration
@@ -287,12 +294,12 @@ Wait for user consent before tracking:
 
 ```javascript
 // Don't track by default
-gr('set', 'consent', false);
+gr("set", "consent", false);
 
 // After user gives consent
 function onConsentGranted() {
-  gr('set', 'consent', true);
-  gr('pageview'); // Track initial pageview
+  gr("set", "consent", true);
+  gr("pageview"); // Track initial pageview
 }
 ```
 
@@ -304,7 +311,7 @@ function onConsentGranted() {
 
 ```javascript
 // In browser console
-localStorage.setItem('globo_debug', 'true');
+localStorage.setItem("globo_debug", "true");
 ```
 
 Debug mode logs all events to the console.
@@ -326,11 +333,13 @@ POST /api/event
 ### Common Issues
 
 **Events not appearing?**
+
 1. Check project ID is correct
 2. Verify no ad blocker is active
 3. Check browser console for errors
 
 **Pageviews counted twice?**
+
 1. Ensure script is only included once
 2. For SPAs, disable automatic tracking if manually calling `gr('pageview')`
 
@@ -338,10 +347,10 @@ POST /api/event
 
 ## Script Size
 
-| Version | Size |
-|---------|------|
+| Version  | Size       |
+| -------- | ---------- |
 | Minified | ~800 bytes |
-| Gzipped | ~450 bytes |
+| Gzipped  | ~450 bytes |
 
 The tracker has zero impact on your site's performance score.
 
@@ -361,6 +370,7 @@ connect-src 'self' https://analytics.example.com;
 ## Framework-Specific Packages
 
 Coming soon:
+
 - `@globoanalytics/react`
 - `@globoanalytics/vue`
 - `@globoanalytics/angular`
@@ -372,19 +382,19 @@ Coming soon:
 
 ### gr(command, [name], [options])
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `command` | string | `pageview`, `event`, `goal`, `set` |
-| `name` | string | Event/goal name (required for event/goal) |
-| `options` | object | Additional data |
+| Parameter | Type   | Description                               |
+| --------- | ------ | ----------------------------------------- |
+| `command` | string | `pageview`, `event`, `goal`, `set`        |
+| `name`    | string | Event/goal name (required for event/goal) |
+| `options` | object | Additional data                           |
 
 ### Options Object
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `url` | string | Override URL |
-| `title` | string | Override page title |
-| `referrer` | string | Override referrer |
-| `category` | string | Event category |
-| `value` | number | Numeric value |
+| Property    | Type   | Description             |
+| ----------- | ------ | ----------------------- |
+| `url`       | string | Override URL            |
+| `title`     | string | Override page title     |
+| `referrer`  | string | Override referrer       |
+| `category`  | string | Event category          |
+| `value`     | number | Numeric value           |
 | `cd1`-`cd5` | string | Custom dimensions (Pro) |

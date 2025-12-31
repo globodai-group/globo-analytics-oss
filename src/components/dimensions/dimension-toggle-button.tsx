@@ -12,7 +12,10 @@ interface DimensionToggleButtonProps {
   isActive: boolean;
 }
 
-export function DimensionToggleButton({ dimensionId, isActive }: DimensionToggleButtonProps) {
+export function DimensionToggleButton({
+  dimensionId,
+  isActive,
+}: DimensionToggleButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,7 +38,11 @@ export function DimensionToggleButton({ dimensionId, isActive }: DimensionToggle
       size="icon"
       onClick={handleToggle}
       disabled={isLoading}
-      className={isActive ? "text-green-600 hover:text-green-700" : "text-muted-foreground"}
+      className={
+        isActive
+          ? "text-green-600 hover:text-green-700"
+          : "text-muted-foreground"
+      }
     >
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />

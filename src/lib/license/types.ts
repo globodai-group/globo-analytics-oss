@@ -56,7 +56,12 @@ export type LicenseFeature =
 /**
  * License status
  */
-export type LicenseStatus = "active" | "expired" | "suspended" | "pending" | "invalid";
+export type LicenseStatus =
+  | "active"
+  | "expired"
+  | "suspended"
+  | "pending"
+  | "invalid";
 
 /**
  * License data structure (decoded from license key)
@@ -256,57 +261,58 @@ export const TIER_NAMES: Record<LicenseTier, { en: string; fr: string }> = {
 /**
  * Feature display names for UI
  */
-export const FEATURE_NAMES: Record<LicenseFeature, { en: string; fr: string }> = {
-  analytics_basic: { en: "Basic Analytics", fr: "Analytics de base" },
-  pageviews: { en: "Pageview Tracking", fr: "Suivi des pages vues" },
-  visitors: { en: "Visitor Tracking", fr: "Suivi des visiteurs" },
-  events_basic: { en: "Basic Events", fr: "Evenements de base" },
-  realtime_widget: { en: "Realtime Widget", fr: "Widget temps reel" },
-  export_csv: { en: "CSV Export", fr: "Export CSV" },
-  heatmaps: { en: "Heatmaps", fr: "Cartes de chaleur" },
-  session_recording: {
-    en: "Session Recording",
-    fr: "Enregistrement de session",
-  },
-  bot_detection_advanced: {
-    en: "Advanced Bot Detection",
-    fr: "Detection avancee des bots",
-  },
-  ab_testing: { en: "A/B Testing", fr: "Tests A/B" },
-  retention_analysis: {
-    en: "Retention Analysis",
-    fr: "Analyse de retention",
-  },
-  user_journey: { en: "User Journey", fr: "Parcours utilisateur" },
-  funnels_advanced: { en: "Advanced Funnels", fr: "Entonnoirs avances" },
-  goals_unlimited: { en: "Unlimited Goals", fr: "Objectifs illimites" },
-  alerts_unlimited: { en: "Unlimited Alerts", fr: "Alertes illimitees" },
-  segments_advanced: { en: "Advanced Segments", fr: "Segments avances" },
-  api_access: { en: "API Access", fr: "Acces API" },
-  export_pdf: { en: "PDF Export", fr: "Export PDF" },
-  scheduled_reports: {
-    en: "Scheduled Reports",
-    fr: "Rapports programmes",
-  },
-  sso_saml: { en: "SAML SSO", fr: "SSO SAML" },
-  sso_oidc: { en: "OIDC SSO", fr: "SSO OIDC" },
-  white_label: { en: "White Label", fr: "Marque blanche" },
-  custom_domain: { en: "Custom Domain", fr: "Domaine personnalise" },
-  role_permissions: {
-    en: "Role Permissions",
-    fr: "Permissions par role",
-  },
-  audit_logs: { en: "Audit Logs", fr: "Journaux d'audit" },
-  ai_insights: { en: "AI Insights", fr: "Insights IA" },
-  predictive_analytics: {
-    en: "Predictive Analytics",
-    fr: "Analytics predictifs",
-  },
-  mobile_sdk: { en: "Mobile SDK", fr: "SDK Mobile" },
-  priority_support: {
-    en: "Priority Support",
-    fr: "Support prioritaire",
-  },
-  sla: { en: "SLA", fr: "SLA" },
-  dedicated_support: { en: "Dedicated Support", fr: "Support dedie" },
-};
+export const FEATURE_NAMES: Record<LicenseFeature, { en: string; fr: string }> =
+  {
+    analytics_basic: { en: "Basic Analytics", fr: "Analytics de base" },
+    pageviews: { en: "Pageview Tracking", fr: "Suivi des pages vues" },
+    visitors: { en: "Visitor Tracking", fr: "Suivi des visiteurs" },
+    events_basic: { en: "Basic Events", fr: "Evenements de base" },
+    realtime_widget: { en: "Realtime Widget", fr: "Widget temps reel" },
+    export_csv: { en: "CSV Export", fr: "Export CSV" },
+    heatmaps: { en: "Heatmaps", fr: "Cartes de chaleur" },
+    session_recording: {
+      en: "Session Recording",
+      fr: "Enregistrement de session",
+    },
+    bot_detection_advanced: {
+      en: "Advanced Bot Detection",
+      fr: "Detection avancee des bots",
+    },
+    ab_testing: { en: "A/B Testing", fr: "Tests A/B" },
+    retention_analysis: {
+      en: "Retention Analysis",
+      fr: "Analyse de retention",
+    },
+    user_journey: { en: "User Journey", fr: "Parcours utilisateur" },
+    funnels_advanced: { en: "Advanced Funnels", fr: "Entonnoirs avances" },
+    goals_unlimited: { en: "Unlimited Goals", fr: "Objectifs illimites" },
+    alerts_unlimited: { en: "Unlimited Alerts", fr: "Alertes illimitees" },
+    segments_advanced: { en: "Advanced Segments", fr: "Segments avances" },
+    api_access: { en: "API Access", fr: "Acces API" },
+    export_pdf: { en: "PDF Export", fr: "Export PDF" },
+    scheduled_reports: {
+      en: "Scheduled Reports",
+      fr: "Rapports programmes",
+    },
+    sso_saml: { en: "SAML SSO", fr: "SSO SAML" },
+    sso_oidc: { en: "OIDC SSO", fr: "SSO OIDC" },
+    white_label: { en: "White Label", fr: "Marque blanche" },
+    custom_domain: { en: "Custom Domain", fr: "Domaine personnalise" },
+    role_permissions: {
+      en: "Role Permissions",
+      fr: "Permissions par role",
+    },
+    audit_logs: { en: "Audit Logs", fr: "Journaux d'audit" },
+    ai_insights: { en: "AI Insights", fr: "Insights IA" },
+    predictive_analytics: {
+      en: "Predictive Analytics",
+      fr: "Analytics predictifs",
+    },
+    mobile_sdk: { en: "Mobile SDK", fr: "SDK Mobile" },
+    priority_support: {
+      en: "Priority Support",
+      fr: "Support prioritaire",
+    },
+    sla: { en: "SLA", fr: "SLA" },
+    dedicated_support: { en: "Dedicated Support", fr: "Support dedie" },
+  };

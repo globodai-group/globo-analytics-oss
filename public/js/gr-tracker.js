@@ -20,7 +20,8 @@
 
   // Configuration
   var config = {
-    trackingId: script.getAttribute("data-tid") || script.getAttribute("data-id"),
+    trackingId:
+      script.getAttribute("data-tid") || script.getAttribute("data-id"),
     host: script.getAttribute("data-host") || "",
     dnt: script.getAttribute("data-dnt") === "true",
     debug: script.getAttribute("data-debug") === "true",
@@ -75,7 +76,10 @@
    */
   function log() {
     if (config.debug) {
-      console.log.apply(console, ["[GloboRank]"].concat(Array.prototype.slice.call(arguments)));
+      console.log.apply(
+        console,
+        ["[GloboRank]"].concat(Array.prototype.slice.call(arguments)),
+      );
     }
   }
 
@@ -139,7 +143,10 @@
   function getOrCreateSession() {
     try {
       var storedSessionId = sessionStorage.getItem(KEYS.SESSION_ID);
-      var lastActivity = parseInt(sessionStorage.getItem(KEYS.LAST_ACTIVITY) || "0", 10);
+      var lastActivity = parseInt(
+        sessionStorage.getItem(KEYS.LAST_ACTIVITY) || "0",
+        10,
+      );
       var now = Date.now();
 
       if (storedSessionId && now - lastActivity < SESSION_TIMEOUT) {
@@ -186,7 +193,7 @@
       document.body.scrollHeight,
       document.documentElement.scrollHeight,
       document.body.offsetHeight,
-      document.documentElement.offsetHeight
+      document.documentElement.offsetHeight,
     );
     var winHeight = window.innerHeight;
 
@@ -206,7 +213,7 @@
         cid: clientId,
         sid: sessionId,
       },
-      data
+      data,
     );
 
     // Clean undefined values
@@ -304,7 +311,7 @@
         et: engagementTime, // Engagement time in ms (like GA4)
         ni: true, // Non-interaction
       },
-      isExit
+      isExit,
     );
 
     if (isExit) {
@@ -313,7 +320,7 @@
           t: "session_end",
           dp: currentPath,
         },
-        true
+        true,
       );
     }
   }

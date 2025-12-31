@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { ReportForm } from "@/components/reports/report-form";
 
@@ -82,7 +88,9 @@ export default async function EditReportPage({ params }: EditReportPageProps) {
       <Card>
         <CardHeader>
           <CardTitle>
-            {locale === "fr" ? "Configuration du rapport" : "Report Configuration"}
+            {locale === "fr"
+              ? "Configuration du rapport"
+              : "Report Configuration"}
           </CardTitle>
           <CardDescription>
             {locale === "fr"

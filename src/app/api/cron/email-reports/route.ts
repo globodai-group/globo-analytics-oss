@@ -71,14 +71,20 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     logError(error, { context: "cron", operation: "emailReports" });
-    return NextResponse.json({ error: "Failed to send email reports" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to send email reports" },
+      { status: 500 },
+    );
   }
 }
 
 async function processReports(
   emailType: number,
   reportType: "weekly" | "monthly",
-  results: { weekly: { sent: number; failed: number }; monthly: { sent: number; failed: number } }
+  results: {
+    weekly: { sent: number; failed: number };
+    monthly: { sent: number; failed: number };
+  },
 ) {
   let cursor: number | undefined;
   let hasMore = true;
@@ -130,7 +136,9 @@ async function processReports(
 
       // Rate limiting delay between emails
       if (DELAY_BETWEEN_EMAILS_MS > 0) {
-        await new Promise((resolve) => setTimeout(resolve, DELAY_BETWEEN_EMAILS_MS));
+        await new Promise((resolve) =>
+          setTimeout(resolve, DELAY_BETWEEN_EMAILS_MS),
+        );
       }
     }
   }
@@ -140,9 +148,14 @@ async function sendReportEmail(
   website: {
     id: number;
     domain: string;
-    user: { firstName: string; lastName: string; email: string; locale: string };
+    user: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      locale: string;
+    };
   },
-  reportType: "weekly" | "monthly"
+  reportType: "weekly" | "monthly",
 ): Promise<boolean> {
   const days = reportType === "weekly" ? 7 : 30;
   const fromDate = subDays(new Date(), days);
@@ -150,46 +163,47 @@ async function sendReportEmail(
 
   try {
     // Get all stats in parallel with a single Promise.all
-    const [visitorsData, pageviewsData, topPages, topCountries] = await Promise.all([
-      prisma.stat.aggregate({
-        where: {
-          websiteId: website.id,
-          name: "visitors",
-          date: { gte: fromDate, lte: toDate },
-        },
-        _sum: { count: true },
-      }),
-      prisma.stat.aggregate({
-        where: {
-          websiteId: website.id,
-          name: "pageviews",
-          date: { gte: fromDate, lte: toDate },
-        },
-        _sum: { count: true },
-      }),
-      prisma.stat.groupBy({
-        by: ["value"],
-        where: {
-          websiteId: website.id,
-          name: "page",
-          date: { gte: fromDate, lte: toDate },
-        },
-        _sum: { count: true },
-        orderBy: { _sum: { count: "desc" } },
-        take: 5,
-      }),
-      prisma.stat.groupBy({
-        by: ["value"],
-        where: {
-          websiteId: website.id,
-          name: "country",
-          date: { gte: fromDate, lte: toDate },
-        },
-        _sum: { count: true },
-        orderBy: { _sum: { count: "desc" } },
-        take: 5,
-      }),
-    ]);
+    const [visitorsData, pageviewsData, topPages, topCountries] =
+      await Promise.all([
+        prisma.stat.aggregate({
+          where: {
+            websiteId: website.id,
+            name: "visitors",
+            date: { gte: fromDate, lte: toDate },
+          },
+          _sum: { count: true },
+        }),
+        prisma.stat.aggregate({
+          where: {
+            websiteId: website.id,
+            name: "pageviews",
+            date: { gte: fromDate, lte: toDate },
+          },
+          _sum: { count: true },
+        }),
+        prisma.stat.groupBy({
+          by: ["value"],
+          where: {
+            websiteId: website.id,
+            name: "page",
+            date: { gte: fromDate, lte: toDate },
+          },
+          _sum: { count: true },
+          orderBy: { _sum: { count: "desc" } },
+          take: 5,
+        }),
+        prisma.stat.groupBy({
+          by: ["value"],
+          where: {
+            websiteId: website.id,
+            name: "country",
+            date: { gte: fromDate, lte: toDate },
+          },
+          _sum: { count: true },
+          orderBy: { _sum: { count: "desc" } },
+          take: 5,
+        }),
+      ]);
 
     const stats = {
       visitors: Number(visitorsData._sum.count || 0),
@@ -213,7 +227,7 @@ async function sendReportEmail(
       reportType,
       stats,
       dashboardUrl,
-      website.user.locale
+      website.user.locale,
     );
 
     return await sendEmail({

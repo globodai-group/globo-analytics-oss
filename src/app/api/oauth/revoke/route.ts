@@ -45,15 +45,18 @@ export async function POST(request: NextRequest) {
       if (!client || !client.isActive) {
         return NextResponse.json(
           { error: "invalid_client" },
-          { status: 401, headers: corsHeaders }
+          { status: 401, headers: corsHeaders },
         );
       }
 
-      const secretValid = await bcrypt.compare(client_secret, client.clientSecret);
+      const secretValid = await bcrypt.compare(
+        client_secret,
+        client.clientSecret,
+      );
       if (!secretValid) {
         return NextResponse.json(
           { error: "invalid_client" },
-          { status: 401, headers: corsHeaders }
+          { status: 401, headers: corsHeaders },
         );
       }
     }
@@ -83,6 +86,9 @@ export async function POST(request: NextRequest) {
     return new NextResponse(null, { status: 200, headers: corsHeaders });
   } catch (error) {
     logError(error, { context: "oauth", operation: "revoke" });
-    return NextResponse.json({ error: "server_error" }, { status: 500, headers: corsHeaders });
+    return NextResponse.json(
+      { error: "server_error" },
+      { status: 500, headers: corsHeaders },
+    );
   }
 }

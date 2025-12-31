@@ -27,7 +27,13 @@ import {
   MonitorSmartphone,
   X,
 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 /**
@@ -218,7 +224,10 @@ export function BottomNav() {
                 ("isProjectLink" in item && pathname.includes(item.href)));
 
             const Icon = item.icon;
-            const label = locale === "fr" && "labelFr" in item ? item.labelFr : item.shortLabel;
+            const label =
+              locale === "fr" && "labelFr" in item
+                ? item.labelFr
+                : item.shortLabel;
 
             if (isMoreButton) {
               return (
@@ -231,18 +240,25 @@ export function BottomNav() {
                           "w-full h-16 min-h-[64px]",
                           "transition-colors duration-200",
                           "touch-target",
-                          "text-muted-foreground hover:text-foreground"
+                          "text-muted-foreground hover:text-foreground",
                         )}
                       >
                         <Icon className="w-5 h-5" />
-                        <span className="text-[10px] font-medium leading-none">{label}</span>
+                        <span className="text-[10px] font-medium leading-none">
+                          {label}
+                        </span>
                       </button>
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl">
+                    <SheetContent
+                      side="bottom"
+                      className="h-[70vh] rounded-t-2xl"
+                    >
                       <SheetHeader className="pb-4">
                         <SheetTitle className="flex items-center justify-between">
                           <span>
-                            {locale === "fr" ? "Navigation projet" : "Project Navigation"}
+                            {locale === "fr"
+                              ? "Navigation projet"
+                              : "Project Navigation"}
                           </span>
                           <button
                             onClick={() => setSheetOpen(false)}
@@ -258,7 +274,8 @@ export function BottomNav() {
                             const fullHref = `/projects/${projectId}${navItem.href}`;
                             const isNavActive = pathname.includes(fullHref);
                             const NavIcon = navItem.icon;
-                            const navLabel = locale === "fr" ? navItem.labelFr : navItem.label;
+                            const navLabel =
+                              locale === "fr" ? navItem.labelFr : navItem.label;
 
                             return (
                               <Link
@@ -270,7 +287,7 @@ export function BottomNav() {
                                   "min-h-[88px]",
                                   isNavActive
                                     ? "bg-primary text-primary-foreground"
-                                    : "bg-muted/50 hover:bg-muted text-foreground"
+                                    : "bg-muted/50 hover:bg-muted text-foreground",
                                 )}
                               >
                                 <NavIcon className="h-6 w-6" />
@@ -297,11 +314,15 @@ export function BottomNav() {
                     "w-full h-16 min-h-[64px]",
                     "transition-colors duration-200",
                     "touch-target",
-                    isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    isActive
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   <Icon className={cn("w-5 h-5", isActive && "text-primary")} />
-                  <span className="text-[10px] font-medium leading-none">{label}</span>
+                  <span className="text-[10px] font-medium leading-none">
+                    {label}
+                  </span>
                 </Link>
               </li>
             );

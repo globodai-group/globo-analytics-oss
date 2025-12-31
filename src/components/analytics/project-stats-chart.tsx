@@ -29,7 +29,11 @@ interface ProjectStatsChartProps {
   endDate: Date;
 }
 
-export function ProjectStatsChart({ projectId, startDate, endDate }: ProjectStatsChartProps) {
+export function ProjectStatsChart({
+  projectId,
+  startDate,
+  endDate,
+}: ProjectStatsChartProps) {
   const locale = useLocale();
   const dateLocale = locale === "fr" ? fr : enUS;
   const [data, setData] = useState<ChartDataPoint[]>([]);
@@ -42,7 +46,9 @@ export function ProjectStatsChart({ projectId, startDate, endDate }: ProjectStat
           from: startDate.toISOString(),
           to: endDate.toISOString(),
         });
-        const res = await fetch(`/api/v1/projects/${projectId}/chart?${params}`);
+        const res = await fetch(
+          `/api/v1/projects/${projectId}/chart?${params}`,
+        );
         if (res.ok) {
           const chartData = await res.json();
           setData(chartData);
@@ -78,15 +84,34 @@ export function ProjectStatsChart({ projectId, startDate, endDate }: ProjectStat
 
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+      <AreaChart
+        data={data}
+        margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+      >
         <defs>
           <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+            <stop
+              offset="5%"
+              stopColor="hsl(var(--primary))"
+              stopOpacity={0.3}
+            />
+            <stop
+              offset="95%"
+              stopColor="hsl(var(--primary))"
+              stopOpacity={0}
+            />
           </linearGradient>
           <linearGradient id="colorSessions" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.3} />
-            <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0} />
+            <stop
+              offset="5%"
+              stopColor="hsl(var(--chart-2))"
+              stopOpacity={0.3}
+            />
+            <stop
+              offset="95%"
+              stopColor="hsl(var(--chart-2))"
+              stopOpacity={0}
+            />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
@@ -110,15 +135,24 @@ export function ProjectStatsChart({ projectId, startDate, endDate }: ProjectStat
             if (active && payload && payload.length) {
               return (
                 <div className="rounded-lg border bg-background p-3 shadow-md">
-                  <p className="text-sm font-medium mb-2">{String(label ?? "")}</p>
+                  <p className="text-sm font-medium mb-2">
+                    {String(label ?? "")}
+                  </p>
                   {payload.map((entry, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm">
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 text-sm"
+                    >
                       <div
                         className="h-2 w-2 rounded-full"
                         style={{ backgroundColor: entry.color }}
                       />
-                      <span className="text-muted-foreground">{entry.name}:</span>
-                      <span className="font-medium">{formatNumber(Number(entry.value) || 0)}</span>
+                      <span className="text-muted-foreground">
+                        {entry.name}:
+                      </span>
+                      <span className="font-medium">
+                        {formatNumber(Number(entry.value) || 0)}
+                      </span>
                     </div>
                   ))}
                 </div>

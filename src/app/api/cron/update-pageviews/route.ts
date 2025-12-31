@@ -78,6 +78,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     logError(error, { context: "cron", operation: "updatePageviews" });
-    return NextResponse.json({ error: "Failed to update pageviews" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update pageviews" },
+      { status: 500 },
+    );
   }
 }

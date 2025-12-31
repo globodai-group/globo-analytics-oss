@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -24,7 +30,10 @@ import {
   Chrome,
   Apple,
 } from "lucide-react";
-import { getTechnologyStatsAction, type TechnologyStats } from "@/lib/actions/stats";
+import {
+  getTechnologyStatsAction,
+  type TechnologyStats,
+} from "@/lib/actions/stats";
 
 interface TechnologyOverviewProps {
   projectId: number;
@@ -48,7 +57,10 @@ const getDeviceIcon = (platform: string) => {
   return Monitor;
 };
 
-export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewProps) {
+export function TechnologyOverview({
+  projectId,
+  dateRange,
+}: TechnologyOverviewProps) {
   const locale = useLocale();
   const [data, setData] = useState<TechnologyStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -109,7 +121,7 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
       acc[browser.name].push(browser);
       return acc;
     },
-    {} as Record<string, typeof data.browsers>
+    {} as Record<string, typeof data.browsers>,
   );
 
   // Group OS by name for collapsible view
@@ -121,7 +133,7 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
       acc[os.name].push(os);
       return acc;
     },
-    {} as Record<string, typeof data.operatingSystems>
+    {} as Record<string, typeof data.operatingSystems>,
   );
 
   return (
@@ -147,7 +159,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                         <Icon className="h-4 w-4 text-muted-foreground" />
                         {platform.platform}
                       </span>
-                      <span className="font-medium">{formatPercentage(platform.percentage)}</span>
+                      <span className="font-medium">
+                        {formatPercentage(platform.percentage)}
+                      </span>
                     </div>
                     <Progress value={platform.percentage} className="h-2" />
                   </div>
@@ -168,7 +182,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
           <CardContent>
             {data.browsers.length > 0 && (
               <div className="space-y-2">
-                <div className="text-3xl font-bold">{data.browsers[0].name}</div>
+                <div className="text-3xl font-bold">
+                  {data.browsers[0].name}
+                </div>
                 <div className="text-sm text-muted-foreground">
                   {formatNumber(data.browsers[0].users)}{" "}
                   {locale === "fr" ? "utilisateurs" : "users"} (
@@ -176,7 +192,11 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {data.browsers.slice(0, 5).map((b) => (
-                    <Badge key={`${b.name}-${b.version}`} variant="secondary" className="text-xs">
+                    <Badge
+                      key={`${b.name}-${b.version}`}
+                      variant="secondary"
+                      className="text-xs"
+                    >
                       {b.name} {b.version}
                     </Badge>
                   ))}
@@ -197,7 +217,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
           <CardContent>
             {data.operatingSystems.length > 0 && (
               <div className="space-y-2">
-                <div className="text-3xl font-bold">{data.operatingSystems[0].name}</div>
+                <div className="text-3xl font-bold">
+                  {data.operatingSystems[0].name}
+                </div>
                 <div className="text-sm text-muted-foreground">
                   {formatNumber(data.operatingSystems[0].users)}{" "}
                   {locale === "fr" ? "utilisateurs" : "users"} (
@@ -205,7 +227,11 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                 </div>
                 <div className="flex flex-wrap gap-1 mt-2">
                   {data.operatingSystems.slice(0, 5).map((o) => (
-                    <Badge key={`${o.name}-${o.version}`} variant="secondary" className="text-xs">
+                    <Badge
+                      key={`${o.name}-${o.version}`}
+                      variant="secondary"
+                      className="text-xs"
+                    >
                       {o.name} {o.version}
                     </Badge>
                   ))}
@@ -237,7 +263,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
         <TabsContent value="browsers">
           <Card>
             <CardHeader>
-              <CardTitle>{locale === "fr" ? "Navigateurs" : "Browsers"}</CardTitle>
+              <CardTitle>
+                {locale === "fr" ? "Navigateurs" : "Browsers"}
+              </CardTitle>
               <CardDescription>
                 {locale === "fr"
                   ? "Répartition des navigateurs et versions"
@@ -249,8 +277,12 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>{locale === "fr" ? "Navigateur" : "Browser"}</TableHead>
-                      <TableHead>{locale === "fr" ? "Version" : "Version"}</TableHead>
+                      <TableHead>
+                        {locale === "fr" ? "Navigateur" : "Browser"}
+                      </TableHead>
+                      <TableHead>
+                        {locale === "fr" ? "Version" : "Version"}
+                      </TableHead>
                       <TableHead className="text-right">
                         {locale === "fr" ? "Utilisateurs" : "Users"}
                       </TableHead>
@@ -261,15 +293,21 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                     {data.browsers.map((browser, index) => {
                       const Icon = getBrowserIcon(browser.name);
                       return (
-                        <TableRow key={`${browser.name}-${browser.version}-${index}`}>
+                        <TableRow
+                          key={`${browser.name}-${browser.version}-${index}`}
+                        >
                           <TableCell>
                             <div className="flex items-center gap-2">
                               <Icon className="h-4 w-4 text-muted-foreground" />
-                              <span className="font-medium">{browser.name}</span>
+                              <span className="font-medium">
+                                {browser.name}
+                              </span>
                             </div>
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline">{browser.version || "-"}</Badge>
+                            <Badge variant="outline">
+                              {browser.version || "-"}
+                            </Badge>
                           </TableCell>
                           <TableCell className="text-right font-mono">
                             {formatNumber(browser.users)}
@@ -282,7 +320,10 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                     })}
                     {data.browsers.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                        <TableCell
+                          colSpan={4}
+                          className="text-center text-muted-foreground py-8"
+                        >
                           {locale === "fr" ? "Aucune donnée" : "No data"}
                         </TableCell>
                       </TableRow>
@@ -299,7 +340,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
           <Card>
             <CardHeader>
               <CardTitle>
-                {locale === "fr" ? "Systèmes d'exploitation" : "Operating Systems"}
+                {locale === "fr"
+                  ? "Systèmes d'exploitation"
+                  : "Operating Systems"}
               </CardTitle>
               <CardDescription>
                 {locale === "fr"
@@ -312,8 +355,12 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>{locale === "fr" ? "Système" : "Operating System"}</TableHead>
-                      <TableHead>{locale === "fr" ? "Version" : "Version"}</TableHead>
+                      <TableHead>
+                        {locale === "fr" ? "Système" : "Operating System"}
+                      </TableHead>
+                      <TableHead>
+                        {locale === "fr" ? "Version" : "Version"}
+                      </TableHead>
                       <TableHead className="text-right">
                         {locale === "fr" ? "Utilisateurs" : "Users"}
                       </TableHead>
@@ -342,7 +389,10 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                     ))}
                     {data.operatingSystems.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                        <TableCell
+                          colSpan={4}
+                          className="text-center text-muted-foreground py-8"
+                        >
                           {locale === "fr" ? "Aucune donnée" : "No data"}
                         </TableCell>
                       </TableRow>
@@ -370,7 +420,9 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>{locale === "fr" ? "Langue" : "Language"}</TableHead>
+                      <TableHead>
+                        {locale === "fr" ? "Langue" : "Language"}
+                      </TableHead>
                       <TableHead className="text-right">
                         {locale === "fr" ? "Utilisateurs" : "Users"}
                       </TableHead>
@@ -400,7 +452,10 @@ export function TechnologyOverview({ projectId, dateRange }: TechnologyOverviewP
                     ))}
                     {data.languages.length === 0 && (
                       <TableRow>
-                        <TableCell colSpan={4} className="text-center text-muted-foreground py-8">
+                        <TableCell
+                          colSpan={4}
+                          className="text-center text-muted-foreground py-8"
+                        >
                           {locale === "fr" ? "Aucune donnée" : "No data"}
                         </TableCell>
                       </TableRow>

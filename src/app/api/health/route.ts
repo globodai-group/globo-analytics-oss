@@ -197,7 +197,7 @@ async function checkQueue(): Promise<ComponentHealth> {
  */
 function determineOverallStatus(
   db: ComponentHealth,
-  redis: ComponentHealth
+  redis: ComponentHealth,
 ): "healthy" | "degraded" | "unhealthy" {
   // Database is critical - if it's down, we're unhealthy
   if (db.status === "down") {

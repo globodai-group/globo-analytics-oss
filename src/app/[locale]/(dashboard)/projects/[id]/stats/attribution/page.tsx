@@ -4,14 +4,31 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, TrendingUp, DollarSign, MousePointerClick, Info } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ArrowLeft,
+  TrendingUp,
+  DollarSign,
+  MousePointerClick,
+  Info,
+} from "lucide-react";
 import { getAttributionAnalysisAction } from "@/lib/actions/attribution";
 import { AttributionModel } from "@prisma/client";
 import { ProjectDateRangePicker } from "@/components/analytics/project-date-range-picker";
 import { AttributionModelPicker } from "@/components/attribution/attribution-model-picker";
 import { AttributionChart } from "@/components/attribution/attribution-chart";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -32,7 +49,10 @@ interface AttributionData {
   avgTouchpoints: number;
 }
 
-export default async function AttributionPage({ params, searchParams }: PageProps) {
+export default async function AttributionPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id } = await params;
   const { from, to, model } = await searchParams;
   const projectId = parseInt(id);
@@ -63,9 +83,15 @@ export default async function AttributionPage({ params, searchParams }: PageProp
   };
 
   // Default model: LAST_CLICK
-  const selectedModel = (model as AttributionModel) || AttributionModel.LAST_CLICK;
+  const selectedModel =
+    (model as AttributionModel) || AttributionModel.LAST_CLICK;
 
-  const result = await getAttributionAnalysisAction(projectId, selectedModel, dateRange, locale);
+  const result = await getAttributionAnalysisAction(
+    projectId,
+    selectedModel,
+    dateRange,
+    locale,
+  );
   const data = result.success ? (result.data as AttributionData) : null;
 
   const modelDescriptions: Record<AttributionModel, string> = {
@@ -87,8 +113,12 @@ export default async function AttributionPage({ params, searchParams }: PageProp
             </Button>
           </Link>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-2xl font-bold truncate">{t("title")}</h1>
-            <p className="text-xs sm:text-sm text-muted-foreground">{t("subtitle")}</p>
+            <h1 className="text-lg sm:text-2xl font-bold truncate">
+              {t("title")}
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              {t("subtitle")}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2 justify-between sm:justify-end">
@@ -117,7 +147,9 @@ export default async function AttributionPage({ params, searchParams }: PageProp
             </TooltipProvider>
             <div>
               <p className="font-medium">{t(`models.${selectedModel}`)}</p>
-              <p className="text-sm text-muted-foreground">{modelDescriptions[selectedModel]}</p>
+              <p className="text-sm text-muted-foreground">
+                {modelDescriptions[selectedModel]}
+              </p>
             </div>
           </div>
         </CardContent>
@@ -128,16 +160,22 @@ export default async function AttributionPage({ params, searchParams }: PageProp
         <div className="grid gap-4 md:grid-cols-3 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("conversions")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("conversions")}
+              </CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data.totalConversions.toLocaleString()}</div>
+              <div className="text-2xl font-bold">
+                {data.totalConversions.toLocaleString()}
+              </div>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("revenue")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("revenue")}
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -151,7 +189,9 @@ export default async function AttributionPage({ params, searchParams }: PageProp
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t("avgTouchpoints")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("avgTouchpoints")}
+              </CardTitle>
               <MousePointerClick className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -188,16 +228,24 @@ export default async function AttributionPage({ params, searchParams }: PageProp
       {data && data.channels.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>{locale === "fr" ? "Détails par canal" : "Channel Details"}</CardTitle>
+            <CardTitle>
+              {locale === "fr" ? "Détails par canal" : "Channel Details"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-medium">{t("channel")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("conversions")}</th>
-                    <th className="text-right py-3 px-4 font-medium">{t("revenue")}</th>
+                    <th className="text-left py-3 px-4 font-medium">
+                      {t("channel")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("conversions")}
+                    </th>
+                    <th className="text-right py-3 px-4 font-medium">
+                      {t("revenue")}
+                    </th>
                     <th className="text-right py-3 px-4 font-medium">%</th>
                   </tr>
                 </thead>
@@ -212,7 +260,9 @@ export default async function AttributionPage({ params, searchParams }: PageProp
                               backgroundColor: getChannelColor(channel.channel),
                             }}
                           />
-                          <span className="font-medium capitalize">{channel.channel}</span>
+                          <span className="font-medium capitalize">
+                            {channel.channel}
+                          </span>
                         </div>
                       </td>
                       <td className="text-right py-3 px-4">
@@ -226,7 +276,9 @@ export default async function AttributionPage({ params, searchParams }: PageProp
                           currency: "EUR",
                         })}
                       </td>
-                      <td className="text-right py-3 px-4 font-medium">{channel.percentage}%</td>
+                      <td className="text-right py-3 px-4 font-medium">
+                        {channel.percentage}%
+                      </td>
                     </tr>
                   ))}
                 </tbody>

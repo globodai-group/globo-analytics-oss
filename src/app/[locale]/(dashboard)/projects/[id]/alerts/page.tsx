@@ -4,8 +4,22 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Plus, Bell, BellOff, Clock, Mail, Webhook } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ArrowLeft,
+  Plus,
+  Bell,
+  BellOff,
+  Clock,
+  Mail,
+  Webhook,
+} from "lucide-react";
 import { getProjectAlertsAction } from "@/lib/actions/alerts";
 import { Badge } from "@/components/ui/badge";
 import { AlertDeleteButton } from "@/components/alerts/alert-delete-button";
@@ -51,15 +65,19 @@ export default async function AlertsPage({ params }: PageProps) {
   }
 
   const result = await getProjectAlertsAction(projectId, locale);
-  const alerts = result.success && result.data ? (result.data.alerts as AlertData[]) : [];
+  const alerts =
+    result.success && result.data ? (result.data.alerts as AlertData[]) : [];
 
   const formatCondition = (
     condition: AlertCondition,
     threshold: number,
-    compareType: CompareType
+    compareType: CompareType,
   ) => {
     const conditionText = t(`conditions.${condition}`);
-    const compareText = compareType !== "ABSOLUTE" ? ` (${t(`compareTypes.${compareType}`)})` : "";
+    const compareText =
+      compareType !== "ABSOLUTE"
+        ? ` (${t(`compareTypes.${compareType}`)})`
+        : "";
     return `${conditionText} ${threshold}${compareText}`;
   };
 
@@ -121,7 +139,11 @@ export default async function AlertsPage({ params }: PageProps) {
                       <CardTitle className="text-lg">{alert.name}</CardTitle>
                       <CardDescription className="mt-1">
                         {t(`metrics.${alert.metric}`)}{" "}
-                        {formatCondition(alert.condition, alert.threshold, alert.compareType)}
+                        {formatCondition(
+                          alert.condition,
+                          alert.threshold,
+                          alert.compareType,
+                        )}
                       </CardDescription>
                     </div>
                   </div>
@@ -134,7 +156,11 @@ export default async function AlertsPage({ params }: PageProps) {
                       isActive={alert.isActive}
                       locale={locale}
                     />
-                    <AlertDeleteButton alertId={alert.id} alertName={alert.name} locale={locale} />
+                    <AlertDeleteButton
+                      alertId={alert.id}
+                      alertName={alert.name}
+                      locale={locale}
+                    />
                   </div>
                 </div>
               </CardHeader>
@@ -168,7 +194,9 @@ export default async function AlertsPage({ params }: PageProps) {
                       <Clock className="h-4 w-4" />
                       <span>
                         {t("lastTriggered")}:{" "}
-                        {new Date(alert.lastTriggered).toLocaleDateString(locale)}
+                        {new Date(alert.lastTriggered).toLocaleDateString(
+                          locale,
+                        )}
                       </span>
                     </div>
                   )}

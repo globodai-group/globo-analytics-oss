@@ -40,7 +40,12 @@ export function getRedis(): Redis | null {
           return null;
         }
         const delay = Math.min(times * 200, 2000);
-        logger.info({ type: "redis", event: "retry", attempt: times, delayMs: delay });
+        logger.info({
+          type: "redis",
+          event: "retry",
+          attempt: times,
+          delayMs: delay,
+        });
         return delay;
       },
       reconnectOnError(err) {
@@ -99,7 +104,7 @@ export async function cacheGet<T>(key: string): Promise<T | null> {
 export async function cacheSet(
   key: string,
   value: unknown,
-  ttlSeconds: number = 300
+  ttlSeconds: number = 300,
 ): Promise<boolean> {
   const redis = getRedis();
   if (!redis) return false;
@@ -138,7 +143,11 @@ export async function cacheDelPattern(pattern: string): Promise<number> {
     if (keys.length === 0) return 0;
     return await redis.del(...keys);
   } catch (error) {
-    logError(error, { context: "redis", operation: "cacheDelPattern", pattern });
+    logError(error, {
+      context: "redis",
+      operation: "cacheDelPattern",
+      pattern,
+    });
     return 0;
   }
 }
@@ -148,7 +157,7 @@ export async function cacheDelPattern(pattern: string): Promise<number> {
  */
 export async function getCachedVisitor(
   projectId: number,
-  visitorId: string
+  visitorId: string,
 ): Promise<{ id: string; firstSeenAt: Date } | null> {
   return cacheGet(`visitor:${projectId}:${visitorId}`);
 }
@@ -156,7 +165,7 @@ export async function getCachedVisitor(
 export async function setCachedVisitor(
   projectId: number,
   visitorId: string,
-  data: { id: string; firstSeenAt: Date }
+  data: { id: string; firstSeenAt: Date },
 ): Promise<boolean> {
   return cacheSet(`visitor:${projectId}:${visitorId}`, data, 1800); // 30 min
 }
@@ -166,7 +175,7 @@ export async function setCachedVisitor(
  */
 export async function getCachedSession(
   projectId: number,
-  sessionId: string
+  sessionId: string,
 ): Promise<{
   id: string;
   visitorId: string;
@@ -184,7 +193,7 @@ export async function setCachedSession(
     visitorId: string;
     pageviews: number;
     lastActivityAt: Date;
-  }
+  },
 ): Promise<boolean> {
   return cacheSet(`session:${projectId}:${sessionId}`, data, 2700); // 45 min
 }
@@ -212,7 +221,7 @@ export async function setCachedProjectConfig(
     engagementThreshold: number;
     excludeBots: boolean;
     excludedIps: string[];
-  }
+  },
 ): Promise<boolean> {
   return cacheSet(`project:${projectId}:config`, data, 300); // 5 min
 }
@@ -223,7 +232,7 @@ export async function setCachedProjectConfig(
 export async function checkRateLimit(
   key: string,
   limit: number,
-  windowMs: number
+  windowMs: number,
 ): Promise<{ allowed: boolean; remaining: number; resetAt: number }> {
   const redis = getRedis();
   const now = Date.now();
@@ -294,7 +303,7 @@ export async function isDuplicateRequest(
   projectId: number,
   visitorId: string,
   eventType: string,
-  timestampMs: number
+  timestampMs: number,
 ): Promise<boolean> {
   const redis = getRedis();
   if (!redis) return false;
@@ -327,6 +336,10 @@ export async function closeRedis(): Promise<void> {
     await redisClient.quit();
     redisClient = null;
     isConnected = false;
-    logger.info({ type: "redis", event: "shutdown", message: "Connection closed gracefully" });
+    logger.info({
+      type: "redis",
+      event: "shutdown",
+      message: "Connection closed gracefully",
+    });
   }
 }

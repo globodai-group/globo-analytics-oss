@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   ArrowLeft,
   ShoppingCart,
@@ -66,68 +72,69 @@ export default async function EcommerceStatsPage({
   toDate.setHours(23, 59, 59, 999);
 
   // Fetch e-commerce stats
-  const [transactions, revenueStats, topProducts, topCategories, funnelStats] = await Promise.all([
-    // Total transactions in period
-    prisma.ecommerceTransaction.findMany({
-      where: {
-        projectId: project.id,
-        createdAt: { gte: fromDate, lte: toDate },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 10,
-      include: {
-        items: true,
-      },
-    }),
-    // Revenue aggregation
-    prisma.ecommerceTransaction.aggregate({
-      where: {
-        projectId: project.id,
-        createdAt: { gte: fromDate, lte: toDate },
-      },
-      _sum: { value: true, tax: true, shipping: true },
-      _count: true,
-      _avg: { value: true },
-    }),
-    // Top products
-    prisma.ecommerceItem.groupBy({
-      by: ["itemId", "itemName"],
-      where: {
-        transaction: {
+  const [transactions, revenueStats, topProducts, topCategories, funnelStats] =
+    await Promise.all([
+      // Total transactions in period
+      prisma.ecommerceTransaction.findMany({
+        where: {
           projectId: project.id,
           createdAt: { gte: fromDate, lte: toDate },
         },
-      },
-      _sum: { quantity: true, price: true },
-      _count: true,
-      orderBy: { _sum: { quantity: "desc" } },
-      take: 10,
-    }),
-    // Top categories
-    prisma.ecommerceItem.groupBy({
-      by: ["itemCategory"],
-      where: {
-        transaction: {
+        orderBy: { createdAt: "desc" },
+        take: 10,
+        include: {
+          items: true,
+        },
+      }),
+      // Revenue aggregation
+      prisma.ecommerceTransaction.aggregate({
+        where: {
           projectId: project.id,
           createdAt: { gte: fromDate, lte: toDate },
         },
-        itemCategory: { not: null },
-      },
-      _sum: { quantity: true, price: true },
-      _count: true,
-      orderBy: { _sum: { quantity: "desc" } },
-      take: 10,
-    }),
-    // Funnel stats (events count)
-    prisma.ecommerceEvent.groupBy({
-      by: ["eventType"],
-      where: {
-        projectId: project.id,
-        createdAt: { gte: fromDate, lte: toDate },
-      },
-      _count: true,
-    }),
-  ]);
+        _sum: { value: true, tax: true, shipping: true },
+        _count: true,
+        _avg: { value: true },
+      }),
+      // Top products
+      prisma.ecommerceItem.groupBy({
+        by: ["itemId", "itemName"],
+        where: {
+          transaction: {
+            projectId: project.id,
+            createdAt: { gte: fromDate, lte: toDate },
+          },
+        },
+        _sum: { quantity: true, price: true },
+        _count: true,
+        orderBy: { _sum: { quantity: "desc" } },
+        take: 10,
+      }),
+      // Top categories
+      prisma.ecommerceItem.groupBy({
+        by: ["itemCategory"],
+        where: {
+          transaction: {
+            projectId: project.id,
+            createdAt: { gte: fromDate, lte: toDate },
+          },
+          itemCategory: { not: null },
+        },
+        _sum: { quantity: true, price: true },
+        _count: true,
+        orderBy: { _sum: { quantity: "desc" } },
+        take: 10,
+      }),
+      // Funnel stats (events count)
+      prisma.ecommerceEvent.groupBy({
+        by: ["eventType"],
+        where: {
+          projectId: project.id,
+          createdAt: { gte: fromDate, lte: toDate },
+        },
+        _count: true,
+      }),
+    ]);
 
   const totalRevenue = revenueStats._sum.value || 0;
   const totalTransactions = revenueStats._count || 0;
@@ -137,14 +144,20 @@ export default async function EcommerceStatsPage({
 
   // Build funnel data
   const funnelData = {
-    view_item: funnelStats.find((f) => f.eventType === "view_item")?._count || 0,
-    add_to_cart: funnelStats.find((f) => f.eventType === "add_to_cart")?._count || 0,
-    begin_checkout: funnelStats.find((f) => f.eventType === "begin_checkout")?._count || 0,
+    view_item:
+      funnelStats.find((f) => f.eventType === "view_item")?._count || 0,
+    add_to_cart:
+      funnelStats.find((f) => f.eventType === "add_to_cart")?._count || 0,
+    begin_checkout:
+      funnelStats.find((f) => f.eventType === "begin_checkout")?._count || 0,
     purchase: totalTransactions,
   };
 
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat(locale, { style: "currency", currency: "EUR" }).format(amount);
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "EUR",
+    }).format(amount);
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -159,9 +172,13 @@ export default async function EcommerceStatsPage({
           <div className="min-w-0">
             <h1 className="text-lg sm:text-2xl font-bold flex items-center gap-2">
               <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
-              <span className="truncate">{locale === "fr" ? "E-commerce" : "E-commerce"}</span>
+              <span className="truncate">
+                {locale === "fr" ? "E-commerce" : "E-commerce"}
+              </span>
             </h1>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">{project.name}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">
+              {project.name}
+            </p>
           </div>
         </div>
         <div className="flex justify-end">
@@ -179,10 +196,13 @@ export default async function EcommerceStatsPage({
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(totalRevenue)}</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(totalRevenue)}
+            </div>
             <p className="text-xs text-muted-foreground">
               {locale === "fr" ? "Taxes: " : "Tax: "}
-              {formatCurrency(totalTax)} | {locale === "fr" ? "Livraison: " : "Shipping: "}
+              {formatCurrency(totalTax)} |{" "}
+              {locale === "fr" ? "Livraison: " : "Shipping: "}
               {formatCurrency(totalShipping)}
             </p>
           </CardContent>
@@ -211,7 +231,9 @@ export default async function EcommerceStatsPage({
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(avgOrderValue)}</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(avgOrderValue)}
+            </div>
             <p className="text-xs text-muted-foreground">
               {locale === "fr" ? "Par transaction" : "Per transaction"}
             </p>
@@ -228,7 +250,9 @@ export default async function EcommerceStatsPage({
           <CardContent>
             <div className="text-2xl font-bold">
               {funnelData.view_item > 0
-                ? ((funnelData.purchase / funnelData.view_item) * 100).toFixed(1)
+                ? ((funnelData.purchase / funnelData.view_item) * 100).toFixed(
+                    1,
+                  )
                 : 0}
               %
             </div>
@@ -242,7 +266,9 @@ export default async function EcommerceStatsPage({
       {/* Funnel */}
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Entonnoir de conversion" : "Conversion Funnel"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Entonnoir de conversion" : "Conversion Funnel"}
+          </CardTitle>
           <CardDescription>
             {locale === "fr"
               ? "Progression des visiteurs dans le parcours d'achat"
@@ -277,14 +303,17 @@ export default async function EcommerceStatsPage({
                 label: locale === "fr" ? "Achats" : "Purchases",
                 value: funnelData.purchase,
                 percentage:
-                  funnelData.view_item > 0 ? (funnelData.purchase / funnelData.view_item) * 100 : 0,
+                  funnelData.view_item > 0
+                    ? (funnelData.purchase / funnelData.view_item) * 100
+                    : 0,
               },
             ].map((step, index) => (
               <div key={index} className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>{step.label}</span>
                   <span className="font-medium">
-                    {step.value.toLocaleString()} ({step.percentage.toFixed(1)}%)
+                    {step.value.toLocaleString()} ({step.percentage.toFixed(1)}
+                    %)
                   </span>
                 </div>
                 <div className="h-3 bg-muted rounded-full overflow-hidden">
@@ -316,15 +345,27 @@ export default async function EcommerceStatsPage({
             ) : (
               <div className="space-y-4">
                 {topProducts.map((product, index) => (
-                  <div key={index} className="flex items-center justify-between">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     <div>
-                      <p className="font-medium">{product.itemName || product.itemId}</p>
-                      <p className="text-sm text-muted-foreground">{product.itemId}</p>
+                      <p className="font-medium">
+                        {product.itemName || product.itemId}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {product.itemId}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium">{product._sum.quantity || 0} vendus</p>
+                      <p className="font-medium">
+                        {product._sum.quantity || 0} vendus
+                      </p>
                       <p className="text-sm text-muted-foreground">
-                        {formatCurrency((product._sum.price || 0) * (product._sum.quantity || 0))}
+                        {formatCurrency(
+                          (product._sum.price || 0) *
+                            (product._sum.quantity || 0),
+                        )}
                       </p>
                     </div>
                   </div>
@@ -337,7 +378,9 @@ export default async function EcommerceStatsPage({
         {/* Top Categories */}
         <Card>
           <CardHeader>
-            <CardTitle>{locale === "fr" ? "Catégories" : "Categories"}</CardTitle>
+            <CardTitle>
+              {locale === "fr" ? "Catégories" : "Categories"}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {topCategories.length === 0 ? (
@@ -347,12 +390,17 @@ export default async function EcommerceStatsPage({
             ) : (
               <div className="space-y-4">
                 {topCategories.map((category, index) => (
-                  <div key={index} className="flex items-center justify-between">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium">{category.itemCategory}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium">{category._sum.quantity || 0} vendus</p>
+                      <p className="font-medium">
+                        {category._sum.quantity || 0} vendus
+                      </p>
                       <p className="text-sm text-muted-foreground">
                         {category._count} transactions
                       </p>
@@ -368,7 +416,9 @@ export default async function EcommerceStatsPage({
       {/* Recent Transactions */}
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Transactions récentes" : "Recent Transactions"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Transactions récentes" : "Recent Transactions"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {transactions.length === 0 ? (
@@ -388,11 +438,14 @@ export default async function EcommerceStatsPage({
                       {format(tx.createdAt, "PPp", { locale: dateLocale })}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {tx.items.length} {locale === "fr" ? "article(s)" : "item(s)"}
+                      {tx.items.length}{" "}
+                      {locale === "fr" ? "article(s)" : "item(s)"}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium text-lg">{formatCurrency(tx.value)}</p>
+                    <p className="font-medium text-lg">
+                      {formatCurrency(tx.value)}
+                    </p>
                     {tx.coupon && (
                       <p className="text-sm text-green-600">
                         {locale === "fr" ? "Coupon: " : "Coupon: "}

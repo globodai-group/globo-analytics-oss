@@ -144,7 +144,11 @@ export default function LoginPage() {
                 {...register("email")}
                 disabled={isLoading}
               />
-              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-sm text-destructive">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -157,15 +161,29 @@ export default function LoginPage() {
                   {t("forgotPassword")}
                 </Link>
               </div>
-              <Input id="password" type="password" {...register("password")} disabled={isLoading} />
+              <Input
+                id="password"
+                type="password"
+                {...register("password")}
+                disabled={isLoading}
+              />
               {errors.password && (
-                <p className="text-sm text-destructive">{errors.password.message}</p>
+                <p className="text-sm text-destructive">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
             <div className="flex items-center space-x-3">
-              <Checkbox id="remember" {...register("remember")} className="h-5 w-5" />
-              <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+              <Checkbox
+                id="remember"
+                {...register("remember")}
+                className="h-5 w-5"
+              />
+              <Label
+                htmlFor="remember"
+                className="text-sm font-normal cursor-pointer"
+              >
                 {t("rememberMe")}
               </Label>
             </div>
@@ -181,7 +199,9 @@ export default function LoginPage() {
               <Separator />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">{t("orContinueWith")}</span>
+              <span className="bg-card px-2 text-muted-foreground">
+                {t("orContinueWith")}
+              </span>
             </div>
           </div>
 

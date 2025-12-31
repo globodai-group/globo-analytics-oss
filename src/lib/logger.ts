@@ -86,9 +86,10 @@ export function logRequest(
   path: string,
   statusCode: number,
   durationMs: number,
-  context?: Record<string, unknown>
+  context?: Record<string, unknown>,
 ) {
-  const level = statusCode >= 500 ? "error" : statusCode >= 400 ? "warn" : "info";
+  const level =
+    statusCode >= 500 ? "error" : statusCode >= 400 ? "warn" : "info";
 
   logger[level]({
     type: "request",
@@ -126,7 +127,7 @@ export function logAnalyticsEvent(
   projectId: number,
   eventType: string,
   visitorId: string,
-  context?: Record<string, unknown>
+  context?: Record<string, unknown>,
 ) {
   logger.debug({
     type: "analytics",
@@ -140,7 +141,10 @@ export function logAnalyticsEvent(
 /**
  * Error logger with stack trace
  */
-export function logError(error: Error | unknown, context?: Record<string, unknown>) {
+export function logError(
+  error: Error | unknown,
+  context?: Record<string, unknown>,
+) {
   if (error instanceof Error) {
     logger.error({
       type: "error",
@@ -179,7 +183,7 @@ export function logSecurityEvent(
     field?: string;
     value?: string;
     tid?: string;
-  }
+  },
 ) {
   logger.warn({
     type: "security",
@@ -196,7 +200,7 @@ export function logAudit(
   userId: string,
   resource: string,
   resourceId: string | number,
-  details?: Record<string, unknown>
+  details?: Record<string, unknown>,
 ) {
   logger.info({
     type: "audit",

@@ -40,7 +40,10 @@ const STAT_LABELS: Record<string, { en: string; fr: string }> = {
   cities: { en: "Cities", fr: "Villes" },
   languages: { en: "Languages", fr: "Langues" },
   browsers: { en: "Browsers", fr: "Navigateurs" },
-  "operating-systems": { en: "Operating Systems", fr: "Systèmes d'exploitation" },
+  "operating-systems": {
+    en: "Operating Systems",
+    fr: "Systèmes d'exploitation",
+  },
   "screen-resolutions": { en: "Screen Resolutions", fr: "Résolutions d'écran" },
   devices: { en: "Devices", fr: "Appareils" },
   events: { en: "Events", fr: "Événements" },
@@ -76,7 +79,9 @@ interface StatsDetailPageProps {
   params: Promise<{ id: string; statType: string }>;
 }
 
-export default async function StatsDetailPage({ params }: StatsDetailPageProps) {
+export default async function StatsDetailPage({
+  params,
+}: StatsDetailPageProps) {
   const { id, statType } = await params;
   const session = await auth();
   const t = await getTranslations("stats");

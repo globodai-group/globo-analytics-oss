@@ -24,7 +24,11 @@ export function UserFlowChart({ nodes, links, locale }: UserFlowChartProps) {
   const t = useTranslations("userFlow");
 
   if (nodes.length === 0 || links.length === 0) {
-    return <div className="text-center py-8 text-muted-foreground">{t("noData")}</div>;
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        {t("noData")}
+      </div>
+    );
   }
 
   // Find unique sources (entry points) and targets
@@ -68,7 +72,10 @@ export function UserFlowChart({ nodes, links, locale }: UserFlowChartProps) {
             <div key={index} className="flex items-center gap-2">
               {/* Source */}
               <div className="w-[200px] text-right">
-                <span className="text-sm truncate inline-block max-w-full" title={link.source}>
+                <span
+                  className="text-sm truncate inline-block max-w-full"
+                  title={link.source}
+                >
                   {link.source || "/"}
                 </span>
               </div>
@@ -102,7 +109,10 @@ export function UserFlowChart({ nodes, links, locale }: UserFlowChartProps) {
 
               {/* Target */}
               <div className="w-[200px]">
-                <span className="text-sm truncate inline-block max-w-full" title={link.target}>
+                <span
+                  className="text-sm truncate inline-block max-w-full"
+                  title={link.target}
+                >
                   {link.target || "/"}
                 </span>
               </div>
@@ -115,7 +125,9 @@ export function UserFlowChart({ nodes, links, locale }: UserFlowChartProps) {
       <div className="flex items-center justify-center gap-6 pt-4 border-t">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded bg-primary/20" />
-          <span className="text-sm text-muted-foreground">{t("transitions")}</span>
+          <span className="text-sm text-muted-foreground">
+            {t("transitions")}
+          </span>
         </div>
         <div className="text-sm text-muted-foreground">
           {locale === "fr"

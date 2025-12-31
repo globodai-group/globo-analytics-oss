@@ -14,7 +14,10 @@ interface TechnologyPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
 }
 
-export default async function TechnologyPage({ params, searchParams }: TechnologyPageProps) {
+export default async function TechnologyPage({
+  params,
+  searchParams,
+}: TechnologyPageProps) {
   const { id } = await params;
   const { from, to } = await searchParams;
   const session = await auth();
@@ -74,7 +77,10 @@ export default async function TechnologyPage({ params, searchParams }: Technolog
       </div>
 
       {/* Technology Overview Component */}
-      <TechnologyOverview projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+      <TechnologyOverview
+        projectId={project.id}
+        dateRange={{ from: startDate, to: endDate }}
+      />
     </div>
   );
 }

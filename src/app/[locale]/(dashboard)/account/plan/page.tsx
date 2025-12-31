@@ -1,7 +1,13 @@
 import { getTranslations, getLocale } from "next-intl/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Key, Zap } from "lucide-react";
@@ -95,9 +101,14 @@ export default async function PlanPage() {
           {/* Pageviews Usage */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>{locale === "fr" ? "Pages vues ce mois" : "Pageviews this month"}</span>
               <span>
-                {pageviews.toLocaleString()} / {pageviewLimit === 0 ? "∞" : pageviewLimit.toLocaleString()}
+                {locale === "fr"
+                  ? "Pages vues ce mois"
+                  : "Pageviews this month"}
+              </span>
+              <span>
+                {pageviews.toLocaleString()} /{" "}
+                {pageviewLimit === 0 ? "∞" : pageviewLimit.toLocaleString()}
               </span>
             </div>
             {pageviewLimit > 0 && <Progress value={pageviewPercentage} />}
@@ -125,7 +136,9 @@ export default async function PlanPage() {
                 <Zap className="h-5 w-5 text-yellow-500" />
                 <div>
                   <p className="font-medium">
-                    {locale === "fr" ? "Version Community" : "Community Edition"}
+                    {locale === "fr"
+                      ? "Version Community"
+                      : "Community Edition"}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {locale === "fr"

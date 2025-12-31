@@ -4,13 +4,18 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { generateSecretKey } from "@/lib/security/hmac";
 import { logError } from "@/lib/logger";
 
 export async function createProjectAction(
   formData: FormData,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number; trackingId: string }>> {
   const t = await getTranslations({ locale, namespace: "projects" });
   const session = await auth();
@@ -23,8 +28,10 @@ export async function createProjectAction(
   const platform = (formData.get("platform") as string) || "web";
   const privacy = parseInt(formData.get("privacy") as string) || 1;
   const excludeBots = formData.get("excludeBots") === "true";
-  const sessionTimeout = parseInt(formData.get("sessionTimeout") as string) || 30;
-  const engagementThreshold = parseInt(formData.get("engagementThreshold") as string) || 10;
+  const sessionTimeout =
+    parseInt(formData.get("sessionTimeout") as string) || 30;
+  const engagementThreshold =
+    parseInt(formData.get("engagementThreshold") as string) || 10;
 
   if (!name) {
     return ActionError(t("errors.nameRequired"));
@@ -48,7 +55,10 @@ export async function createProjectAction(
     });
 
     revalidatePath("/projects");
-    return ActionSuccess({ id: project.id, trackingId: project.trackingId }, t("created"));
+    return ActionSuccess(
+      { id: project.id, trackingId: project.trackingId },
+      t("created"),
+    );
   } catch (error) {
     logError(error, { context: "projects", operation: "create" });
     return ActionError(t("errors.createFailed"));
@@ -58,7 +68,7 @@ export async function createProjectAction(
 export async function updateProjectAction(
   projectId: number,
   formData: FormData,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "projects" });
   const session = await auth();
@@ -78,8 +88,10 @@ export async function updateProjectAction(
   const name = formData.get("name") as string;
   const privacy = parseInt(formData.get("privacy") as string) || 1;
   const excludeBots = formData.get("excludeBots") === "true";
-  const sessionTimeout = parseInt(formData.get("sessionTimeout") as string) || 30;
-  const engagementThreshold = parseInt(formData.get("engagementThreshold") as string) || 10;
+  const sessionTimeout =
+    parseInt(formData.get("sessionTimeout") as string) || 30;
+  const engagementThreshold =
+    parseInt(formData.get("engagementThreshold") as string) || 10;
 
   try {
     await prisma.project.update({
@@ -104,7 +116,7 @@ export async function updateProjectAction(
 
 export async function deleteProjectAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "projects" });
   const session = await auth();
@@ -131,7 +143,9 @@ export async function deleteProjectAction(
   }
 }
 
-export async function toggleProjectFavoriteAction(projectId: number): Promise<ActionResult<void>> {
+export async function toggleProjectFavoriteAction(
+  projectId: number,
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -160,8 +174,10 @@ export async function toggleProjectFavoriteAction(projectId: number): Promise<Ac
 export async function addProjectDomainAction(
   projectId: number,
   domain: string,
-  type: string = "web"
-): Promise<ActionResult<{ id: number; domain: string; type: string; createdAt: string }>> {
+  type: string = "web",
+): Promise<
+  ActionResult<{ id: number; domain: string; type: string; createdAt: string }>
+> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -193,7 +209,7 @@ export async function addProjectDomainAction(
         type: newDomain.type,
         createdAt: newDomain.createdAt.toISOString(),
       },
-      "Domain added"
+      "Domain added",
     );
   } catch (error) {
     logError(error, { context: "projects", operation: "addDomain", projectId });
@@ -201,7 +217,9 @@ export async function addProjectDomainAction(
   }
 }
 
-export async function removeProjectDomainAction(domainId: number): Promise<ActionResult<void>> {
+export async function removeProjectDomainAction(
+  domainId: number,
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -227,7 +245,7 @@ export async function removeProjectDomainAction(domainId: number): Promise<Actio
  * This invalidates any existing signed tracking scripts
  */
 export async function regenerateProjectSecretAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<{ secretKey: string }>> {
   const session = await auth();
 
@@ -254,7 +272,11 @@ export async function regenerateProjectSecretAction(
     revalidatePath(`/projects/${projectId}`);
     return ActionSuccess({ secretKey: newSecretKey }, "Secret key regenerated");
   } catch (error) {
-    logError(error, { context: "projects", operation: "regenerateSecret", projectId });
+    logError(error, {
+      context: "projects",
+      operation: "regenerateSecret",
+      projectId,
+    });
     return ActionError("Failed to regenerate secret key");
   }
 }
@@ -263,7 +285,7 @@ export async function regenerateProjectSecretAction(
  * Get the HMAC secret key for a project (for displaying in tracking code)
  */
 export async function getProjectSecretAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<{ secretKey: string | null }>> {
   const session = await auth();
 

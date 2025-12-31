@@ -5,13 +5,25 @@ import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createProjectSchema, type CreateProjectInput } from "@/lib/validations/project";
-import { createProjectAction, updateProjectAction } from "@/lib/actions/projects";
+import {
+  createProjectSchema,
+  type CreateProjectInput,
+} from "@/lib/validations/project";
+import {
+  createProjectAction,
+  updateProjectAction,
+} from "@/lib/actions/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Select,
@@ -101,7 +113,12 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
     if (result.success) {
       toast.success(result.message);
-      if (!isEditing && result.data && typeof result.data === "object" && "id" in result.data) {
+      if (
+        !isEditing &&
+        result.data &&
+        typeof result.data === "object" &&
+        "id" in result.data
+      ) {
         router.push(`/projects/${result.data.id}/domains`);
       } else {
         router.push("/projects");
@@ -149,7 +166,11 @@ export function ProjectForm({ project }: ProjectFormProps) {
             placeholder={locale === "fr" ? "Mon Application" : "My Application"}
             disabled={isLoading}
           />
-          {errors.name && <p className="text-sm text-destructive mt-2">{errors.name.message}</p>}
+          {errors.name && (
+            <p className="text-sm text-destructive mt-2">
+              {errors.name.message}
+            </p>
+          )}
         </CardContent>
       </Card>
 
@@ -169,7 +190,9 @@ export function ProjectForm({ project }: ProjectFormProps) {
         <CardContent>
           <Select
             value={platform}
-            onValueChange={(value) => setValue("platform", value as "web" | "mobile" | "both")}
+            onValueChange={(value) =>
+              setValue("platform", value as "web" | "mobile" | "both")
+            }
             disabled={isLoading || isEditing}
           >
             <SelectTrigger>
@@ -225,16 +248,24 @@ export function ProjectForm({ project }: ProjectFormProps) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">{t("projects.privacyOptions.public")}</SelectItem>
-              <SelectItem value="1">{t("projects.privacyOptions.private")}</SelectItem>
-              <SelectItem value="2">{t("projects.privacyOptions.password")}</SelectItem>
+              <SelectItem value="0">
+                {t("projects.privacyOptions.public")}
+              </SelectItem>
+              <SelectItem value="1">
+                {t("projects.privacyOptions.private")}
+              </SelectItem>
+              <SelectItem value="2">
+                {t("projects.privacyOptions.password")}
+              </SelectItem>
             </SelectContent>
           </Select>
 
           {showPassword && (
             <div className="space-y-2">
               <Label htmlFor="password">
-                {locale === "fr" ? "Mot de passe pour les statistiques" : "Password for statistics"}
+                {locale === "fr"
+                  ? "Mot de passe pour les statistiques"
+                  : "Password for statistics"}
               </Label>
               <Input
                 id="password"
@@ -264,7 +295,9 @@ export function ProjectForm({ project }: ProjectFormProps) {
         <CardContent className="space-y-6">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label>{locale === "fr" ? "Timeout de session" : "Session timeout"}</Label>
+              <Label>
+                {locale === "fr" ? "Timeout de session" : "Session timeout"}
+              </Label>
               <span className="text-sm text-muted-foreground">
                 {sessionTimeout} {locale === "fr" ? "minutes" : "minutes"}
               </span>
@@ -286,14 +319,20 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label>{locale === "fr" ? "Seuil d'engagement" : "Engagement threshold"}</Label>
+              <Label>
+                {locale === "fr"
+                  ? "Seuil d'engagement"
+                  : "Engagement threshold"}
+              </Label>
               <span className="text-sm text-muted-foreground">
                 {engagementThreshold} {locale === "fr" ? "secondes" : "seconds"}
               </span>
             </div>
             <Slider
               value={[engagementThreshold]}
-              onValueChange={(value) => setValue("engagementThreshold", value[0])}
+              onValueChange={(value) =>
+                setValue("engagementThreshold", value[0])
+              }
               min={1}
               max={300}
               step={1}
@@ -324,7 +363,9 @@ export function ProjectForm({ project }: ProjectFormProps) {
         <CardContent>
           <div className="flex items-center justify-between">
             <Label htmlFor="excludeBots" className="flex-1">
-              {locale === "fr" ? "Activer le filtrage des bots" : "Enable bot filtering"}
+              {locale === "fr"
+                ? "Activer le filtrage des bots"
+                : "Enable bot filtering"}
             </Label>
             <Switch
               id="excludeBots"
@@ -338,7 +379,12 @@ export function ProjectForm({ project }: ProjectFormProps) {
 
       {/* Submit */}
       <div className="flex justify-end gap-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          disabled={isLoading}
+        >
           {t("common.cancel")}
         </Button>
         <Button type="submit" disabled={isLoading}>

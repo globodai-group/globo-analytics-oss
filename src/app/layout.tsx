@@ -16,7 +16,13 @@ export const metadata: Metadata = {
   },
   description:
     "Privacy-friendly web analytics platform. Track your website visitors without compromising their privacy.",
-  keywords: ["analytics", "web analytics", "privacy", "website tracking", "statistics"],
+  keywords: [
+    "analytics",
+    "web analytics",
+    "privacy",
+    "website tracking",
+    "statistics",
+  ],
 };
 
 export default function RootLayout({

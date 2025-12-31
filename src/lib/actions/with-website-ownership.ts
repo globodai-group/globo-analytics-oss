@@ -8,7 +8,7 @@ import { Website } from "@prisma/client";
  */
 export async function verifyWebsiteOwnership(
   websiteId: number,
-  userId: string
+  userId: string,
 ): Promise<Website | null> {
   const website = await prisma.website.findFirst({
     where: { id: websiteId, userId },
@@ -33,9 +33,10 @@ export async function hasWebsiteAccess(websiteId: number): Promise<boolean> {
  * Returns { authorized: true, website, userId } or { authorized: false }
  */
 export async function checkWebsiteAccess(
-  websiteId: number
+  websiteId: number,
 ): Promise<
-  { authorized: true; website: Website; userId: string } | { authorized: false; error: string }
+  | { authorized: true; website: Website; userId: string }
+  | { authorized: false; error: string }
 > {
   const session = await auth();
   if (!session?.user?.id) {

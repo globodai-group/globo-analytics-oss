@@ -66,11 +66,14 @@ export async function POST(request: NextRequest) {
       const rateLimitResult = await checkRateLimit(
         `tracking-legacy:${ip}`,
         RATE_LIMIT,
-        RATE_WINDOW_MS
+        RATE_WINDOW_MS,
       );
 
       if (!rateLimitResult.allowed) {
-        logSecurityEvent("rate_limit", { ip, reason: "Legacy tracking rate limit exceeded" });
+        logSecurityEvent("rate_limit", {
+          ip,
+          reason: "Legacy tracking rate limit exceeded",
+        });
 
         return NextResponse.json(
           { error: "Rate limit exceeded" },
@@ -78,9 +81,11 @@ export async function POST(request: NextRequest) {
             status: 429,
             headers: {
               ...corsHeaders,
-              "Retry-After": Math.ceil((rateLimitResult.resetAt - Date.now()) / 1000).toString(),
+              "Retry-After": Math.ceil(
+                (rateLimitResult.resetAt - Date.now()) / 1000,
+              ).toString(),
             },
-          }
+          },
         );
       }
     }
@@ -118,7 +123,7 @@ export async function POST(request: NextRequest) {
     if (!page) {
       return NextResponse.json(
         { error: "Missing required field: page" },
-        { status: 400, headers: corsHeaders }
+        { status: 400, headers: corsHeaders },
       );
     }
 
@@ -146,14 +151,14 @@ export async function POST(request: NextRequest) {
     if (!website) {
       return NextResponse.json(
         { error: "Website not found" },
-        { status: 404, headers: corsHeaders }
+        { status: 404, headers: corsHeaders },
       );
     }
 
     if (!website.user.canTrack) {
       return NextResponse.json(
         { error: "Tracking disabled" },
-        { status: 403, headers: corsHeaders }
+        { status: 403, headers: corsHeaders },
       );
     }
 
@@ -164,13 +169,16 @@ export async function POST(request: NextRequest) {
     if (website.excludeBots && isBot(userAgent)) {
       return NextResponse.json(
         { success: true, message: "Bot excluded" },
-        { headers: corsHeaders }
+        { headers: corsHeaders },
       );
     }
 
     // Check IP exclusion
     if (isIpExcluded(ip, website.excludeIps)) {
-      return NextResponse.json({ success: true, message: "IP excluded" }, { headers: corsHeaders });
+      return NextResponse.json(
+        { success: true, message: "IP excluded" },
+        { headers: corsHeaders },
+      );
     }
 
     // Get language from Accept-Language header
@@ -200,7 +208,8 @@ export async function POST(request: NextRequest) {
       utm: utm || parseUtmFromUrl(page),
       // Engagement data
       timeOnPage: time_on_page !== undefined ? Number(time_on_page) : undefined,
-      scrollDepth: scroll_depth !== undefined ? Number(scroll_depth) : undefined,
+      scrollDepth:
+        scroll_depth !== undefined ? Number(scroll_depth) : undefined,
       isExit: is_exit || false,
       // Event data
       eventName: event_name || undefined,
@@ -210,7 +219,13 @@ export async function POST(request: NextRequest) {
     };
 
     // Track the event
-    await trackEvent(website.id, trackingData, userAgent, ip, geoData || undefined);
+    await trackEvent(
+      website.id,
+      trackingData,
+      userAgent,
+      ip,
+      geoData || undefined,
+    );
 
     return NextResponse.json({ success: true }, { headers: corsHeaders });
   } catch (error) {
@@ -218,7 +233,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500, headers: corsHeaders }
+      { status: 500, headers: corsHeaders },
     );
   }
 }

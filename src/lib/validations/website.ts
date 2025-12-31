@@ -4,7 +4,11 @@ import { z } from "zod";
 const DOMAIN_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}$/;
 
 export const createWebsiteSchema = z.object({
-  domain: z.string().min(1, "Domain is required").max(255).regex(DOMAIN_PATTERN, "Invalid domain"),
+  domain: z
+    .string()
+    .min(1, "Domain is required")
+    .max(255)
+    .regex(DOMAIN_PATTERN, "Invalid domain"),
   privacy: z.enum(["0", "1", "2"]), // 0=public, 1=private, 2=password
   password: z.string().max(255).optional(),
   email: z.boolean(),
@@ -30,4 +34,6 @@ export const validateWebsitePasswordSchema = z.object({
 
 export type CreateWebsiteInput = z.infer<typeof createWebsiteSchema>;
 export type UpdateWebsiteInput = z.infer<typeof updateWebsiteSchema>;
-export type ValidateWebsitePasswordInput = z.infer<typeof validateWebsitePasswordSchema>;
+export type ValidateWebsitePasswordInput = z.infer<
+  typeof validateWebsitePasswordSchema
+>;

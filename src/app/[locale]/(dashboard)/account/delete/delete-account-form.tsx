@@ -66,7 +66,9 @@ export function DeleteAccountForm({ locale }: DeleteAccountFormProps) {
 
       if (result.success) {
         toast.success(
-          locale === "fr" ? "Votre compte a été supprimé" : "Your account has been deleted"
+          locale === "fr"
+            ? "Votre compte a été supprimé"
+            : "Your account has been deleted",
         );
         await signOut({ callbackUrl: "/" });
       } else {
@@ -101,7 +103,9 @@ export function DeleteAccountForm({ locale }: DeleteAccountFormProps) {
               : "Delete all your websites and their statistics"}
           </li>
           <li>
-            {locale === "fr" ? "Annuler votre abonnement actif" : "Cancel your active subscription"}
+            {locale === "fr"
+              ? "Annuler votre abonnement actif"
+              : "Cancel your active subscription"}
           </li>
           <li>
             {locale === "fr"
@@ -140,7 +144,9 @@ export function DeleteAccountForm({ locale }: DeleteAccountFormProps) {
                   disabled={isLoading}
                 />
                 {errors.confirmation && (
-                  <p className="text-sm text-destructive">{errors.confirmation.message}</p>
+                  <p className="text-sm text-destructive">
+                    {errors.confirmation.message}
+                  </p>
                 )}
               </div>
             </div>
@@ -154,7 +160,11 @@ export function DeleteAccountForm({ locale }: DeleteAccountFormProps) {
               >
                 {locale === "fr" ? "Annuler" : "Cancel"}
               </Button>
-              <Button type="submit" variant="destructive" disabled={!isConfirmValid || isLoading}>
+              <Button
+                type="submit"
+                variant="destructive"
+                disabled={!isConfirmValid || isLoading}
+              >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 {t("button")}
               </Button>

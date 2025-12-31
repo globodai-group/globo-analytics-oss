@@ -12,7 +12,10 @@ interface WebsiteFavoriteButtonProps {
   isFavorite: boolean;
 }
 
-export function WebsiteFavoriteButton({ websiteId, isFavorite }: WebsiteFavoriteButtonProps) {
+export function WebsiteFavoriteButton({
+  websiteId,
+  isFavorite,
+}: WebsiteFavoriteButtonProps) {
   const locale = useLocale();
   const [favorite, setFavorite] = useState(isFavorite);
   const [isLoading, setIsLoading] = useState(false);

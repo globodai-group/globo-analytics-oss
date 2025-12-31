@@ -23,7 +23,12 @@
  * ```
  */
 
-import { hasFeature, hasFeatures, hasAnyFeature, getLicense } from "./validator";
+import {
+  hasFeature,
+  hasFeatures,
+  hasAnyFeature,
+  getLicense,
+} from "./validator";
 import type { LicenseFeature } from "./types";
 import { ActionError, type ActionResult } from "../types/actions";
 
@@ -50,7 +55,7 @@ export const LicenseErrors = {
  */
 export async function requireFeature(
   feature: LicenseFeature,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<void> {
   const available = await hasFeature(feature);
   if (!available) {
@@ -63,11 +68,13 @@ export async function requireFeature(
  */
 export async function requireFeatures(
   features: LicenseFeature[],
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<void> {
   const available = await hasFeatures(features);
   if (!available) {
-    throw new Error(LicenseErrors.featureNotAvailable(locale, features.join(", ")));
+    throw new Error(
+      LicenseErrors.featureNotAvailable(locale, features.join(", ")),
+    );
   }
 }
 
@@ -76,11 +83,13 @@ export async function requireFeatures(
  */
 export async function requireAnyFeature(
   features: LicenseFeature[],
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<void> {
   const available = await hasAnyFeature(features);
   if (!available) {
-    throw new Error(LicenseErrors.featureNotAvailable(locale, features.join(" or ")));
+    throw new Error(
+      LicenseErrors.featureNotAvailable(locale, features.join(" or ")),
+    );
   }
 }
 
@@ -100,7 +109,7 @@ export async function requireAnyFeature(
 export function withFeature<TArgs extends unknown[], TResult>(
   feature: LicenseFeature,
   fn: (...args: TArgs) => Promise<TResult>,
-  locale: string = "en"
+  locale: string = "en",
 ): (...args: TArgs) => Promise<TResult> {
   return async (...args: TArgs): Promise<TResult> => {
     await requireFeature(feature, locale);
@@ -125,7 +134,7 @@ export function withFeature<TArgs extends unknown[], TResult>(
 export function withFeatureAction<TArgs extends unknown[], TResult>(
   feature: LicenseFeature,
   fn: (...args: TArgs) => Promise<ActionResult<TResult>>,
-  locale: string = "en"
+  locale: string = "en",
 ): (...args: TArgs) => Promise<ActionResult<TResult>> {
   return async (...args: TArgs): Promise<ActionResult<TResult>> => {
     const available = await hasFeature(feature);
@@ -142,7 +151,7 @@ export function withFeatureAction<TArgs extends unknown[], TResult>(
 export function withFeatures<TArgs extends unknown[], TResult>(
   features: LicenseFeature[],
   fn: (...args: TArgs) => Promise<TResult>,
-  locale: string = "en"
+  locale: string = "en",
 ): (...args: TArgs) => Promise<TResult> {
   return async (...args: TArgs): Promise<TResult> => {
     await requireFeatures(features, locale);
@@ -155,7 +164,7 @@ export function withFeatures<TArgs extends unknown[], TResult>(
  */
 export async function checkProFeature(
   feature: LicenseFeature,
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<ActionResult<void>> {
   const available = await hasFeature(feature);
   if (!available) {
@@ -176,13 +185,14 @@ export async function getAvailableFeatures(): Promise<LicenseFeature[]> {
  * Check if current tier is at least the specified tier
  */
 export async function isTierAtLeast(
-  requiredTier: "community" | "pro" | "enterprise"
+  requiredTier: "community" | "pro" | "enterprise",
 ): Promise<boolean> {
   const license = await getLicense();
   if (!license) return requiredTier === "community";
 
   const tierOrder = { community: 0, pro: 1, enterprise: 2 };
-  const currentTierLevel = tierOrder[license.data.tier as keyof typeof tierOrder] ?? 0;
+  const currentTierLevel =
+    tierOrder[license.data.tier as keyof typeof tierOrder] ?? 0;
   const requiredTierLevel = tierOrder[requiredTier];
 
   return currentTierLevel >= requiredTierLevel;
@@ -193,14 +203,14 @@ export async function isTierAtLeast(
  */
 export async function requireTier(
   requiredTier: "community" | "pro" | "enterprise",
-  locale: string = "en"
+  locale: string = "en",
 ): Promise<void> {
   const sufficient = await isTierAtLeast(requiredTier);
   if (!sufficient) {
     throw new Error(
       locale === "fr"
         ? `Cette fonctionnalite necessite le tier ${requiredTier} ou superieur`
-        : `This feature requires ${requiredTier} tier or higher`
+        : `This feature requires ${requiredTier} tier or higher`,
     );
   }
 }
@@ -211,7 +221,7 @@ export async function requireTier(
 export function withTier<TArgs extends unknown[], TResult>(
   requiredTier: "community" | "pro" | "enterprise",
   fn: (...args: TArgs) => Promise<TResult>,
-  locale: string = "en"
+  locale: string = "en",
 ): (...args: TArgs) => Promise<TResult> {
   return async (...args: TArgs): Promise<TResult> => {
     await requireTier(requiredTier, locale);

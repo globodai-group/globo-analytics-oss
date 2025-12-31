@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     if (userCount > 0) {
       return NextResponse.json(
         { error: "Setup already completed. Users already exist." },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.issues[0].message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     if (existingUser) {
       return NextResponse.json(
         { error: "Email already registered" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     console.error("Setup error:", error);
     return NextResponse.json(
       { error: "Failed to create admin account" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -103,7 +103,7 @@ export async function GET() {
   } catch {
     return NextResponse.json(
       { error: "Database connection failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

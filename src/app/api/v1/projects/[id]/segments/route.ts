@@ -22,7 +22,10 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const projectId = parseInt(projectIdStr);
 
     if (isNaN(projectId)) {
-      return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid project ID" },
+        { status: 400 },
+      );
     }
 
     // Verify project ownership
@@ -67,7 +70,10 @@ export async function GET(request: NextRequest, context: RouteContext) {
       name: segment.name,
       description: segment.description,
       conditions: segment.conditions,
-      matchType: (segment.conditions as { type?: string })?.type === "OR" ? "any" : "all",
+      matchType:
+        (segment.conditions as { type?: string })?.type === "OR"
+          ? "any"
+          : "all",
       isShared: segment.isShared,
       createdAt: segment.createdAt,
       isOwner: segment.user.id === session.user.id,
@@ -76,6 +82,9 @@ export async function GET(request: NextRequest, context: RouteContext) {
     return NextResponse.json({ segments: transformedSegments });
   } catch (error) {
     logError(error, { context: "api", operation: "getSegments" });
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

@@ -52,7 +52,7 @@ function calculateNextRun(
   hour: number,
   timezone: string,
   dayOfWeek?: number | null,
-  dayOfMonth?: number | null
+  dayOfMonth?: number | null,
 ): Date {
   const now = new Date();
   const next = new Date();
@@ -95,7 +95,7 @@ function calculateNextRun(
 // Get project reports
 export async function getProjectReportsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<ScheduledReportWithRelations[]>> {
   try {
     const session = await auth();
@@ -145,7 +145,7 @@ export async function getProjectReportsAction(
 export async function createReportAction(
   projectId: number,
   input: ScheduledReportInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   try {
     const session = await auth();
@@ -176,7 +176,9 @@ export async function createReportAction(
       return {
         success: false,
         error:
-          locale === "fr" ? "Au moins un destinataire requis" : "At least one recipient required",
+          locale === "fr"
+            ? "Au moins un destinataire requis"
+            : "At least one recipient required",
       };
     }
 
@@ -184,7 +186,10 @@ export async function createReportAction(
     if (!input.metrics || input.metrics.length === 0) {
       return {
         success: false,
-        error: locale === "fr" ? "Au moins une métrique requise" : "At least one metric required",
+        error:
+          locale === "fr"
+            ? "Au moins une métrique requise"
+            : "At least one metric required",
       };
     }
 
@@ -196,7 +201,7 @@ export async function createReportAction(
       hour,
       timezone,
       input.dayOfWeek,
-      input.dayOfMonth
+      input.dayOfMonth,
     );
 
     const report = await prisma.scheduledReport.create({
@@ -223,7 +228,8 @@ export async function createReportAction(
     return {
       success: true,
       data: { id: report.id },
-      message: locale === "fr" ? "Rapport programmé créé" : "Scheduled report created",
+      message:
+        locale === "fr" ? "Rapport programmé créé" : "Scheduled report created",
     };
   } catch (error) {
     console.error("Error creating report:", error);
@@ -238,7 +244,7 @@ export async function createReportAction(
 export async function updateReportAction(
   reportId: number,
   input: Partial<ScheduledReportInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -272,7 +278,7 @@ export async function updateReportAction(
         input.hour ?? report.hour,
         input.timezone ?? report.timezone,
         input.dayOfWeek ?? report.dayOfWeek,
-        input.dayOfMonth ?? report.dayOfMonth
+        input.dayOfMonth ?? report.dayOfMonth,
       );
     }
 
@@ -300,7 +306,10 @@ export async function updateReportAction(
 }
 
 // Delete report
-export async function deleteReportAction(reportId: number, locale: string): Promise<ActionResult> {
+export async function deleteReportAction(
+  reportId: number,
+  locale: string,
+): Promise<ActionResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -345,7 +354,10 @@ export async function deleteReportAction(reportId: number, locale: string): Prom
 }
 
 // Toggle report active status
-export async function toggleReportAction(reportId: number, locale: string): Promise<ActionResult> {
+export async function toggleReportAction(
+  reportId: number,
+  locale: string,
+): Promise<ActionResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -380,7 +392,7 @@ export async function toggleReportAction(reportId: number, locale: string): Prom
         report.hour,
         report.timezone,
         report.dayOfWeek,
-        report.dayOfMonth
+        report.dayOfMonth,
       );
     }
 
@@ -416,7 +428,7 @@ export async function toggleReportAction(reportId: number, locale: string): Prom
 // Get report by ID
 export async function getReportAction(
   reportId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<ScheduledReportWithRelations>> {
   try {
     const session = await auth();
@@ -459,7 +471,7 @@ export async function getReportAction(
 // Get project segments for form dropdown
 export async function getProjectSegmentsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number; name: string }[]>> {
   try {
     const session = await auth();
@@ -490,7 +502,10 @@ export async function getProjectSegmentsAction(
 }
 
 // Send report manually (for testing)
-export async function sendReportNowAction(reportId: number, locale: string): Promise<ActionResult> {
+export async function sendReportNowAction(
+  reportId: number,
+  locale: string,
+): Promise<ActionResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -521,7 +536,7 @@ export async function sendReportNowAction(reportId: number, locale: string): Pro
       report.hour,
       report.timezone,
       report.dayOfWeek,
-      report.dayOfMonth
+      report.dayOfMonth,
     );
 
     await prisma.scheduledReport.update({
@@ -536,7 +551,10 @@ export async function sendReportNowAction(reportId: number, locale: string): Pro
 
     return {
       success: true,
-      message: locale === "fr" ? "Rapport envoyé (simulation)" : "Report sent (simulation)",
+      message:
+        locale === "fr"
+          ? "Rapport envoyé (simulation)"
+          : "Report sent (simulation)",
     };
   } catch (error) {
     console.error("Error sending report:", error);

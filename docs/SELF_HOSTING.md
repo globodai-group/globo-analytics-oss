@@ -20,12 +20,12 @@ This guide covers everything you need to deploy GloboAnalytics on your own infra
 
 ### Minimum Specifications
 
-| Resource | Minimum | Recommended |
-|----------|---------|-------------|
-| CPU | 1 core | 2+ cores |
-| RAM | 1 GB | 2+ GB |
-| Storage | 10 GB | 50+ GB |
-| PostgreSQL | 15+ | 16+ |
+| Resource   | Minimum | Recommended |
+| ---------- | ------- | ----------- |
+| CPU        | 1 core  | 2+ cores    |
+| RAM        | 1 GB    | 2+ GB       |
+| Storage    | 10 GB   | 50+ GB      |
+| PostgreSQL | 15+     | 16+         |
 
 ### Software Requirements
 
@@ -68,11 +68,11 @@ For production, use this enhanced configuration:
 
 ```yaml
 # docker-compose.prod.yml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
-    image: globoanalytics/oss:v1.0.0  # Pin version
+    image: globoanalytics/oss:v1.0.0 # Pin version
     restart: always
     environment:
       - DATABASE_URL=postgresql://globoanalytics:${DB_PASSWORD}@postgres:5432/globoanalytics
@@ -170,6 +170,7 @@ nano .env
 ```
 
 Key settings:
+
 ```bash
 DATABASE_URL="postgresql://user:password@localhost:5432/globoanalytics"
 NEXTAUTH_SECRET="$(openssl rand -base64 48)"
@@ -344,6 +345,7 @@ find /backups -name "globo_*.sql.gz" -mtime +30 -delete
 ```
 
 Add to crontab:
+
 ```bash
 0 3 * * * /path/to/backup.sh
 ```
@@ -409,6 +411,7 @@ Coming soon: `/api/metrics` endpoint for Prometheus scraping.
 ### Common Issues
 
 #### App won't start
+
 ```bash
 # Check logs
 docker-compose logs app
@@ -420,6 +423,7 @@ docker-compose logs app
 ```
 
 #### Database connection errors
+
 ```bash
 # Test connection
 psql $DATABASE_URL -c "SELECT 1"
@@ -429,6 +433,7 @@ sudo systemctl status postgresql
 ```
 
 #### Memory issues
+
 ```bash
 # Increase container memory
 deploy:
@@ -438,6 +443,7 @@ deploy:
 ```
 
 #### Tracker not loading
+
 ```bash
 # Check CORS headers
 # Ensure NEXTAUTH_URL matches your domain

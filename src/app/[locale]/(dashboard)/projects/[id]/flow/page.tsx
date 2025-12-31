@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -56,7 +62,11 @@ export default async function FlowPage({ params }: FlowPageProps) {
   startDate.setDate(startDate.getDate() - 30);
   const dateRange = { from: startDate, to: endDate };
 
-  const flowResult = await getUserFlowAnalysisAction(projectId, dateRange, locale);
+  const flowResult = await getUserFlowAnalysisAction(
+    projectId,
+    dateRange,
+    locale,
+  );
   const flowData = flowResult.data;
 
   const t = {
@@ -70,13 +80,17 @@ export default async function FlowPage({ params }: FlowPageProps) {
     topPages: locale === "fr" ? "Pages principales" : "Top Pages",
     entryPages: locale === "fr" ? "Pages d'entrée" : "Entry Pages",
     exitPages: locale === "fr" ? "Pages de sortie" : "Exit Pages",
-    topTransitions: locale === "fr" ? "Transitions principales" : "Top Transitions",
+    topTransitions:
+      locale === "fr" ? "Transitions principales" : "Top Transitions",
     page: locale === "fr" ? "Page" : "Page",
     sessions: locale === "fr" ? "Sessions" : "Sessions",
     from: locale === "fr" ? "De" : "From",
     to: locale === "fr" ? "Vers" : "To",
     count: locale === "fr" ? "Nombre" : "Count",
-    noData: locale === "fr" ? "Aucune donnée de flux disponible" : "No flow data available",
+    noData:
+      locale === "fr"
+        ? "Aucune donnée de flux disponible"
+        : "No flow data available",
     setupInstructions:
       locale === "fr"
         ? "Le flux utilisateur sera disponible une fois que vous aurez du trafic sur votre site."
@@ -115,7 +129,9 @@ export default async function FlowPage({ params }: FlowPageProps) {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold">{flowData.totalSessions.toLocaleString()}</p>
+                <p className="text-2xl font-bold">
+                  {flowData.totalSessions.toLocaleString()}
+                </p>
               </CardContent>
             </Card>
 
@@ -172,7 +188,10 @@ export default async function FlowPage({ params }: FlowPageProps) {
                       <TableRow key={index}>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="font-mono text-xs">
+                            <Badge
+                              variant="outline"
+                              className="font-mono text-xs"
+                            >
                               {index + 1}
                             </Badge>
                             <span className="font-mono text-sm truncate max-w-[200px]">
@@ -216,7 +235,10 @@ export default async function FlowPage({ params }: FlowPageProps) {
                       <TableRow key={index}>
                         <TableCell>
                           <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="font-mono text-xs">
+                            <Badge
+                              variant="outline"
+                              className="font-mono text-xs"
+                            >
                               {index + 1}
                             </Badge>
                             <span className="font-mono text-sm truncate max-w-[200px]">
@@ -297,7 +319,9 @@ export default async function FlowPage({ params }: FlowPageProps) {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Workflow className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">{t.noData}</h3>
-            <p className="text-muted-foreground text-center mb-6 max-w-md">{t.setupInstructions}</p>
+            <p className="text-muted-foreground text-center mb-6 max-w-md">
+              {t.setupInstructions}
+            </p>
           </CardContent>
         </Card>
       )}

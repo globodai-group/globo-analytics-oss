@@ -3,8 +3,21 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe, Users, Eye, TrendingUp, Plus, FolderKanban } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Globe,
+  Users,
+  Eye,
+  TrendingUp,
+  Plus,
+  FolderKanban,
+} from "lucide-react";
 import { subDays } from "date-fns";
 
 export default async function DashboardPage() {
@@ -80,7 +93,8 @@ export default async function DashboardPage() {
   ]);
 
   const pageviewsCount = totalPageviews._sum.pageviews || 0;
-  const bounceRate = totalSessions > 0 ? Math.round((bouncedSessions / totalSessions) * 100) : 0;
+  const bounceRate =
+    totalSessions > 0 ? Math.round((bouncedSessions / totalSessions) * 100) : 0;
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -89,7 +103,9 @@ export default async function DashboardPage() {
         <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">
           {t("dashboard.welcome", { name: session?.user?.name || "User" })}
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground">{t("dashboard.overview")}</p>
+        <p className="text-sm sm:text-base text-muted-foreground">
+          {t("dashboard.overview")}
+        </p>
       </div>
 
       {/* Stats Cards */}
@@ -141,7 +157,9 @@ export default async function DashboardPage() {
           <CardHeader>
             <CardTitle>{t("projects.title")}</CardTitle>
             <CardDescription>
-              {recentProjects.length > 0 ? t("dashboard.recentProjects") : t("stats.noDataYet")}
+              {recentProjects.length > 0
+                ? t("dashboard.recentProjects")
+                : t("stats.noDataYet")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -166,7 +184,9 @@ export default async function DashboardPage() {
                       <p className="text-sm font-medium">
                         {project._count.visitors.toLocaleString()}
                       </p>
-                      <p className="text-xs text-muted-foreground">{t("stats.visitors")}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("stats.visitors")}
+                      </p>
                     </div>
                   </Link>
                 ))}
@@ -174,7 +194,9 @@ export default async function DashboardPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <FolderKanban className="h-12 w-12 text-muted-foreground/50 mb-4" />
-                <p className="text-sm text-muted-foreground mb-4">{t("stats.startTracking")}</p>
+                <p className="text-sm text-muted-foreground mb-4">
+                  {t("stats.startTracking")}
+                </p>
                 <Link href="/projects/new">
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
@@ -212,7 +234,9 @@ function StatsCard({
       <CardContent>
         <div className="text-xl sm:text-2xl font-bold">{value}</div>
         {description && (
-          <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">{description}</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground mt-1">
+            {description}
+          </p>
         )}
       </CardContent>
     </Card>

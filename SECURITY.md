@@ -47,6 +47,7 @@ Send an email to [security@globoanalytics.com](mailto:security@globoanalytics.co
 GloboAnalytics implements the following security measures:
 
 ### Authentication & Authorization
+
 - Secure password hashing (bcrypt)
 - Session-based authentication
 - Two-factor authentication (TOTP)
@@ -54,24 +55,28 @@ GloboAnalytics implements the following security measures:
 - JWT with short expiration
 
 ### Input Validation
+
 - Server-side validation on all inputs
 - SQL injection prevention via Prisma ORM
 - XSS prevention with DOMPurify
 - CSRF tokens on all forms
 
 ### Network Security
+
 - HTTPS enforced in production
 - Secure headers (HSTS, CSP, X-Frame-Options)
 - Rate limiting on authentication endpoints
 - IP-based blocking for repeated failures
 
 ### Data Protection
+
 - Encryption at rest (database)
 - Encryption in transit (TLS 1.3)
 - Privacy-preserving visitor identification
 - No third-party data sharing
 
 ### Infrastructure
+
 - Regular dependency updates
 - Automated security scanning
 - Docker container security
@@ -82,6 +87,7 @@ GloboAnalytics implements the following security measures:
 If you're self-hosting GloboAnalytics, please follow these guidelines:
 
 ### Required
+
 - [ ] Use HTTPS with a valid certificate
 - [ ] Set a strong `NEXTAUTH_SECRET` (64+ characters)
 - [ ] Keep your instance updated
@@ -89,6 +95,7 @@ If you're self-hosting GloboAnalytics, please follow these guidelines:
 - [ ] Enable firewall rules
 
 ### Recommended
+
 - [ ] Use a reverse proxy (nginx, Caddy)
 - [ ] Enable fail2ban or similar
 - [ ] Regular backups
@@ -115,6 +122,7 @@ DATABASE_URL=postgresql://user:STRONG_PASSWORD@host:5432/db
 Security updates are released as patch versions (e.g., 1.0.1, 1.0.2).
 
 Subscribe to security notifications:
+
 - Watch the repository with "Releases only"
 - Follow [@globoanalytics](https://twitter.com/globoanalytics)
 - Join our [Discord](https://discord.gg/globoanalytics) #security channel
@@ -124,6 +132,7 @@ Subscribe to security notifications:
 We currently do not offer a paid bug bounty program. However, we deeply appreciate security researchers who help us improve.
 
 Contributors who report valid security issues will be:
+
 - Credited in our security advisories
 - Listed in our Hall of Fame
 - Given early access to new features
@@ -132,7 +141,7 @@ Contributors who report valid security issues will be:
 
 We thank the following researchers for responsibly disclosing vulnerabilities:
 
-*No reports yet - be the first!*
+_No reports yet - be the first!_
 
 ---
 

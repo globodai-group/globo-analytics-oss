@@ -124,7 +124,7 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
         statType as Parameters<typeof getStatsByTypeAction>[1],
         { from: dateRange.from, to: dateRange.to },
         tablePage,
-        10
+        10,
       );
 
       if (result.success && result.data) {
@@ -133,7 +133,7 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
             label: row.value,
             count: row.count,
             percentage: row.percentage,
-          }))
+          })),
         );
         setTableTotalPages(result.data.totalPages);
       }
@@ -168,7 +168,10 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
     <div className="space-y-6">
       {/* Date Range Picker */}
       <div className="flex justify-end">
-        <DateRangePicker dateRange={dateRange} onDateRangeChange={handleDateRangeChange} />
+        <DateRangePicker
+          dateRange={dateRange}
+          onDateRangeChange={handleDateRangeChange}
+        />
       </div>
 
       {/* Stats Cards */}
@@ -210,7 +213,9 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {overview?.bounceRate !== undefined ? `${overview.bounceRate}%` : "--"}
+                  {overview?.bounceRate !== undefined
+                    ? `${overview.bounceRate}%`
+                    : "--"}
                 </div>
                 {overview?.previousBounceRate !== undefined &&
                   overview.bounceRate !== undefined && (
@@ -219,20 +224,26 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
                         <>
                           <ArrowDownRight className="h-3 w-3 text-green-500" />
                           <span className="text-green-500">
-                            {Math.abs(overview.bounceRate - overview.previousBounceRate)}%
+                            {Math.abs(
+                              overview.bounceRate - overview.previousBounceRate,
+                            )}
+                            %
                           </span>
                         </>
                       ) : overview.bounceRate > overview.previousBounceRate ? (
                         <>
                           <ArrowUpRight className="h-3 w-3 text-red-500" />
                           <span className="text-red-500">
-                            +{overview.bounceRate - overview.previousBounceRate}%
+                            +{overview.bounceRate - overview.previousBounceRate}
+                            %
                           </span>
                         </>
                       ) : (
                         <span>0%</span>
                       )}
-                      <span className="ml-1">{t("stats.vsPreviousPeriod")}</span>
+                      <span className="ml-1">
+                        {t("stats.vsPreviousPeriod")}
+                      </span>
                     </p>
                   )}
               </CardContent>
@@ -245,7 +256,9 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{overview?.avgSessionDuration || "--"}</div>
+                <div className="text-2xl font-bold">
+                  {overview?.avgSessionDuration || "--"}
+                </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {t("stats.averageTimePerSession")}
                 </p>
@@ -282,23 +295,38 @@ export function StatsPageClient({ websiteId }: StatsPageClientProps) {
                 <FileText className="h-4 w-4" />
                 {t("stats.pages")}
               </TabsTrigger>
-              <TabsTrigger value="landing_pages" className="flex items-center gap-2">
+              <TabsTrigger
+                value="landing_pages"
+                className="flex items-center gap-2"
+              >
                 <LogIn className="h-4 w-4" />
                 {t("stats.landingPages")}
               </TabsTrigger>
-              <TabsTrigger value="exit_pages" className="flex items-center gap-2">
+              <TabsTrigger
+                value="exit_pages"
+                className="flex items-center gap-2"
+              >
                 <LogOut className="h-4 w-4" />
                 {t("stats.exitPages")}
               </TabsTrigger>
-              <TabsTrigger value="referrers" className="flex items-center gap-2">
+              <TabsTrigger
+                value="referrers"
+                className="flex items-center gap-2"
+              >
                 <LinkIcon className="h-4 w-4" />
                 {t("stats.referrers")}
               </TabsTrigger>
-              <TabsTrigger value="traffic_sources" className="flex items-center gap-2">
+              <TabsTrigger
+                value="traffic_sources"
+                className="flex items-center gap-2"
+              >
                 <TrendingDown className="h-4 w-4" />
                 {t("stats.trafficSources")}
               </TabsTrigger>
-              <TabsTrigger value="countries" className="flex items-center gap-2">
+              <TabsTrigger
+                value="countries"
+                className="flex items-center gap-2"
+              >
                 <Globe className="h-4 w-4" />
                 {t("stats.countries")}
               </TabsTrigger>

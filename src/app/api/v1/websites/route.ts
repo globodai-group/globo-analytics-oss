@@ -94,7 +94,8 @@ export async function POST(request: NextRequest) {
       return apiError(parsed.error.issues[0].message, 400);
     }
 
-    const { url, privacy, excludeBots, excludeIps, excludeParams } = parsed.data;
+    const { url, privacy, excludeBots, excludeIps, excludeParams } =
+      parsed.data;
 
     // Extract domain from URL
     let domain: string;
@@ -141,7 +142,7 @@ export async function POST(request: NextRequest) {
         excludeBots: website.excludeBots,
         createdAt: website.createdAt,
       },
-      201
+      201,
     );
   });
 }

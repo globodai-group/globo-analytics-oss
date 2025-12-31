@@ -30,7 +30,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreHorizontal, Copy, Ban, Pause, Play, Trash2, Eye } from "lucide-react";
+import {
+  MoreHorizontal,
+  Copy,
+  Ban,
+  Pause,
+  Play,
+  Trash2,
+  Eye,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   revokeLicenseAction,
@@ -64,7 +72,9 @@ export function LicenseList({ licenses }: LicenseListProps) {
   const t = useTranslations("admin.licenses");
   const router = useRouter();
   const [selectedLicense, setSelectedLicense] = useState<License | null>(null);
-  const [actionType, setActionType] = useState<"revoke" | "delete" | null>(null);
+  const [actionType, setActionType] = useState<"revoke" | "delete" | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const copyLicenseKey = (key: string) => {
@@ -115,7 +125,10 @@ export function LicenseList({ licenses }: LicenseListProps) {
   };
 
   const getStatusBadge = (status: LicenseStatus) => {
-    const variants: Record<LicenseStatus, "default" | "secondary" | "destructive" | "outline"> = {
+    const variants: Record<
+      LicenseStatus,
+      "default" | "secondary" | "destructive" | "outline"
+    > = {
       ACTIVE: "default",
       EXPIRED: "secondary",
       REVOKED: "destructive",
@@ -138,7 +151,11 @@ export function LicenseList({ licenses }: LicenseListProps) {
   };
 
   if (licenses.length === 0) {
-    return <div className="text-center py-12 text-muted-foreground">{t("noLicenses")}</div>;
+    return (
+      <div className="text-center py-12 text-muted-foreground">
+        {t("noLicenses")}
+      </div>
+    );
   }
 
   return (
@@ -179,7 +196,9 @@ export function LicenseList({ licenses }: LicenseListProps) {
                   <div>
                     <div className="font-medium">{license.customerEmail}</div>
                     {license.companyName && (
-                      <div className="text-xs text-muted-foreground">{license.companyName}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {license.companyName}
+                      </div>
                     )}
                   </div>
                 </TableCell>
@@ -188,7 +207,9 @@ export function LicenseList({ licenses }: LicenseListProps) {
                   {license.activations} / {license.maxActivations}
                 </TableCell>
                 <TableCell>
-                  {license.expiresAt ? format(new Date(license.expiresAt), "PP") : t("lifetime")}
+                  {license.expiresAt
+                    ? format(new Date(license.expiresAt), "PP")
+                    : t("lifetime")}
                 </TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -199,24 +220,32 @@ export function LicenseList({ licenses }: LicenseListProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
-                        onClick={() => router.push(`/admin/licenses/${license.id}`)}
+                        onClick={() =>
+                          router.push(`/admin/licenses/${license.id}`)
+                        }
                       >
                         <Eye className="mr-2 h-4 w-4" />
                         View Details
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => copyLicenseKey(license.licenseKey)}>
+                      <DropdownMenuItem
+                        onClick={() => copyLicenseKey(license.licenseKey)}
+                      >
                         <Copy className="mr-2 h-4 w-4" />
                         {t("copyKey")}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       {license.status === "ACTIVE" && (
-                        <DropdownMenuItem onClick={() => handleSuspend(license)}>
+                        <DropdownMenuItem
+                          onClick={() => handleSuspend(license)}
+                        >
                           <Pause className="mr-2 h-4 w-4" />
                           {t("suspend")}
                         </DropdownMenuItem>
                       )}
                       {license.status === "SUSPENDED" && (
-                        <DropdownMenuItem onClick={() => handleReactivate(license)}>
+                        <DropdownMenuItem
+                          onClick={() => handleReactivate(license)}
+                        >
                           <Play className="mr-2 h-4 w-4" />
                           {t("reactivate")}
                         </DropdownMenuItem>
@@ -277,7 +306,11 @@ export function LicenseList({ licenses }: LicenseListProps) {
               disabled={isLoading}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isLoading ? "..." : actionType === "revoke" ? t("revoke") : "Delete"}
+              {isLoading
+                ? "..."
+                : actionType === "revoke"
+                  ? t("revoke")
+                  : "Delete"}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

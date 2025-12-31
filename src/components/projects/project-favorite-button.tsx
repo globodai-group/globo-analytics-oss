@@ -11,7 +11,10 @@ interface ProjectFavoriteButtonProps {
   isFavorite: boolean;
 }
 
-export function ProjectFavoriteButton({ projectId, isFavorite }: ProjectFavoriteButtonProps) {
+export function ProjectFavoriteButton({
+  projectId,
+  isFavorite,
+}: ProjectFavoriteButtonProps) {
   const [favorite, setFavorite] = useState(isFavorite);
   const [isLoading, setIsLoading] = useState(false);
 

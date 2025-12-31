@@ -10,7 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { createOAuthClientAction, OAUTH_SCOPES } from "@/lib/actions/oauth";
 import { toast } from "sonner";
 import { Loader2, Plus, X, Copy, Check } from "lucide-react";
@@ -79,7 +85,9 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
         toast.error(result.error);
       }
     } catch {
-      toast.error(locale === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        locale === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -100,7 +108,7 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
   const removeUri = (uri: string) => {
     setValue(
       "redirectUris",
-      redirectUris.filter((u) => u !== uri)
+      redirectUris.filter((u) => u !== uri),
     );
   };
 
@@ -108,7 +116,7 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
     if (scopes.includes(scope)) {
       setValue(
         "scopes",
-        scopes.filter((s) => s !== scope)
+        scopes.filter((s) => s !== scope),
       );
     } else {
       setValue("scopes", [...scopes, scope]);
@@ -148,7 +156,10 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
         ? "Créer l'application"
         : "Create Application",
     cancel: locale === "fr" ? "Annuler" : "Cancel",
-    credentialsTitle: locale === "fr" ? "Identifiants de l'application" : "Application Credentials",
+    credentialsTitle:
+      locale === "fr"
+        ? "Identifiants de l'application"
+        : "Application Credentials",
     credentialsWarning:
       locale === "fr"
         ? "Copiez ces identifiants maintenant. Le secret ne sera plus affiché."
@@ -161,7 +172,9 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
     return (
       <Card className="border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
         <CardHeader>
-          <CardTitle className="text-green-800 dark:text-green-200">{t.credentialsTitle}</CardTitle>
+          <CardTitle className="text-green-800 dark:text-green-200">
+            {t.credentialsTitle}
+          </CardTitle>
           <CardDescription className="text-green-700 dark:text-green-300">
             {t.credentialsWarning}
           </CardDescription>
@@ -207,7 +220,10 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
             </div>
           </div>
 
-          <Button className="w-full" onClick={() => router.push("/account/developers")}>
+          <Button
+            className="w-full"
+            onClick={() => router.push("/account/developers")}
+          >
             {t.done}
           </Button>
         </CardContent>
@@ -220,8 +236,14 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
       {/* Name */}
       <div className="space-y-2">
         <Label htmlFor="name">{t.name}</Label>
-        <Input id="name" placeholder={t.namePlaceholder} {...register("name")} />
-        {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+        <Input
+          id="name"
+          placeholder={t.namePlaceholder}
+          {...register("name")}
+        />
+        {errors.name && (
+          <p className="text-sm text-destructive">{errors.name.message}</p>
+        )}
       </div>
 
       {/* Description */}
@@ -276,7 +298,9 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
           </div>
         )}
         {errors.redirectUris && (
-          <p className="text-sm text-destructive">{errors.redirectUris.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.redirectUris.message}
+          </p>
         )}
       </div>
 
@@ -292,14 +316,21 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
                 checked={scopes.includes(scope.value)}
                 onCheckedChange={() => toggleScope(scope.value)}
               />
-              <label htmlFor={`scope-${scope.value}`} className="text-sm cursor-pointer">
+              <label
+                htmlFor={`scope-${scope.value}`}
+                className="text-sm cursor-pointer"
+              >
                 <span className="font-mono text-xs">{scope.value}</span>
-                <span className="text-muted-foreground ml-2">- {scope.label}</span>
+                <span className="text-muted-foreground ml-2">
+                  - {scope.label}
+                </span>
               </label>
             </div>
           ))}
         </div>
-        {errors.scopes && <p className="text-sm text-destructive">{errors.scopes.message}</p>}
+        {errors.scopes && (
+          <p className="text-sm text-destructive">{errors.scopes.message}</p>
+        )}
       </div>
 
       {/* Actions */}
@@ -308,7 +339,11 @@ export function OAuthClientForm({ locale, initialData }: OAuthClientFormProps) {
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {t.submit}
         </Button>
-        <Button type="button" variant="outline" onClick={() => router.push("/account/developers")}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.push("/account/developers")}
+        >
           {t.cancel}
         </Button>
       </div>

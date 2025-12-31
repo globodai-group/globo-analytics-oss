@@ -39,7 +39,7 @@ interface UseAdaptivePollingReturn {
  */
 export function useAdaptivePolling(
   callback: () => void | Promise<void>,
-  options: UseAdaptivePollingOptions = {}
+  options: UseAdaptivePollingOptions = {},
 ): UseAdaptivePollingReturn {
   const {
     activeInterval = 5000,
@@ -60,7 +60,9 @@ export function useAdaptivePolling(
   // Get current interval based on visibility
   const getCurrentInterval = useCallback(() => {
     if (typeof document === "undefined") return activeInterval;
-    return document.visibilityState === "visible" ? activeInterval : backgroundInterval;
+    return document.visibilityState === "visible"
+      ? activeInterval
+      : backgroundInterval;
   }, [activeInterval, backgroundInterval]);
 
   // Check if user is idle
@@ -177,7 +179,13 @@ export function useAdaptivePolling(
     }
 
     // Activity events
-    const activityEvents = ["mousemove", "keydown", "scroll", "touchstart", "click"];
+    const activityEvents = [
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "click",
+    ];
 
     // Throttled activity handler (max once per second)
     let lastActivityCall = 0;
@@ -210,7 +218,14 @@ export function useAdaptivePolling(
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       stopPolling();
     };
-  }, [enabled, handleActivity, handleVisibilityChange, startPolling, stopPolling, executeCallback]);
+  }, [
+    enabled,
+    handleActivity,
+    handleVisibilityChange,
+    startPolling,
+    stopPolling,
+    executeCallback,
+  ]);
 
   return {
     isPolling,

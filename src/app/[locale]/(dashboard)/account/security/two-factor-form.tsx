@@ -32,7 +32,7 @@ export function TwoFactorForm({ enabled, locale }: TwoFactorFormProps) {
               : "2FA enabled"
             : locale === "fr"
               ? "2FA désactivé"
-              : "2FA disabled"
+              : "2FA disabled",
         );
       } else {
         toast.error(result.error || "Failed to update 2FA");

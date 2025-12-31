@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -36,7 +42,9 @@ interface ContentStatsPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function ContentStatsPage({ params }: ContentStatsPageProps) {
+export default async function ContentStatsPage({
+  params,
+}: ContentStatsPageProps) {
   const { id } = await params;
   const projectId = parseInt(id);
   const session = await auth();
@@ -63,12 +71,13 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
   startDate.setDate(startDate.getDate() - 30);
   const dateRange = { startDate, endDate };
 
-  const [overviewResult, pagesResult, scrollResult, timeResult] = await Promise.all([
-    getContentOverviewAction(projectId, dateRange),
-    getPagePerformanceAction(projectId, dateRange, 20),
-    getScrollDepthStatsAction(projectId, dateRange),
-    getTimeOnPageStatsAction(projectId, dateRange),
-  ]);
+  const [overviewResult, pagesResult, scrollResult, timeResult] =
+    await Promise.all([
+      getContentOverviewAction(projectId, dateRange),
+      getPagePerformanceAction(projectId, dateRange, 20),
+      getScrollDepthStatsAction(projectId, dateRange),
+      getTimeOnPageStatsAction(projectId, dateRange),
+    ]);
 
   const overview = overviewResult.data;
   const pages = pagesResult.data || [];
@@ -135,7 +144,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{overview.totalPageviews.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {overview.totalPageviews.toLocaleString()}
+              </p>
             </CardContent>
           </Card>
 
@@ -147,7 +158,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{formatTime(overview.avgTimeOnPage)}</p>
+              <p className="text-2xl font-bold">
+                {formatTime(overview.avgTimeOnPage)}
+              </p>
             </CardContent>
           </Card>
 
@@ -183,7 +196,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{overview.pagesRead100.toLocaleString()}</p>
+              <p className="text-2xl font-bold">
+                {overview.pagesRead100.toLocaleString()}
+              </p>
             </CardContent>
           </Card>
 
@@ -234,7 +249,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
                 ))}
               </div>
             ) : (
-              <p className="text-center text-muted-foreground py-8">{t.noData}</p>
+              <p className="text-center text-muted-foreground py-8">
+                {t.noData}
+              </p>
             )}
           </CardContent>
         </Card>
@@ -268,7 +285,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
                 ))}
               </div>
             ) : (
-              <p className="text-center text-muted-foreground py-8">{t.noData}</p>
+              <p className="text-center text-muted-foreground py-8">
+                {t.noData}
+              </p>
             )}
           </CardContent>
         </Card>
@@ -282,7 +301,9 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
             {t.topPages}
           </CardTitle>
           <CardDescription>
-            {locale === "fr" ? "Performance détaillée par page" : "Detailed performance by page"}
+            {locale === "fr"
+              ? "Performance détaillée par page"
+              : "Detailed performance by page"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -303,21 +324,32 @@ export default async function ContentStatsPage({ params }: ContentStatsPageProps
                     <TableCell className="font-mono text-sm max-w-xs truncate">
                       {page.path}
                     </TableCell>
-                    <TableCell className="text-right">{page.pageviews.toLocaleString()}</TableCell>
                     <TableCell className="text-right">
-                      <Badge variant={page.bounceRate > 70 ? "destructive" : "secondary"}>
+                      {page.pageviews.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Badge
+                        variant={
+                          page.bounceRate > 70 ? "destructive" : "secondary"
+                        }
+                      >
                         {page.bounceRate}%
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Progress value={page.scrollDepth["100"]} className="w-16 h-2" />
+                        <Progress
+                          value={page.scrollDepth["100"]}
+                          className="w-16 h-2"
+                        />
                         <span className="text-sm text-muted-foreground w-10">
                           {page.scrollDepth["100"]}%
                         </span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">{page.exitRate}%</TableCell>
+                    <TableCell className="text-right">
+                      {page.exitRate}%
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -15,14 +15,14 @@ export async function GET(request: NextRequest) {
     if (!clientId) {
       return NextResponse.json(
         { error: "invalid_request", error_description: "Missing client_id" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!redirectUri) {
       return NextResponse.json(
         { error: "invalid_request", error_description: "Missing redirect_uri" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
           error: "unsupported_response_type",
           error_description: "Only code response type is supported",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -43,8 +43,11 @@ export async function GET(request: NextRequest) {
 
     if (!client || !client.isActive) {
       return NextResponse.json(
-        { error: "invalid_client", error_description: "Client not found or inactive" },
-        { status: 400 }
+        {
+          error: "invalid_client",
+          error_description: "Client not found or inactive",
+        },
+        { status: 400 },
       );
     }
 
@@ -52,18 +55,23 @@ export async function GET(request: NextRequest) {
     if (!client.redirectUris.includes(redirectUri)) {
       return NextResponse.json(
         { error: "invalid_request", error_description: "Invalid redirect_uri" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     // Parse and validate scopes
     const requestedScopes = scope ? scope.split(" ") : [];
-    const validScopes = requestedScopes.filter((s) => client.scopes.includes(s));
+    const validScopes = requestedScopes.filter((s) =>
+      client.scopes.includes(s),
+    );
 
     if (requestedScopes.length > 0 && validScopes.length === 0) {
       return NextResponse.json(
-        { error: "invalid_scope", error_description: "No valid scopes requested" },
-        { status: 400 }
+        {
+          error: "invalid_scope",
+          error_description: "No valid scopes requested",
+        },
+        { status: 400 },
       );
     }
 
@@ -81,7 +89,7 @@ export async function GET(request: NextRequest) {
     logError(error, { context: "oauth", operation: "authorize" });
     return NextResponse.json(
       { error: "server_error", error_description: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

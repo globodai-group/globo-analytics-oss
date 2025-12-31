@@ -98,7 +98,7 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                         "group flex gap-x-3 rounded-md p-2.5 min-h-[44px] text-sm font-medium leading-6 transition-colors items-center",
                         active
                           ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground",
                       )}
                     >
                       <item.icon className="h-5 w-5 shrink-0" />
@@ -146,7 +146,9 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                 <User className="h-4 w-4" />
               )}
             </div>
-            <span className="hidden sm:block text-sm font-medium">{user.name || user.email}</span>
+            <span className="hidden sm:block text-sm font-medium">
+              {user.name || user.email}
+            </span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-48">

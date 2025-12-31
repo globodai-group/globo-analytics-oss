@@ -108,7 +108,7 @@ export async function queueStatUpdate(
   value: string,
   date: Date,
   domain: string | null,
-  count: number = 1
+  count: number = 1,
 ): Promise<boolean> {
   const queue = getStatQueue();
 
@@ -131,11 +131,15 @@ export async function queueStatUpdate(
       {
         // Group by project for batch processing
         jobId: `stat:${projectId}:${name}:${value}:${date.toISOString().split("T")[0]}`,
-      }
+      },
     );
     return true;
   } catch (error) {
-    logError(error, { context: "queue", operation: "queueStatUpdate", projectId });
+    logError(error, {
+      context: "queue",
+      operation: "queueStatUpdate",
+      projectId,
+    });
     return false;
   }
 }
@@ -149,7 +153,7 @@ export async function queueEvent(
   sessionId: string | null,
   name: string,
   value: string | null,
-  properties: Record<string, unknown> | null
+  properties: Record<string, unknown> | null,
 ): Promise<boolean> {
   const queue = getEventQueue();
 
@@ -218,11 +222,16 @@ export function startStatWorker(): Worker<StatUpdateJob> | null {
         max: 100,
         duration: 1000,
       },
-    }
+    },
   );
 
   statWorker.on("completed", (job) => {
-    logger.debug({ type: "queue", event: "job_completed", queue: "stat-updates", jobId: job.id });
+    logger.debug({
+      type: "queue",
+      event: "job_completed",
+      queue: "stat-updates",
+      jobId: job.id,
+    });
   });
 
   statWorker.on("failed", (job, err) => {
@@ -249,7 +258,15 @@ export function startEventWorker(): Worker<EventJob> | null {
   eventWorker = new Worker<EventJob>(
     "event-tracking",
     async (job: Job<EventJob>) => {
-      const { projectId, visitorId, sessionId, name, value, properties, createdAt } = job.data;
+      const {
+        projectId,
+        visitorId,
+        sessionId,
+        name,
+        value,
+        properties,
+        createdAt,
+      } = job.data;
 
       await prisma.projectEvent.create({
         data: {
@@ -270,7 +287,7 @@ export function startEventWorker(): Worker<EventJob> | null {
         max: 200,
         duration: 1000,
       },
-    }
+    },
   );
 
   eventWorker.on("failed", (job, err) => {
@@ -291,7 +308,12 @@ export function startEventWorker(): Worker<EventJob> | null {
  */
 export async function getQueueStats(): Promise<{
   stats: { waiting: number; active: number; completed: number; failed: number };
-  events: { waiting: number; active: number; completed: number; failed: number };
+  events: {
+    waiting: number;
+    active: number;
+    completed: number;
+    failed: number;
+  };
 } | null> {
   const stats = getStatQueue();
   const events = getEventQueue();
@@ -299,19 +321,21 @@ export async function getQueueStats(): Promise<{
   if (!stats || !events) return null;
 
   try {
-    const [statsWaiting, statsActive, statsCompleted, statsFailed] = await Promise.all([
-      stats.getWaitingCount(),
-      stats.getActiveCount(),
-      stats.getCompletedCount(),
-      stats.getFailedCount(),
-    ]);
+    const [statsWaiting, statsActive, statsCompleted, statsFailed] =
+      await Promise.all([
+        stats.getWaitingCount(),
+        stats.getActiveCount(),
+        stats.getCompletedCount(),
+        stats.getFailedCount(),
+      ]);
 
-    const [eventsWaiting, eventsActive, eventsCompleted, eventsFailed] = await Promise.all([
-      events.getWaitingCount(),
-      events.getActiveCount(),
-      events.getCompletedCount(),
-      events.getFailedCount(),
-    ]);
+    const [eventsWaiting, eventsActive, eventsCompleted, eventsFailed] =
+      await Promise.all([
+        events.getWaitingCount(),
+        events.getActiveCount(),
+        events.getCompletedCount(),
+        events.getFailedCount(),
+      ]);
 
     return {
       stats: {
@@ -359,5 +383,9 @@ export async function closeQueues(): Promise<void> {
   statQueue = null;
   eventQueue = null;
 
-  logger.info({ type: "queue", event: "shutdown", message: "All queues closed gracefully" });
+  logger.info({
+    type: "queue",
+    event: "shutdown",
+    message: "All queues closed gracefully",
+  });
 }

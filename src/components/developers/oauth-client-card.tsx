@@ -3,7 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/i18n/routing";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -17,8 +23,19 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Key, Trash2, RefreshCw, Copy, Check, ExternalLink, Loader2 } from "lucide-react";
-import { deleteOAuthClientAction, regenerateClientSecretAction } from "@/lib/actions/oauth";
+import {
+  Key,
+  Trash2,
+  RefreshCw,
+  Copy,
+  Check,
+  ExternalLink,
+  Loader2,
+} from "lucide-react";
+import {
+  deleteOAuthClientAction,
+  regenerateClientSecretAction,
+} from "@/lib/actions/oauth";
 import { toast } from "sonner";
 import { format, Locale } from "date-fns";
 
@@ -38,7 +55,11 @@ interface OAuthClientCardProps {
   dateLocale: Locale;
 }
 
-export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardProps) {
+export function OAuthClientCard({
+  client,
+  locale,
+  dateLocale,
+}: OAuthClientCardProps) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -90,7 +111,8 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
               {client.name}
             </CardTitle>
             <CardDescription>
-              {client.description || (locale === "fr" ? "Aucune description" : "No description")}
+              {client.description ||
+                (locale === "fr" ? "Aucune description" : "No description")}
             </CardDescription>
           </div>
           <Badge variant={client.isActive ? "default" : "secondary"}>
@@ -109,9 +131,19 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
         <div className="space-y-1">
           <p className="text-sm font-medium">Client ID</p>
           <div className="flex items-center gap-2">
-            <code className="flex-1 p-2 bg-muted rounded text-xs font-mono">{client.clientId}</code>
-            <Button variant="ghost" size="icon" onClick={() => handleCopy(client.clientId)}>
-              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+            <code className="flex-1 p-2 bg-muted rounded text-xs font-mono">
+              {client.clientId}
+            </code>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleCopy(client.clientId)}
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>
@@ -128,7 +160,11 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
               <code className="flex-1 p-2 bg-white dark:bg-black rounded text-xs font-mono break-all">
                 {newSecret}
               </code>
-              <Button variant="ghost" size="icon" onClick={() => handleCopy(newSecret)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleCopy(newSecret)}
+              >
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
@@ -142,7 +178,10 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
           </p>
           <div className="flex flex-wrap gap-2">
             {client.redirectUris.map((uri, index) => (
-              <code key={index} className="px-2 py-1 bg-muted rounded text-xs font-mono">
+              <code
+                key={index}
+                className="px-2 py-1 bg-muted rounded text-xs font-mono"
+              >
                 {uri}
               </code>
             ))}
@@ -164,7 +203,8 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
         {/* Stats */}
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
           <span>
-            {client.tokenCount} {locale === "fr" ? "token(s) actif(s)" : "active token(s)"}
+            {client.tokenCount}{" "}
+            {locale === "fr" ? "token(s) actif(s)" : "active token(s)"}
           </span>
           <span>
             {locale === "fr" ? "Créé le" : "Created"}{" "}
@@ -191,7 +231,9 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  {locale === "fr" ? "Régénérer le secret" : "Regenerate Secret"}
+                  {locale === "fr"
+                    ? "Régénérer le secret"
+                    : "Regenerate Secret"}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   {locale === "fr"
@@ -200,9 +242,16 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{locale === "fr" ? "Annuler" : "Cancel"}</AlertDialogCancel>
-                <AlertDialogAction onClick={handleRegenerate} disabled={isRegenerating}>
-                  {isRegenerating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <AlertDialogCancel>
+                  {locale === "fr" ? "Annuler" : "Cancel"}
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleRegenerate}
+                  disabled={isRegenerating}
+                >
+                  {isRegenerating && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   {locale === "fr" ? "Régénérer" : "Regenerate"}
                 </AlertDialogAction>
               </AlertDialogFooter>
@@ -223,7 +272,9 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  {locale === "fr" ? "Supprimer l'application" : "Delete Application"}
+                  {locale === "fr"
+                    ? "Supprimer l'application"
+                    : "Delete Application"}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   {locale === "fr"
@@ -232,13 +283,17 @@ export function OAuthClientCard({ client, locale, dateLocale }: OAuthClientCardP
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{locale === "fr" ? "Annuler" : "Cancel"}</AlertDialogCancel>
+                <AlertDialogCancel>
+                  {locale === "fr" ? "Annuler" : "Cancel"}
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDelete}
                   disabled={isDeleting}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 >
-                  {isDeleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {isDeleting && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   {locale === "fr" ? "Supprimer" : "Delete"}
                 </AlertDialogAction>
               </AlertDialogFooter>

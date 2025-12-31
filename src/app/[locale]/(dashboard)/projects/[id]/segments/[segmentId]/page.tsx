@@ -11,7 +11,9 @@ interface EditSegmentPageProps {
   params: Promise<{ id: string; segmentId: string }>;
 }
 
-export default async function EditSegmentPage({ params }: EditSegmentPageProps) {
+export default async function EditSegmentPage({
+  params,
+}: EditSegmentPageProps) {
   const { id, segmentId } = await params;
   const session = await auth();
   const t = await getTranslations("segments");
@@ -79,7 +81,11 @@ export default async function EditSegmentPage({ params }: EditSegmentPageProps) 
       {/* Form */}
       <div className="max-w-3xl">
         {isOwner ? (
-          <SegmentForm projectId={projectId} locale={locale} segment={segment} />
+          <SegmentForm
+            projectId={projectId}
+            locale={locale}
+            segment={segment}
+          />
         ) : (
           <div className="text-muted-foreground">
             {locale === "fr"

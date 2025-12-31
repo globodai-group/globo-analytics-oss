@@ -135,7 +135,7 @@ export async function updateLicenseAction(
     maxActivations?: number;
     expiresAt?: Date | null;
     notes?: string;
-  }
+  },
 ) {
   await requireAdmin();
 
@@ -216,7 +216,10 @@ export async function verifyLicenseAction(licenseKey: string, domain: string) {
   }
 
   if (license.status !== "ACTIVE") {
-    return { success: false, error: `License is ${license.status.toLowerCase()}` };
+    return {
+      success: false,
+      error: `License is ${license.status.toLowerCase()}`,
+    };
   }
 
   if (license.expiresAt && license.expiresAt < new Date()) {
@@ -258,7 +261,7 @@ export async function activateLicenseAction(
   domain: string,
   ipAddress?: string,
   instanceId?: string,
-  version?: string
+  version?: string,
 ) {
   const license = await prisma.license.findUnique({
     where: { licenseKey },

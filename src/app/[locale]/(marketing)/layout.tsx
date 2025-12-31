@@ -29,10 +29,16 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
 
             {/* Desktop navigation */}
             <nav className="hidden md:flex items-center gap-6">
-              <Link href="/pricing" className="text-sm font-medium hover:text-primary">
+              <Link
+                href="/pricing"
+                className="text-sm font-medium hover:text-primary"
+              >
                 {t("pricing.title")}
               </Link>
-              <Link href="/contact" className="text-sm font-medium hover:text-primary">
+              <Link
+                href="/contact"
+                className="text-sm font-medium hover:text-primary"
+              >
                 {t("footer.contact")}
               </Link>
             </nav>
@@ -76,7 +82,11 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
                     {t("footer.contact")}
                   </Link>
                   <div className="border-t pt-4 mt-4 space-y-3">
-                    <Link href="/login" className="block" onClick={() => setMobileMenuOpen(false)}>
+                    <Link
+                      href="/login"
+                      className="block"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
                       <Button variant="outline" className="w-full">
                         {t("auth.login")}
                       </Button>
@@ -251,8 +261,11 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
               <span className="font-bold">GloboAnalytics</span>
             </Link>
             <p className="text-sm text-muted-foreground text-center md:text-right">
-              &copy; {new Date().getFullYear()} GloboAnalytics. {t("footer.copyright")}
-              <span className="ml-2 text-muted-foreground/60">v{APP_VERSION}</span>
+              &copy; {new Date().getFullYear()} GloboAnalytics.{" "}
+              {t("footer.copyright")}
+              <span className="ml-2 text-muted-foreground/60">
+                v{APP_VERSION}
+              </span>
             </p>
           </div>
         </div>
