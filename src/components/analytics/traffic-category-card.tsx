@@ -37,8 +37,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   unknown_bot: "#9ca3af", // muted
 };
 
-// Category icons
-const CATEGORY_ICONS: Record<string, React.ElementType> = {
+// Category icons - reserved for future use
+const _CATEGORY_ICONS: Record<string, React.ElementType> = {
   human: Users,
   ai_agent: Bot,
   search_engine: Search,

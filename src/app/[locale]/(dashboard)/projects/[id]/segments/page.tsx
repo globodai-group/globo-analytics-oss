@@ -16,7 +16,6 @@ import {
   MoreHorizontal,
   Pencil,
   Copy,
-  Trash2,
 } from "lucide-react";
 import {
   DropdownMenu,

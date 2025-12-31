@@ -16,7 +16,7 @@ interface OAuthAuthorizeFormProps {
 
 export function OAuthAuthorizeForm({
   clientId,
-  clientPublicId,
+  clientPublicId: _clientPublicId,
   redirectUri,
   scopes,
   state,

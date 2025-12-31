@@ -150,13 +150,13 @@ export async function POST(request: NextRequest) {
 
       // Screen info
       sr, // Screen resolution
-      sd, // Screen color depth
-      vp, // Viewport size
+      sd: _sd, // Screen color depth
+      vp: _vp, // Viewport size
 
       // Platform
       pl, // Platform: web, ios, android, server
       av, // App version (mobile)
-      aid, // App ID (mobile bundle identifier)
+      aid: _aid, // App ID (mobile bundle identifier)
 
       // Geography override (for server-side)
       geoid, // Country code override
@@ -204,10 +204,10 @@ export async function POST(request: NextRequest) {
       item_list_name, // Item list name
       shipping_tier, // Shipping tier
       payment_type, // Payment type
-      ep, // Event properties (for custom events)
+      ep: _ep, // Event properties (for custom events)
 
       // Authentication flag - if true, user is authenticated (definitely human)
-      auth, // Boolean: user is authenticated
+      auth: _auth, // Boolean: user is authenticated
 
       // HMAC signature for anti-spoofing
       sig, // HMAC-SHA256 signature
@@ -486,7 +486,9 @@ export async function POST(request: NextRequest) {
     if (dl) {
       try {
         domain = new URL(dl).hostname;
-      } catch {}
+      } catch {
+        // intentionally empty - domain stays null if URL parsing fails
+      }
     }
 
     // Get or create visitor record
@@ -999,7 +1001,9 @@ async function trackPageviewStats(
       if (referrerDomain !== data.domain) {
         stats.push({ name: "referrer", value: referrerDomain });
       }
-    } catch {}
+    } catch {
+      // intentionally empty - skip referrer tracking if URL parsing fails
+    }
   }
 
   // Upsert all stats

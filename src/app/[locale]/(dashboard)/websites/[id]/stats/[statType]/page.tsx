@@ -84,7 +84,7 @@ export default async function StatsDetailPage({
 }: StatsDetailPageProps) {
   const { id, statType } = await params;
   const session = await auth();
-  const t = await getTranslations("stats");
+  const _t = await getTranslations("stats");
   const locale = await getLocale();
 
   if (!session?.user?.id) {

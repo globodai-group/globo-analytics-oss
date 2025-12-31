@@ -79,12 +79,12 @@ export function SegmentConditionRow({
 }: SegmentConditionRowProps) {
   const locale = useLocale();
 
-  const getFieldLabel = (value: string) => {
+  const _getFieldLabel = (value: string) => {
     const field = FIELDS.find((f) => f.value === value);
     return locale === "fr" ? field?.labelFr : field?.labelEn;
   };
 
-  const getOperatorLabel = (value: string) => {
+  const _getOperatorLabel = (value: string) => {
     const op = OPERATORS.find((o) => o.value === value);
     return locale === "fr" ? op?.labelFr : op?.labelEn;
   };

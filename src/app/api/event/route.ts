@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       // Custom event data
       event_name,
       event_value,
-      event_data,
+      event_data: _event_data,
       // Legacy fields
       event,
       landing,

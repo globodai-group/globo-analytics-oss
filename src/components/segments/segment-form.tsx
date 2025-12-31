@@ -251,7 +251,7 @@ export function SegmentForm({ projectId, locale, segment }: SegmentFormProps) {
 
           {/* Rules */}
           <div className="space-y-3">
-            {rules.map((rule, index) => (
+            {rules.map((rule, _index) => (
               <div
                 key={rule.id}
                 className="flex items-start gap-3 p-4 rounded-lg border bg-muted/30"
