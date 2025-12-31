@@ -246,7 +246,7 @@ export async function getFunnelAnalysisAction(
 
   // Calculate funnel metrics for each step
   const stepsWithMetrics = await Promise.all(
-    funnel.steps.map(async (step, index) => {
+    funnel.steps.map(async (step, _index) => {
       let visitors = 0;
 
       if (step.type === "URL" && step.urlPattern) {

@@ -10,15 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Globe,
-  Users,
-  Eye,
-  TrendingUp,
-  Plus,
-  FolderKanban,
-} from "lucide-react";
-import { subDays } from "date-fns";
+import { Users, Eye, TrendingUp, Plus, FolderKanban } from "lucide-react";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -34,7 +26,7 @@ export default async function DashboardPage() {
 
   // Fetch real data from database
   const [
-    websitesCount,
+    _websitesCount,
     projectsCount,
     totalVisitors,
     totalPageviews,

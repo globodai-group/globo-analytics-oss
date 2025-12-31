@@ -113,7 +113,7 @@ export function TechnologyOverview({
   }
 
   // Group browsers by name for collapsible view
-  const browserGroups = data.browsers.reduce(
+  const _browserGroups = data.browsers.reduce(
     (acc, browser) => {
       if (!acc[browser.name]) {
         acc[browser.name] = [];
@@ -125,7 +125,7 @@ export function TechnologyOverview({
   );
 
   // Group OS by name for collapsible view
-  const osGroups = data.operatingSystems.reduce(
+  const _osGroups = data.operatingSystems.reduce(
     (acc, os) => {
       if (!acc[os.name]) {
         acc[os.name] = [];

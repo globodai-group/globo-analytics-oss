@@ -36,7 +36,7 @@ export default async function EcommerceStatsPage({
   const { id } = await params;
   const { from, to } = await searchParams;
   const session = await auth();
-  const t = await getTranslations();
+  const _t = await getTranslations();
   const locale = await getLocale();
   const dateLocale = locale === "fr" ? fr : enUS;
 

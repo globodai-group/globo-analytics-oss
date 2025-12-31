@@ -41,7 +41,7 @@ export function UserFlowChart({ nodes, links, locale }: UserFlowChartProps) {
   });
 
   // Entry pages are sources that aren't targets (or have high value as first step)
-  const entryPages = Array.from(sourcePages).filter((page) => {
+  const _entryPages = Array.from(sourcePages).filter((page) => {
     const asTarget = links.filter((l) => l.target === page);
     const asSource = links.filter((l) => l.source === page);
     return asSource.length > asTarget.length;

@@ -12,7 +12,6 @@ import {
   CartesianGrid,
 } from "recharts";
 import { useLocale } from "next-intl";
-import { format } from "date-fns";
 import { fr, enUS } from "date-fns/locale";
 import { Loader2 } from "lucide-react";
 
@@ -35,7 +34,7 @@ export function ProjectStatsChart({
   endDate,
 }: ProjectStatsChartProps) {
   const locale = useLocale();
-  const dateLocale = locale === "fr" ? fr : enUS;
+  const _dateLocale = locale === "fr" ? fr : enUS;
   const [data, setData] = useState<ChartDataPoint[]>([]);
   const [loading, setLoading] = useState(true);
 

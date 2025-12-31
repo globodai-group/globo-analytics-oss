@@ -2,13 +2,7 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProjectDateRangePicker } from "@/components/analytics/project-date-range-picker";
 import { ChannelBreakdownCard } from "@/components/acquisition/channel-breakdown";
 import { SourceMediumTable } from "@/components/acquisition/source-medium-table";
@@ -49,7 +43,7 @@ export default async function AcquisitionPage({
     redirect(`/${locale}/projects`);
   }
 
-  const t = await getTranslations();
+  const _t = await getTranslations();
 
   // Parse date range from search params or default to last 30 days
   const endDate = to ? new Date(to) : new Date();

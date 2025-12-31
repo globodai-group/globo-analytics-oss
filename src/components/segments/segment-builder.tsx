@@ -43,7 +43,7 @@ function generateId() {
 }
 
 export function SegmentBuilder({
-  projectId,
+  projectId: _projectId,
   initialSegment,
   onSave,
   onCancel,
@@ -116,7 +116,7 @@ export function SegmentBuilder({
         conditions,
         matchType,
       });
-    } catch (err) {
+    } catch {
       setError(
         locale === "fr"
           ? "Erreur lors de la sauvegarde"

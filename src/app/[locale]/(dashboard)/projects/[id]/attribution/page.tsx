@@ -28,7 +28,6 @@ import {
   Share2,
   TrendingUp,
   DollarSign,
-  Users,
   MousePointerClick,
   Layers,
 } from "lucide-react";

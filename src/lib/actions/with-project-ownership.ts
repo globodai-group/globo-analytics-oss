@@ -45,7 +45,7 @@ export function withProjectOwnership<TArgs extends unknown[], TResult>(
     projectId: number,
     ...args: TArgs
   ) => Promise<TResult>,
-  namespace: string,
+  _namespace: string,
 ) {
   return async (
     projectId: number,
