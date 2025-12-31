@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import {
   Search,
@@ -14,7 +20,10 @@ import {
   HelpCircle,
   Loader2,
 } from "lucide-react";
-import { getChannelBreakdownAction, type ChannelBreakdown } from "@/lib/actions/acquisition";
+import {
+  getChannelBreakdownAction,
+  type ChannelBreakdown,
+} from "@/lib/actions/acquisition";
 
 interface ChannelBreakdownCardProps {
   projectId: number;
@@ -51,7 +60,10 @@ const CHANNEL_LABELS: Record<string, { en: string; fr: string }> = {
   unknown: { en: "Unknown", fr: "Inconnu" },
 };
 
-export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownCardProps) {
+export function ChannelBreakdownCard({
+  projectId,
+  dateRange,
+}: ChannelBreakdownCardProps) {
   const locale = useLocale();
   const [data, setData] = useState<ChannelBreakdown[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -92,7 +104,9 @@ export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownC
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-48 flex items-center justify-center text-muted-foreground">
@@ -108,7 +122,9 @@ export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownC
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-48 flex items-center justify-center text-red-500">
@@ -122,7 +138,9 @@ export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownC
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}</CardTitle>
+        <CardTitle>
+          {locale === "fr" ? "Canaux d'acquisition" : "Acquisition Channels"}
+        </CardTitle>
         <CardDescription>
           {locale === "fr"
             ? "Répartition du trafic par canal d'acquisition"
@@ -135,7 +153,8 @@ export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownC
             const IconComponent = CHANNEL_ICONS[channel.icon] || HelpCircle;
             const colorClass = CHANNEL_COLORS[channel.channel] || "bg-gray-500";
             const label =
-              CHANNEL_LABELS[channel.channel]?.[locale as "en" | "fr"] || channel.channel;
+              CHANNEL_LABELS[channel.channel]?.[locale as "en" | "fr"] ||
+              channel.channel;
 
             return (
               <Card key={channel.channel} className="relative overflow-hidden">
@@ -156,7 +175,9 @@ export function ChannelBreakdownCard({ projectId, dateRange }: ChannelBreakdownC
                       <span className="text-muted-foreground">
                         {locale === "fr" ? "Visiteurs" : "Visitors"}
                       </span>
-                      <span className="font-medium">{formatNumber(channel.visitors)}</span>
+                      <span className="font-medium">
+                        {formatNumber(channel.visitors)}
+                      </span>
                     </div>
                     <Progress value={channel.percentage} className="h-2" />
                   </div>

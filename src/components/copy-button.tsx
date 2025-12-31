@@ -10,7 +10,10 @@ interface CopyButtonProps {
   successMessage?: string;
 }
 
-export function CopyButton({ text, successMessage = "Copied!" }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  successMessage = "Copied!",
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {

@@ -5,7 +5,12 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
 import { GoalType, UrlMatchType } from "@prisma/client";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { verifyProjectOwnership } from "./with-project-ownership";
 
 interface GoalInput {
@@ -37,7 +42,7 @@ interface GoalInput {
 export async function createGoalAction(
   projectId: number,
   input: GoalInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   const t = await getTranslations({ locale, namespace: "goals" });
   const session = await auth();
@@ -91,7 +96,7 @@ export async function createGoalAction(
 export async function updateGoalAction(
   goalId: number,
   input: Partial<GoalInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "goals" });
   const session = await auth();
@@ -115,26 +120,48 @@ export async function updateGoalAction(
       data: {
         name: input.name?.trim() || goal.name,
         description:
-          input.description !== undefined ? input.description?.trim() || null : goal.description,
+          input.description !== undefined
+            ? input.description?.trim() || null
+            : goal.description,
         type: input.type || goal.type,
         isActive: input.isActive ?? goal.isActive,
-        urlMatch: input.urlMatch !== undefined ? input.urlMatch || null : goal.urlMatch,
+        urlMatch:
+          input.urlMatch !== undefined ? input.urlMatch || null : goal.urlMatch,
         urlMatchType:
-          input.urlMatchType !== undefined ? input.urlMatchType || null : goal.urlMatchType,
-        eventName: input.eventName !== undefined ? input.eventName || null : goal.eventName,
+          input.urlMatchType !== undefined
+            ? input.urlMatchType || null
+            : goal.urlMatchType,
+        eventName:
+          input.eventName !== undefined
+            ? input.eventName || null
+            : goal.eventName,
         eventCategory:
-          input.eventCategory !== undefined ? input.eventCategory || null : goal.eventCategory,
-        eventAction: input.eventAction !== undefined ? input.eventAction || null : goal.eventAction,
-        eventLabel: input.eventLabel !== undefined ? input.eventLabel || null : goal.eventLabel,
-        eventValue: input.eventValue !== undefined ? input.eventValue || null : goal.eventValue,
+          input.eventCategory !== undefined
+            ? input.eventCategory || null
+            : goal.eventCategory,
+        eventAction:
+          input.eventAction !== undefined
+            ? input.eventAction || null
+            : goal.eventAction,
+        eventLabel:
+          input.eventLabel !== undefined
+            ? input.eventLabel || null
+            : goal.eventLabel,
+        eventValue:
+          input.eventValue !== undefined
+            ? input.eventValue || null
+            : goal.eventValue,
         durationSeconds:
           input.durationSeconds !== undefined
             ? input.durationSeconds || null
             : goal.durationSeconds,
-        minPages: input.minPages !== undefined ? input.minPages || null : goal.minPages,
+        minPages:
+          input.minPages !== undefined ? input.minPages || null : goal.minPages,
         revenueTracking: input.revenueTracking ?? goal.revenueTracking,
         defaultRevenue:
-          input.defaultRevenue !== undefined ? input.defaultRevenue || null : goal.defaultRevenue,
+          input.defaultRevenue !== undefined
+            ? input.defaultRevenue || null
+            : goal.defaultRevenue,
       },
     });
 
@@ -152,7 +179,7 @@ export async function updateGoalAction(
  */
 export async function deleteGoalAction(
   goalId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<void>> {
   const t = await getTranslations({ locale, namespace: "goals" });
   const session = await auth();
@@ -183,7 +210,9 @@ export async function deleteGoalAction(
 /**
  * Toggle goal active status
  */
-export async function toggleGoalActiveAction(goalId: number): Promise<ActionResult<void>> {
+export async function toggleGoalActiveAction(
+  goalId: number,
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -213,7 +242,7 @@ export async function toggleGoalActiveAction(goalId: number): Promise<ActionResu
  */
 export async function getProjectGoalsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ goals: unknown[] }>> {
   const t = await getTranslations({ locale, namespace: "goals" });
   const session = await auth();
@@ -256,7 +285,7 @@ export async function getProjectGoalsAction(
 export async function getGoalDetailsAction(
   goalId: number,
   dateRange: { from: Date; to: Date },
-  locale: string
+  locale: string,
 ): Promise<ActionResult<unknown>> {
   const t = await getTranslations({ locale, namespace: "goals" });
   const session = await auth();
@@ -310,7 +339,9 @@ export async function getGoalDetailsAction(
   });
 
   // Get daily conversions for chart
-  const dailyConversions = await prisma.$queryRaw<{ date: Date; count: bigint; revenue: number }[]>`
+  const dailyConversions = await prisma.$queryRaw<
+    { date: Date; count: bigint; revenue: number }[]
+  >`
     SELECT
       DATE(created_at) as date,
       COUNT(*) as count,
@@ -362,8 +393,10 @@ export async function getGoalDetailsAction(
  */
 export async function getGoalConversionRateAction(
   goalId: number,
-  dateRange: { from: Date; to: Date }
-): Promise<ActionResult<{ rate: number; conversions: number; visitors: number }>> {
+  dateRange: { from: Date; to: Date },
+): Promise<
+  ActionResult<{ rate: number; conversions: number; visitors: number }>
+> {
   const session = await auth();
 
   if (!session?.user?.id) {

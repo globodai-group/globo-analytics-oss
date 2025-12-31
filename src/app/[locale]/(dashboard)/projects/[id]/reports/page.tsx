@@ -4,9 +4,24 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, FileText, Calendar, Clock, Users, Mail, Send } from "lucide-react";
+import {
+  ArrowLeft,
+  Plus,
+  FileText,
+  Calendar,
+  Clock,
+  Users,
+  Mail,
+  Send,
+} from "lucide-react";
 import { ReportDeleteButton } from "@/components/reports/report-delete-button";
 import { ReportToggleButton } from "@/components/reports/report-toggle-button";
 import { ReportSendButton } from "@/components/reports/report-send-button";
@@ -105,7 +120,9 @@ export default async function ReportsPage({ params }: ReportsPageProps) {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <FileText className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">
-              {locale === "fr" ? "Aucun rapport programmé" : "No scheduled reports"}
+              {locale === "fr"
+                ? "Aucun rapport programmé"
+                : "No scheduled reports"}
             </h3>
             <p className="text-muted-foreground text-center mb-4">
               {locale === "fr"
@@ -149,7 +166,9 @@ export default async function ReportsPage({ params }: ReportsPageProps) {
                           ? "Inactif"
                           : "Inactive"}
                     </Badge>
-                    <Badge variant="outline">{formatLabels[report.format]}</Badge>
+                    <Badge variant="outline">
+                      {formatLabels[report.format]}
+                    </Badge>
                   </div>
                 </div>
               </CardHeader>
@@ -180,7 +199,9 @@ export default async function ReportsPage({ params }: ReportsPageProps) {
                   <div className="flex items-center gap-2 text-sm">
                     <Mail className="h-4 w-4 text-muted-foreground" />
                     <span>
-                      {report.nextRun ? format(report.nextRun, "PPp", { locale: dateLocale }) : "-"}
+                      {report.nextRun
+                        ? format(report.nextRun, "PPp", { locale: dateLocale })
+                        : "-"}
                     </span>
                   </div>
                 </div>

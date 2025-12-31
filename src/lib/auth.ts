@@ -46,7 +46,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const isValidPassword = await bcrypt.compare(credentials.password as string, user.password);
+        const isValidPassword = await bcrypt.compare(
+          credentials.password as string,
+          user.password,
+        );
 
         if (!isValidPassword) {
           return null;
@@ -109,7 +112,10 @@ export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
 }
 
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+export async function verifyPassword(
+  password: string,
+  hashedPassword: string,
+): Promise<boolean> {
   return bcrypt.compare(password, hashedPassword);
 }
 

@@ -61,7 +61,12 @@ interface FunnelFormProps {
   };
 }
 
-export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps) {
+export function FunnelForm({
+  projectId,
+  locale,
+  goals,
+  funnel,
+}: FunnelFormProps) {
   const router = useRouter();
   const t = useTranslations("funnels");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -135,8 +140,14 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">{t("name")}</Label>
-          <Input id="name" placeholder={t("namePlaceholder")} {...register("name")} />
-          {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+          <Input
+            id="name"
+            placeholder={t("namePlaceholder")}
+            {...register("name")}
+          />
+          {errors.name && (
+            <p className="text-sm text-destructive">{errors.name.message}</p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -151,7 +162,9 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <Label>{t("active")}</Label>
-            <p className="text-sm text-muted-foreground">{t("activeDescription")}</p>
+            <p className="text-sm text-muted-foreground">
+              {t("activeDescription")}
+            </p>
           </div>
           <Switch
             checked={watch("isActive")}
@@ -168,7 +181,9 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
             type="button"
             variant="outline"
             size="sm"
-            onClick={() => append({ name: "", type: FunnelStepType.URL, urlPattern: "" })}
+            onClick={() =>
+              append({ name: "", type: FunnelStepType.URL, urlPattern: "" })
+            }
             className="gap-1"
           >
             <Plus className="h-4 w-4" />
@@ -182,7 +197,10 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
 
         <div className="space-y-3">
           {fields.map((field, index) => (
-            <div key={field.id} className="flex gap-3 p-4 border rounded-lg bg-muted/30">
+            <div
+              key={field.id}
+              className="flex gap-3 p-4 border rounded-lg bg-muted/30"
+            >
               <div className="flex items-center">
                 <GripVertical className="h-5 w-5 text-muted-foreground cursor-move" />
                 <span className="ml-2 flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-medium">
@@ -198,7 +216,9 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
                     {...register(`steps.${index}.name`)}
                   />
                   {errors.steps?.[index]?.name && (
-                    <p className="text-xs text-destructive">{errors.steps[index].name?.message}</p>
+                    <p className="text-xs text-destructive">
+                      {errors.steps[index].name?.message}
+                    </p>
                   )}
                 </div>
 
@@ -214,9 +234,15 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={FunnelStepType.URL}>{t("stepTypes.URL")}</SelectItem>
-                      <SelectItem value={FunnelStepType.EVENT}>{t("stepTypes.EVENT")}</SelectItem>
-                      <SelectItem value={FunnelStepType.GOAL}>{t("stepTypes.GOAL")}</SelectItem>
+                      <SelectItem value={FunnelStepType.URL}>
+                        {t("stepTypes.URL")}
+                      </SelectItem>
+                      <SelectItem value={FunnelStepType.EVENT}>
+                        {t("stepTypes.EVENT")}
+                      </SelectItem>
+                      <SelectItem value={FunnelStepType.GOAL}>
+                        {t("stepTypes.GOAL")}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -225,13 +251,19 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
                   {watch(`steps.${index}.type`) === FunnelStepType.URL && (
                     <>
                       <Label className="text-xs">{t("urlPattern")}</Label>
-                      <Input placeholder="/checkout" {...register(`steps.${index}.urlPattern`)} />
+                      <Input
+                        placeholder="/checkout"
+                        {...register(`steps.${index}.urlPattern`)}
+                      />
                     </>
                   )}
                   {watch(`steps.${index}.type`) === FunnelStepType.EVENT && (
                     <>
                       <Label className="text-xs">{t("eventName")}</Label>
-                      <Input placeholder="purchase" {...register(`steps.${index}.eventName`)} />
+                      <Input
+                        placeholder="purchase"
+                        {...register(`steps.${index}.eventName`)}
+                      />
                     </>
                   )}
                   {watch(`steps.${index}.type`) === FunnelStepType.GOAL && (
@@ -244,11 +276,16 @@ export function FunnelForm({ projectId, locale, goals, funnel }: FunnelFormProps
                         }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder={t("selectGoalPlaceholder")} />
+                          <SelectValue
+                            placeholder={t("selectGoalPlaceholder")}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {goals.map((goal) => (
-                            <SelectItem key={goal.id} value={goal.id.toString()}>
+                            <SelectItem
+                              key={goal.id}
+                              value={goal.id.toString()}
+                            >
                               {goal.name}
                             </SelectItem>
                           ))}

@@ -12,7 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Filter, X, Plus, Settings } from "lucide-react";
 import { useSegment } from "@/contexts/segment-context";
 
@@ -59,7 +63,9 @@ export function SegmentSelector({ projectId }: SegmentSelectorProps) {
           <span className="hidden sm:inline">
             {locale === "fr" ? "Créer un segment" : "Create segment"}
           </span>
-          <span className="sm:hidden">{locale === "fr" ? "Segment" : "Segment"}</span>
+          <span className="sm:hidden">
+            {locale === "fr" ? "Segment" : "Segment"}
+          </span>
         </Button>
       </Link>
     );
@@ -96,7 +102,9 @@ export function SegmentSelector({ projectId }: SegmentSelectorProps) {
               </p>
               <Select
                 value={activeSegmentId?.toString() || ""}
-                onValueChange={(value) => setActiveSegmentId(value ? parseInt(value) : null)}
+                onValueChange={(value) =>
+                  setActiveSegmentId(value ? parseInt(value) : null)
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -110,12 +118,18 @@ export function SegmentSelector({ projectId }: SegmentSelectorProps) {
                 </SelectContent>
               </Select>
               <div className="flex gap-2">
-                <Link href={`/projects/${projectId}/segments`} className="flex-1">
+                <Link
+                  href={`/projects/${projectId}/segments`}
+                  className="flex-1"
+                >
                   <Button variant="outline" size="sm" className="w-full">
                     {locale === "fr" ? "Gérer" : "Manage"}
                   </Button>
                 </Link>
-                <Link href={`/projects/${projectId}/segments/new`} className="flex-1">
+                <Link
+                  href={`/projects/${projectId}/segments/new`}
+                  className="flex-1"
+                >
                   <Button variant="outline" size="sm" className="w-full gap-1">
                     <Plus className="h-3 w-3" />
                     {locale === "fr" ? "Nouveau" : "New"}
@@ -134,18 +148,24 @@ export function SegmentSelector({ projectId }: SegmentSelectorProps) {
     <div className="flex items-center gap-2">
       <Select
         value=""
-        onValueChange={(value) => setActiveSegmentId(value ? parseInt(value) : null)}
+        onValueChange={(value) =>
+          setActiveSegmentId(value ? parseInt(value) : null)
+        }
       >
         <SelectTrigger className="w-auto min-w-[100px] sm:min-w-[160px] h-8 sm:h-9 text-xs sm:text-sm px-2 sm:px-3">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Filter className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-muted-foreground shrink-0" />
             <span className="hidden sm:inline">
               <SelectValue
-                placeholder={locale === "fr" ? "Appliquer un segment" : "Apply segment"}
+                placeholder={
+                  locale === "fr" ? "Appliquer un segment" : "Apply segment"
+                }
               />
             </span>
             <span className="sm:hidden">
-              <SelectValue placeholder={locale === "fr" ? "Segment" : "Segment"} />
+              <SelectValue
+                placeholder={locale === "fr" ? "Segment" : "Segment"}
+              />
             </span>
           </div>
         </SelectTrigger>

@@ -17,8 +17,12 @@ export default async function DevelopersPage() {
     <div className="container mx-auto px-4 py-24">
       {/* Header */}
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t("title")}</h1>
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">{t("subtitle")}</p>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          {t("title")}
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          {t("subtitle")}
+        </p>
       </div>
 
       {/* API Documentation */}

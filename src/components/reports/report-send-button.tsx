@@ -31,8 +31,18 @@ export function ReportSendButton({ reportId, locale }: ReportSendButtonProps) {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={handleSend} disabled={isSending} className="gap-1">
-      {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={handleSend}
+      disabled={isSending}
+      className="gap-1"
+    >
+      {isSending ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Send className="h-4 w-4" />
+      )}
       {locale === "fr" ? "Envoyer" : "Send"}
     </Button>
   );

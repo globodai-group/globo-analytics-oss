@@ -276,7 +276,13 @@ const useCases = [
   },
 ];
 
-function ComparisonValue({ value, note }: { value: boolean | string; note: string }) {
+function ComparisonValue({
+  value,
+  note,
+}: {
+  value: boolean | string;
+  note: string;
+}) {
   if (value === true) {
     return (
       <div className="flex items-center gap-2">
@@ -316,11 +322,20 @@ function ComparisonValue({ value, note }: { value: boolean | string; note: strin
 
 function UseCaseCell({ value }: { value: string }) {
   const config = {
-    perfect: { color: "text-green-600 dark:text-green-400", label: "Perfect fit" },
+    perfect: {
+      color: "text-green-600 dark:text-green-400",
+      label: "Perfect fit",
+    },
     great: { color: "text-green-600 dark:text-green-400", label: "Great" },
     good: { color: "text-blue-600 dark:text-blue-400", label: "Good" },
-    partial: { color: "text-yellow-600 dark:text-yellow-400", label: "Partial" },
-    overkill: { color: "text-orange-600 dark:text-orange-400", label: "Overkill" },
+    partial: {
+      color: "text-yellow-600 dark:text-yellow-400",
+      label: "Partial",
+    },
+    overkill: {
+      color: "text-orange-600 dark:text-orange-400",
+      label: "Overkill",
+    },
     poor: { color: "text-red-600 dark:text-red-400", label: "Poor fit" },
   };
   const { color, label } = config[value as keyof typeof config] || config.good;
@@ -340,12 +355,13 @@ export default function MixpanelComparisonPage() {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              GloboAnalytics vs <span className="text-muted-foreground">Mixpanel</span>
+              GloboAnalytics vs{" "}
+              <span className="text-muted-foreground">Mixpanel</span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Get product analytics insights without the complexity, privacy concerns, and
-              unpredictable pricing of Mixpanel.
+              Get product analytics insights without the complexity, privacy
+              concerns, and unpredictable pricing of Mixpanel.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -356,7 +372,11 @@ export default function MixpanelComparisonPage() {
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   View Pricing
                 </Button>
               </Link>
@@ -373,9 +393,11 @@ export default function MixpanelComparisonPage() {
               Different Tools for Different Needs
             </h2>
             <p className="text-lg text-muted-foreground">
-              Mixpanel is a powerful product analytics platform built for complex SaaS apps with
-              dedicated data teams. <strong>GloboAnalytics</strong> is a privacy-first analytics
-              solution that combines web and product analytics in one simple package.
+              Mixpanel is a powerful product analytics platform built for
+              complex SaaS apps with dedicated data teams.{" "}
+              <strong>GloboAnalytics</strong> is a privacy-first analytics
+              solution that combines web and product analytics in one simple
+              package.
             </p>
           </div>
         </div>
@@ -385,9 +407,12 @@ export default function MixpanelComparisonPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Which Tool Fits Your Use Case?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Which Tool Fits Your Use Case?
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Be honest about what you&apos;re building. The right tool depends on your needs.
+              Be honest about what you&apos;re building. The right tool depends
+              on your needs.
             </p>
           </div>
 
@@ -396,7 +421,9 @@ export default function MixpanelComparisonPage() {
               <div className="grid grid-cols-3 gap-4 px-6 py-4 bg-muted/50 border-b">
                 <div className="font-medium">Use Case</div>
                 <div className="font-medium text-primary">GloboAnalytics</div>
-                <div className="font-medium text-muted-foreground">Mixpanel</div>
+                <div className="font-medium text-muted-foreground">
+                  Mixpanel
+                </div>
               </div>
               {useCases.map((row) => (
                 <div
@@ -417,7 +444,9 @@ export default function MixpanelComparisonPage() {
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Common Mixpanel Pain Points</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Common Mixpanel Pain Points
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Mixpanel is powerful, but power comes with complexity
             </p>
@@ -444,7 +473,9 @@ export default function MixpanelComparisonPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Feature Comparison</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Feature Comparison
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               How the two platforms stack up feature by feature
             </p>
@@ -452,7 +483,10 @@ export default function MixpanelComparisonPage() {
 
           <div className="max-w-4xl mx-auto space-y-8">
             {comparisonFeatures.map((category) => (
-              <div key={category.category} className="rounded-xl border bg-card overflow-hidden">
+              <div
+                key={category.category}
+                className="rounded-xl border bg-card overflow-hidden"
+              >
                 <div className="bg-muted/50 px-6 py-4 border-b">
                   <h3 className="font-semibold text-lg">{category.category}</h3>
                 </div>
@@ -464,13 +498,21 @@ export default function MixpanelComparisonPage() {
                       <Globe className="h-4 w-4" />
                       GloboAnalytics
                     </div>
-                    <div className="font-medium text-muted-foreground">Mixpanel</div>
+                    <div className="font-medium text-muted-foreground">
+                      Mixpanel
+                    </div>
                   </div>
 
                   {category.features.map((feature) => (
-                    <div key={feature.name} className="grid grid-cols-3 gap-4 px-6 py-4">
+                    <div
+                      key={feature.name}
+                      className="grid grid-cols-3 gap-4 px-6 py-4"
+                    >
                       <div className="font-medium">{feature.name}</div>
-                      <ComparisonValue value={feature.globo.value} note={feature.globo.note} />
+                      <ComparisonValue
+                        value={feature.globo.value}
+                        note={feature.globo.note}
+                      />
                       <ComparisonValue
                         value={feature.mixpanel.value}
                         note={feature.mixpanel.note}
@@ -498,11 +540,16 @@ export default function MixpanelComparisonPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {advantages.map((advantage) => (
-              <div key={advantage.title} className="p-6 rounded-xl border bg-card">
+              <div
+                key={advantage.title}
+                className="p-6 rounded-xl border bg-card"
+              >
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <advantage.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{advantage.title}</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  {advantage.title}
+                </h3>
                 <p className="text-muted-foreground">{advantage.description}</p>
               </div>
             ))}
@@ -522,7 +569,9 @@ export default function MixpanelComparisonPage() {
               <div className="p-6 rounded-xl border-2 border-primary bg-card">
                 <div className="flex items-center gap-3 mb-4">
                   <Globe className="h-8 w-8 text-primary" />
-                  <h3 className="text-xl font-bold">Choose GloboAnalytics if...</h3>
+                  <h3 className="text-xl font-bold">
+                    Choose GloboAnalytics if...
+                  </h3>
                 </div>
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-2">
@@ -595,35 +644,45 @@ export default function MixpanelComparisonPage() {
                   Can GloboAnalytics do everything Mixpanel does?
                 </h3>
                 <p className="text-muted-foreground">
-                  No - and that&apos;s intentional. Mixpanel has features like JQL queries, complex
-                  identity resolution, and deep product analytics that we don&apos;t replicate.
-                  We&apos;re simpler by design, which makes us better for 90% of use cases.
+                  No - and that&apos;s intentional. Mixpanel has features like
+                  JQL queries, complex identity resolution, and deep product
+                  analytics that we don&apos;t replicate. We&apos;re simpler by
+                  design, which makes us better for 90% of use cases.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">How does privacy-first analytics work?</h3>
+                <h3 className="font-semibold mb-2">
+                  How does privacy-first analytics work?
+                </h3>
                 <p className="text-muted-foreground">
-                  We track events and pageviews without storing personal identifiers. We use
-                  privacy-preserving techniques to show behavior patterns without creating user
-                  profiles. You still see funnels and segments, just not individual user histories.
+                  We track events and pageviews without storing personal
+                  identifiers. We use privacy-preserving techniques to show
+                  behavior patterns without creating user profiles. You still
+                  see funnels and segments, just not individual user histories.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Can I migrate from Mixpanel?</h3>
+                <h3 className="font-semibold mb-2">
+                  Can I migrate from Mixpanel?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes! Our tracking script is easy to add alongside or replace Mixpanel. Historical
-                  data stays in Mixpanel, and you start fresh with GloboAnalytics. Many teams run
-                  both during transition.
+                  Yes! Our tracking script is easy to add alongside or replace
+                  Mixpanel. Historical data stays in Mixpanel, and you start
+                  fresh with GloboAnalytics. Many teams run both during
+                  transition.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">What about mobile app tracking?</h3>
+                <h3 className="font-semibold mb-2">
+                  What about mobile app tracking?
+                </h3>
                 <p className="text-muted-foreground">
-                  We focus on web analytics. For mobile apps, Mixpanel has stronger SDKs. However,
-                  if you have a web app or hybrid solution, GloboAnalytics works great.
+                  We focus on web analytics. For mobile apps, Mixpanel has
+                  stronger SDKs. However, if you have a web app or hybrid
+                  solution, GloboAnalytics works great.
                 </p>
               </div>
             </div>
@@ -639,11 +698,16 @@ export default function MixpanelComparisonPage() {
               Ready for Simpler Product Analytics?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Get the insights you need without the complexity. Start your free trial today.
+              Get the insights you need without the complexity. Start your free
+              trial today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Start Free 14-Day Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

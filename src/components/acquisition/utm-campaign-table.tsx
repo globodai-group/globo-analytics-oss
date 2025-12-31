@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,14 +19,20 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Target, TrendingUp } from "lucide-react";
-import { getUtmCampaignsAction, type UtmCampaignData } from "@/lib/actions/acquisition";
+import {
+  getUtmCampaignsAction,
+  type UtmCampaignData,
+} from "@/lib/actions/acquisition";
 
 interface UtmCampaignTableProps {
   projectId: number;
   dateRange: { from: Date; to: Date };
 }
 
-export function UtmCampaignTable({ projectId, dateRange }: UtmCampaignTableProps) {
+export function UtmCampaignTable({
+  projectId,
+  dateRange,
+}: UtmCampaignTableProps) {
   const locale = useLocale();
   const [data, setData] = useState<UtmCampaignData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,7 +99,9 @@ export function UtmCampaignTable({ projectId, dateRange }: UtmCampaignTableProps
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 flex items-center justify-center text-red-500">{error}</div>
+          <div className="h-48 flex items-center justify-center text-red-500">
+            {error}
+          </div>
         </CardContent>
       </Card>
     );
@@ -132,13 +146,17 @@ export function UtmCampaignTable({ projectId, dateRange }: UtmCampaignTableProps
             <p className="text-sm text-muted-foreground">
               {locale === "fr" ? "Conversions" : "Conversions"}
             </p>
-            <p className="text-2xl font-bold text-green-600">{formatNumber(totalConversions)}</p>
+            <p className="text-2xl font-bold text-green-600">
+              {formatNumber(totalConversions)}
+            </p>
           </div>
           <div className="p-4 bg-muted/50 rounded-lg">
             <p className="text-sm text-muted-foreground">
               {locale === "fr" ? "Revenu" : "Revenue"}
             </p>
-            <p className="text-2xl font-bold text-blue-600">{formatCurrency(totalRevenue)}</p>
+            <p className="text-2xl font-bold text-blue-600">
+              {formatCurrency(totalRevenue)}
+            </p>
           </div>
         </div>
 
@@ -147,7 +165,9 @@ export function UtmCampaignTable({ projectId, dateRange }: UtmCampaignTableProps
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{locale === "fr" ? "Campagne" : "Campaign"}</TableHead>
+                <TableHead>
+                  {locale === "fr" ? "Campagne" : "Campaign"}
+                </TableHead>
                 <TableHead>{locale === "fr" ? "Source" : "Source"}</TableHead>
                 <TableHead>{locale === "fr" ? "Medium" : "Medium"}</TableHead>
                 <TableHead className="text-right">
@@ -193,8 +213,13 @@ export function UtmCampaignTable({ projectId, dateRange }: UtmCampaignTableProps
               ))}
               {data.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    {locale === "fr" ? "Aucune campagne UTM détectée" : "No UTM campaigns detected"}
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-muted-foreground py-8"
+                  >
+                    {locale === "fr"
+                      ? "Aucune campagne UTM détectée"
+                      : "No UTM campaigns detected"}
                   </TableCell>
                 </TableRow>
               )}

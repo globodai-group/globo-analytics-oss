@@ -23,7 +23,7 @@ import { hasProjectAccess } from "./with-project-ownership";
  * Get AI-suggested funnels for a project
  */
 export async function getAIFunnelSuggestionsAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<FunnelSuggestion[]>> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -93,7 +93,7 @@ export async function getAIFunnelSuggestionsAction(
  * Get AI-suggested segments for a project
  */
 export async function getAISegmentSuggestionsAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<SegmentSuggestion[]>> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -112,59 +112,60 @@ export async function getAISegmentSuggestionsAction(
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-  const [countries, devices, sources, browsers, sessionStats] = await Promise.all([
-    prisma.projectStat.groupBy({
-      by: ["value"],
-      where: {
-        projectId,
-        name: "country",
-        date: { gte: thirtyDaysAgo },
-      },
-      _sum: { count: true },
-      orderBy: { _sum: { count: "desc" } },
-      take: 15,
-    }),
-    prisma.projectStat.groupBy({
-      by: ["value"],
-      where: {
-        projectId,
-        name: "device",
-        date: { gte: thirtyDaysAgo },
-      },
-      _sum: { count: true },
-      orderBy: { _sum: { count: "desc" } },
-    }),
-    prisma.projectStat.groupBy({
-      by: ["value"],
-      where: {
-        projectId,
-        name: "utm_source",
-        date: { gte: thirtyDaysAgo },
-      },
-      _sum: { count: true },
-      orderBy: { _sum: { count: "desc" } },
-      take: 15,
-    }),
-    prisma.projectStat.groupBy({
-      by: ["value"],
-      where: {
-        projectId,
-        name: "browser",
-        date: { gte: thirtyDaysAgo },
-      },
-      _sum: { count: true },
-      orderBy: { _sum: { count: "desc" } },
-      take: 10,
-    }),
-    prisma.projectSession.aggregate({
-      where: {
-        projectId,
-        startedAt: { gte: thirtyDaysAgo },
-      },
-      _avg: { duration: true },
-      _count: true,
-    }),
-  ]);
+  const [countries, devices, sources, browsers, sessionStats] =
+    await Promise.all([
+      prisma.projectStat.groupBy({
+        by: ["value"],
+        where: {
+          projectId,
+          name: "country",
+          date: { gte: thirtyDaysAgo },
+        },
+        _sum: { count: true },
+        orderBy: { _sum: { count: "desc" } },
+        take: 15,
+      }),
+      prisma.projectStat.groupBy({
+        by: ["value"],
+        where: {
+          projectId,
+          name: "device",
+          date: { gte: thirtyDaysAgo },
+        },
+        _sum: { count: true },
+        orderBy: { _sum: { count: "desc" } },
+      }),
+      prisma.projectStat.groupBy({
+        by: ["value"],
+        where: {
+          projectId,
+          name: "utm_source",
+          date: { gte: thirtyDaysAgo },
+        },
+        _sum: { count: true },
+        orderBy: { _sum: { count: "desc" } },
+        take: 15,
+      }),
+      prisma.projectStat.groupBy({
+        by: ["value"],
+        where: {
+          projectId,
+          name: "browser",
+          date: { gte: thirtyDaysAgo },
+        },
+        _sum: { count: true },
+        orderBy: { _sum: { count: "desc" } },
+        take: 10,
+      }),
+      prisma.projectSession.aggregate({
+        where: {
+          projectId,
+          startedAt: { gte: thirtyDaysAgo },
+        },
+        _avg: { duration: true },
+        _count: true,
+      }),
+    ]);
 
   // Calculate bounce rate
   const bouncedSessions = await prisma.projectSession.count({
@@ -175,7 +176,8 @@ export async function getAISegmentSuggestionsAction(
     },
   });
 
-  const bounceRate = sessionStats._count > 0 ? bouncedSessions / sessionStats._count : 0;
+  const bounceRate =
+    sessionStats._count > 0 ? bouncedSessions / sessionStats._count : 0;
 
   const suggestions = await suggestSegments({
     countries: countries.map((c) => ({
@@ -205,7 +207,7 @@ export async function getAISegmentSuggestionsAction(
  * Get AI-generated insights for a project
  */
 export async function getAIInsightsAction(
-  projectId: number
+  projectId: number,
 ): Promise<ActionResult<AnalyticsInsight[]>> {
   const session = await auth();
   if (!session?.user?.id) {
@@ -226,40 +228,41 @@ export async function getAIInsightsAction(
   const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
 
   // Get metrics for current and previous periods
-  const [currentStats, previousStats, currentSessions, previousSessions] = await Promise.all([
-    prisma.projectStat.aggregate({
-      where: {
-        projectId,
-        name: "page",
-        date: { gte: sevenDaysAgo },
-      },
-      _sum: { count: true },
-    }),
-    prisma.projectStat.aggregate({
-      where: {
-        projectId,
-        name: "page",
-        date: { gte: fourteenDaysAgo, lt: sevenDaysAgo },
-      },
-      _sum: { count: true },
-    }),
-    prisma.projectSession.aggregate({
-      where: {
-        projectId,
-        startedAt: { gte: sevenDaysAgo },
-      },
-      _avg: { duration: true },
-      _count: true,
-    }),
-    prisma.projectSession.aggregate({
-      where: {
-        projectId,
-        startedAt: { gte: fourteenDaysAgo, lt: sevenDaysAgo },
-      },
-      _avg: { duration: true },
-      _count: true,
-    }),
-  ]);
+  const [currentStats, previousStats, currentSessions, previousSessions] =
+    await Promise.all([
+      prisma.projectStat.aggregate({
+        where: {
+          projectId,
+          name: "page",
+          date: { gte: sevenDaysAgo },
+        },
+        _sum: { count: true },
+      }),
+      prisma.projectStat.aggregate({
+        where: {
+          projectId,
+          name: "page",
+          date: { gte: fourteenDaysAgo, lt: sevenDaysAgo },
+        },
+        _sum: { count: true },
+      }),
+      prisma.projectSession.aggregate({
+        where: {
+          projectId,
+          startedAt: { gte: sevenDaysAgo },
+        },
+        _avg: { duration: true },
+        _count: true,
+      }),
+      prisma.projectSession.aggregate({
+        where: {
+          projectId,
+          startedAt: { gte: fourteenDaysAgo, lt: sevenDaysAgo },
+        },
+        _avg: { duration: true },
+        _count: true,
+      }),
+    ]);
 
   // Get unique visitors
   const [currentVisitors, previousVisitors] = await Promise.all([
@@ -306,14 +309,19 @@ export async function getAIInsightsAction(
 
   // Calculate changes
   const pageviewChange =
-    previousPageviews > 0 ? (currentPageviews - previousPageviews) / previousPageviews : 0;
+    previousPageviews > 0
+      ? (currentPageviews - previousPageviews) / previousPageviews
+      : 0;
 
   const visitorChange =
-    previousVisitors > 0 ? (currentVisitors - previousVisitors) / previousVisitors : 0;
+    previousVisitors > 0
+      ? (currentVisitors - previousVisitors) / previousVisitors
+      : 0;
 
   const sessionChange =
     previousSessions._count > 0
-      ? (currentSessions._count - previousSessions._count) / previousSessions._count
+      ? (currentSessions._count - previousSessions._count) /
+        previousSessions._count
       : 0;
 
   const insights = await generateInsights({

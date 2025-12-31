@@ -39,7 +39,10 @@ interface ProjectStatsPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
 }
 
-export default async function ProjectStatsPage({ params, searchParams }: ProjectStatsPageProps) {
+export default async function ProjectStatsPage({
+  params,
+  searchParams,
+}: ProjectStatsPageProps) {
   const { id } = await params;
   const { from, to } = await searchParams;
   const session = await auth();
@@ -261,22 +264,33 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
 
   // Calculate metrics
   const avgEngagement = Math.round(avgEngagementTime._avg?.engagementTime || 0);
-  const prevAvgEngagement = Math.round(prevEngagementTime._avg?.engagementTime || 0);
+  const prevAvgEngagement = Math.round(
+    prevEngagementTime._avg?.engagementTime || 0,
+  );
   const pageviewsCount = totalPageviews._sum?.pageviews || 0;
   const prevPageviewsCount = prevPageviews._sum?.pageviews || 0;
   const bounceCount = sessionsData.filter((s) => s.isBounce).length;
-  const bounceRate = sessionsData.length > 0 ? (bounceCount / sessionsData.length) * 100 : 0;
+  const bounceRate =
+    sessionsData.length > 0 ? (bounceCount / sessionsData.length) * 100 : 0;
   const prevBounceCount = prevSessionsData.filter((s) => s.isBounce).length;
   const prevBounceRate =
-    prevSessionsData.length > 0 ? (prevBounceCount / prevSessionsData.length) * 100 : 0;
+    prevSessionsData.length > 0
+      ? (prevBounceCount / prevSessionsData.length) * 100
+      : 0;
   const engagementRate =
-    sessionsData.length > 0 ? ((sessionsData.length - bounceCount) / sessionsData.length) * 100 : 0;
+    sessionsData.length > 0
+      ? ((sessionsData.length - bounceCount) / sessionsData.length) * 100
+      : 0;
   const prevEngagementRate =
     prevSessionsData.length > 0
-      ? ((prevSessionsData.length - prevBounceCount) / prevSessionsData.length) * 100
+      ? ((prevSessionsData.length - prevBounceCount) /
+          prevSessionsData.length) *
+        100
       : 0;
-  const pagesPerSession = totalSessions > 0 ? pageviewsCount / totalSessions : 0;
-  const prevPagesPerSession = prevSessions > 0 ? prevPageviewsCount / prevSessions : 0;
+  const pagesPerSession =
+    totalSessions > 0 ? pageviewsCount / totalSessions : 0;
+  const prevPagesPerSession =
+    prevSessions > 0 ? prevPageviewsCount / prevSessions : 0;
 
   // KPI metrics for the bar
   const kpiMetrics = [
@@ -349,7 +363,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
               <ArrowLeft className="h-4 w-4" />
             </Button>
           </Link>
-          <h1 className="text-lg sm:text-xl font-semibold truncate">{project.name}</h1>
+          <h1 className="text-lg sm:text-xl font-semibold truncate">
+            {project.name}
+          </h1>
         </div>
         {/* Controls row - full width on mobile */}
         <div className="flex items-center gap-2 justify-between sm:justify-end">
@@ -376,7 +392,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
               <span className="hidden xs:inline">
                 {locale === "fr" ? "Vue d'ensemble" : "Overview"}
               </span>
-              <span className="xs:hidden">{locale === "fr" ? "Vue" : "Overview"}</span>
+              <span className="xs:hidden">
+                {locale === "fr" ? "Vue" : "Overview"}
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="audience"
@@ -393,7 +411,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
               <span className="hidden sm:inline">
                 {locale === "fr" ? "Comportement" : "Behavior"}
               </span>
-              <span className="sm:hidden">{locale === "fr" ? "Comport." : "Behavior"}</span>
+              <span className="sm:hidden">
+                {locale === "fr" ? "Comport." : "Behavior"}
+              </span>
             </TabsTrigger>
             <TabsTrigger
               value="geography"
@@ -403,7 +423,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
               <span className="hidden sm:inline">
                 {locale === "fr" ? "Géographie" : "Geography"}
               </span>
-              <span className="sm:hidden">{locale === "fr" ? "Géo" : "Geo"}</span>
+              <span className="sm:hidden">
+                {locale === "fr" ? "Géo" : "Geo"}
+              </span>
             </TabsTrigger>
           </TabsList>
         </div>
@@ -414,11 +436,17 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">
-                {locale === "fr" ? "Activité dans le temps" : "Activity over time"}
+                {locale === "fr"
+                  ? "Activité dans le temps"
+                  : "Activity over time"}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ProjectStatsChart projectId={project.id} startDate={startDate} endDate={endDate} />
+              <ProjectStatsChart
+                projectId={project.id}
+                startDate={startDate}
+                endDate={endDate}
+              />
             </CardContent>
           </Card>
 
@@ -576,7 +604,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
                     <Eye className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <p className="text-2xl font-semibold">{pagesPerSession.toFixed(1)}</p>
+                    <p className="text-2xl font-semibold">
+                      {pagesPerSession.toFixed(1)}
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {locale === "fr" ? "Pages / session" : "Pages / session"}
                     </p>
@@ -592,9 +622,13 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
                     <Activity className="h-5 w-5 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <p className="text-2xl font-semibold">{engagementRate.toFixed(1)}%</p>
+                    <p className="text-2xl font-semibold">
+                      {engagementRate.toFixed(1)}%
+                    </p>
                     <p className="text-xs text-muted-foreground">
-                      {locale === "fr" ? "Taux d'engagement" : "Engagement rate"}
+                      {locale === "fr"
+                        ? "Taux d'engagement"
+                        : "Engagement rate"}
                     </p>
                   </div>
                 </div>
@@ -608,7 +642,9 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
                     <MousePointerClick className="h-5 w-5 text-orange-600 dark:text-orange-400" />
                   </div>
                   <div>
-                    <p className="text-2xl font-semibold">{bounceRate.toFixed(1)}%</p>
+                    <p className="text-2xl font-semibold">
+                      {bounceRate.toFixed(1)}%
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {locale === "fr" ? "Taux de rebond" : "Bounce rate"}
                     </p>
@@ -687,7 +723,10 @@ export default async function ProjectStatsPage({ params, searchParams }: Project
         {/* Geography Tab */}
         <TabsContent value="geography" className="space-y-6">
           {/* Map */}
-          <GeoMap projectId={project.id} dateRange={{ from: startDate, to: endDate }} />
+          <GeoMap
+            projectId={project.id}
+            dateRange={{ from: startDate, to: endDate }}
+          />
 
           {/* Countries Table */}
           <Card>

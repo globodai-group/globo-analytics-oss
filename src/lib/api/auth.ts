@@ -2,7 +2,9 @@ import { NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { prisma } from "@/lib/prisma";
 
-export type ApiUser = NonNullable<Awaited<ReturnType<typeof authenticateApiRequest>>>;
+export type ApiUser = NonNullable<
+  Awaited<ReturnType<typeof authenticateApiRequest>>
+>;
 
 /**
  * Authenticate API request using Bearer token
@@ -44,7 +46,7 @@ export async function authenticateApiRequest(request: NextRequest) {
  */
 export async function withApiAuth(
   request: NextRequest,
-  handler: (user: ApiUser) => Promise<Response>
+  handler: (user: ApiUser) => Promise<Response>,
 ): Promise<Response> {
   const ip = request.headers.get("x-forwarded-for") || "unknown";
   const rateLimit = checkRateLimit(`api:${ip}`, 100, 60000);
@@ -84,7 +86,7 @@ const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 export function checkRateLimit(
   identifier: string,
   limit = 100,
-  windowMs = 60000
+  windowMs = 60000,
 ): { allowed: boolean; remaining: number } {
   const now = Date.now();
   const record = rateLimitStore.get(identifier);
@@ -117,12 +119,15 @@ export interface PaginationParams {
 export function parsePaginationParams(
   searchParams: URLSearchParams,
   defaultLimit = 20,
-  maxLimit = 100
+  maxLimit = 100,
 ): PaginationParams {
   const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10));
   const limit = Math.min(
-    Math.max(1, parseInt(searchParams.get("limit") || String(defaultLimit), 10)),
-    maxLimit
+    Math.max(
+      1,
+      parseInt(searchParams.get("limit") || String(defaultLimit), 10),
+    ),
+    maxLimit,
   );
   const offset = (page - 1) * limit;
 
@@ -132,7 +137,11 @@ export function parsePaginationParams(
 /**
  * Build pagination response object
  */
-export function buildPaginationResponse<T>(items: T[], total: number, params: PaginationParams) {
+export function buildPaginationResponse<T>(
+  items: T[],
+  total: number,
+  params: PaginationParams,
+) {
   return {
     data: items,
     pagination: {

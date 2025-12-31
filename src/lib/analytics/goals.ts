@@ -21,7 +21,11 @@ interface HitData {
 /**
  * Check if a URL matches a goal pattern
  */
-function matchUrl(url: string, pattern: string, matchType: UrlMatchType): boolean {
+function matchUrl(
+  url: string,
+  pattern: string,
+  matchType: UrlMatchType,
+): boolean {
   if (!url || !pattern) return false;
 
   switch (matchType) {
@@ -51,7 +55,8 @@ function matchesGoal(goal: Goal, hit: HitData): boolean {
     case "URL":
       if (!goal.urlMatch || !goal.urlMatchType) return false;
       return (
-        hit.hitType === "pageview" && matchUrl(hit.pagePath || "", goal.urlMatch, goal.urlMatchType)
+        hit.hitType === "pageview" &&
+        matchUrl(hit.pagePath || "", goal.urlMatch, goal.urlMatchType)
       );
 
     case "EVENT":
@@ -59,8 +64,10 @@ function matchesGoal(goal: Goal, hit: HitData): boolean {
 
       // Match event conditions
       if (goal.eventName && hit.eventName !== goal.eventName) return false;
-      if (goal.eventCategory && hit.eventCategory !== goal.eventCategory) return false;
-      if (goal.eventAction && hit.eventAction !== goal.eventAction) return false;
+      if (goal.eventCategory && hit.eventCategory !== goal.eventCategory)
+        return false;
+      if (goal.eventAction && hit.eventAction !== goal.eventAction)
+        return false;
       if (goal.eventLabel && hit.eventLabel !== goal.eventLabel) return false;
       if (
         goal.eventValue !== null &&
@@ -183,7 +190,7 @@ export async function checkGoalConversions(hit: HitData): Promise<number> {
  */
 export async function getGoalStats(
   goalId: number,
-  dateRange: { from: Date; to: Date }
+  dateRange: { from: Date; to: Date },
 ): Promise<{
   conversions: number;
   uniqueVisitors: number;
@@ -201,8 +208,12 @@ export async function getGoalStats(
   });
 
   const uniqueVisitors = new Set(conversions.map((c) => c.visitorId)).size;
-  const totalRevenue = conversions.reduce((sum, c) => sum + (c.revenue || 0), 0);
-  const avgRevenue = conversions.length > 0 ? totalRevenue / conversions.length : 0;
+  const totalRevenue = conversions.reduce(
+    (sum, c) => sum + (c.revenue || 0),
+    0,
+  );
+  const avgRevenue =
+    conversions.length > 0 ? totalRevenue / conversions.length : 0;
 
   return {
     conversions: conversions.length,
@@ -218,7 +229,7 @@ export async function getGoalStats(
 export async function getTopGoals(
   projectId: number,
   dateRange: { from: Date; to: Date },
-  limit: number = 5
+  limit: number = 5,
 ): Promise<
   {
     id: number;
@@ -260,7 +271,7 @@ export async function getTopGoals(
 export async function getConversionFunnel(
   projectId: number,
   goalId: number,
-  dateRange: { from: Date; to: Date }
+  dateRange: { from: Date; to: Date },
 ): Promise<{
   totalVisitors: number;
   totalSessions: number;
@@ -300,7 +311,8 @@ export async function getConversionFunnel(
     },
   });
 
-  const conversionRate = totalVisitors > 0 ? (conversions / totalVisitors) * 100 : 0;
+  const conversionRate =
+    totalVisitors > 0 ? (conversions / totalVisitors) * 100 : 0;
 
   return {
     totalVisitors,

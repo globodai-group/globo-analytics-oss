@@ -26,6 +26,9 @@ export async function GET() {
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json({ error: "Failed to get license status" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to get license status" },
+      { status: 500 },
+    );
   }
 }

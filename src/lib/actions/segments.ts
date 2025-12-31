@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { getTranslations } from "next-intl/server";
-import { ActionResult, ActionSuccess, ActionError, ActionSuccessVoid } from "@/lib/types/actions";
+import {
+  ActionResult,
+  ActionSuccess,
+  ActionError,
+  ActionSuccessVoid,
+} from "@/lib/types/actions";
 import { verifyProjectOwnership } from "./with-project-ownership";
 
 // Segment rule operator types
@@ -74,7 +79,7 @@ export interface SegmentInput {
 export async function createSegmentAction(
   projectId: number,
   input: SegmentInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   const t = await getTranslations({ locale, namespace: "segments" });
   const session = await auth();
@@ -122,7 +127,7 @@ export async function createSegmentAction(
 export async function updateSegmentAction(
   segmentId: number,
   input: Partial<SegmentInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   const t = await getTranslations({ locale, namespace: "segments" });
   const session = await auth();
@@ -141,7 +146,10 @@ export async function updateSegmentAction(
   }
 
   // Only owner or project owner can update
-  if (segment.userId !== session.user.id && segment.project.userId !== session.user.id) {
+  if (
+    segment.userId !== session.user.id &&
+    segment.project.userId !== session.user.id
+  ) {
     return ActionError(t("errors.unauthorized"));
   }
 
@@ -151,7 +159,9 @@ export async function updateSegmentAction(
       data: {
         name: input.name?.trim() || segment.name,
         description:
-          input.description !== undefined ? input.description?.trim() || null : segment.description,
+          input.description !== undefined
+            ? input.description?.trim() || null
+            : segment.description,
         conditions: input.conditions
           ? (input.conditions as object)
           : (segment.conditions as object),
@@ -173,7 +183,7 @@ export async function updateSegmentAction(
  */
 export async function deleteSegmentAction(
   segmentId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   const t = await getTranslations({ locale, namespace: "segments" });
   const session = await auth();
@@ -192,7 +202,10 @@ export async function deleteSegmentAction(
   }
 
   // Only owner or project owner can delete
-  if (segment.userId !== session.user.id && segment.project.userId !== session.user.id) {
+  if (
+    segment.userId !== session.user.id &&
+    segment.project.userId !== session.user.id
+  ) {
     return ActionError(t("errors.unauthorized"));
   }
 
@@ -209,7 +222,9 @@ export async function deleteSegmentAction(
 /**
  * Toggle segment sharing
  */
-export async function toggleSegmentSharingAction(segmentId: number): Promise<ActionResult<void>> {
+export async function toggleSegmentSharingAction(
+  segmentId: number,
+): Promise<ActionResult<void>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -239,7 +254,7 @@ export async function toggleSegmentSharingAction(segmentId: number): Promise<Act
  */
 export async function getProjectSegmentsAction(
   projectId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ segments: unknown[] }>> {
   const t = await getTranslations({ locale, namespace: "segments" });
   const session = await auth();
@@ -273,7 +288,9 @@ export async function getProjectSegmentsAction(
       conditions: s.conditions,
       isShared: s.isShared,
       isOwner: s.userId === session.user.id,
-      createdBy: s.user.firstName ? `${s.user.firstName} ${s.user.lastName}` : s.user.email,
+      createdBy: s.user.firstName
+        ? `${s.user.firstName} ${s.user.lastName}`
+        : s.user.email,
       createdAt: s.createdAt.toISOString(),
       updatedAt: s.updatedAt.toISOString(),
     })),
@@ -285,7 +302,7 @@ export async function getProjectSegmentsAction(
  */
 export async function duplicateSegmentAction(
   segmentId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ id: number }>> {
   const t = await getTranslations({ locale, namespace: "segments" });
   const session = await auth();

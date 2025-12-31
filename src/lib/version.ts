@@ -21,7 +21,7 @@ export function logVersion(): void {
   if (!hasLoggedVersion && typeof window !== "undefined") {
     console.info(
       `%c GloboAnalytics OSS ${getVersionString()} `,
-      "background: #6366f1; color: white; padding: 2px 8px; border-radius: 4px;"
+      "background: #6366f1; color: white; padding: 2px 8px; border-radius: 4px;",
     );
     hasLoggedVersion = true;
   }

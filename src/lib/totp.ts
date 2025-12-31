@@ -50,7 +50,10 @@ export function getTotpUri(secret: string, email: string): string {
 /**
  * Generate QR code as data URL
  */
-export async function generateTotpQrCode(secret: string, email: string): Promise<string> {
+export async function generateTotpQrCode(
+  secret: string,
+  email: string,
+): Promise<string> {
   const uri = getTotpUri(secret, email);
   return QRCode.toDataURL(uri, {
     errorCorrectionLevel: "M",
@@ -62,7 +65,11 @@ export async function generateTotpQrCode(secret: string, email: string): Promise
 /**
  * Verify a TOTP code
  */
-export function verifyTotpCode(secret: string, email: string, code: string): boolean {
+export function verifyTotpCode(
+  secret: string,
+  email: string,
+  code: string,
+): boolean {
   const totp = createTotp(secret, email);
 
   // Allow for 1 period of drift (30 seconds before/after)
@@ -78,7 +85,7 @@ export function verifyTotpCode(secret: string, email: string, code: string): boo
  */
 export function verifyRecoveryCode(
   codes: string[],
-  inputCode: string
+  inputCode: string,
 ): { valid: boolean; index: number } {
   // Normalize input: remove dashes and convert to uppercase
   const normalizedInput = inputCode.replace(/-/g, "").toUpperCase();

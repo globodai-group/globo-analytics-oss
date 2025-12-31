@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -14,14 +20,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ChevronLeft, ChevronRight, Loader2, ExternalLink } from "lucide-react";
-import { getSourceMediumAction, type SourceMediumData } from "@/lib/actions/acquisition";
+import {
+  getSourceMediumAction,
+  type SourceMediumData,
+} from "@/lib/actions/acquisition";
 
 interface SourceMediumTableProps {
   projectId: number;
   dateRange: { from: Date; to: Date };
 }
 
-export function SourceMediumTable({ projectId, dateRange }: SourceMediumTableProps) {
+export function SourceMediumTable({
+  projectId,
+  dateRange,
+}: SourceMediumTableProps) {
   const locale = useLocale();
   const [data, setData] = useState<SourceMediumData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +49,10 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
       setLoading(true);
       setError(null);
 
-      const result = await getSourceMediumAction(projectId, dateRange, { page, perPage });
+      const result = await getSourceMediumAction(projectId, dateRange, {
+        page,
+        perPage,
+      });
 
       if (result.success && result.data) {
         setData(result.data.data);
@@ -75,7 +90,9 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Source / Médium" : "Source / Medium"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Source / Médium" : "Source / Medium"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-48 flex items-center justify-center text-muted-foreground">
@@ -91,10 +108,14 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Source / Médium" : "Source / Medium"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Source / Médium" : "Source / Medium"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-48 flex items-center justify-center text-red-500">{error}</div>
+          <div className="h-48 flex items-center justify-center text-red-500">
+            {error}
+          </div>
         </CardContent>
       </Card>
     );
@@ -105,7 +126,9 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>{locale === "fr" ? "Source / Médium" : "Source / Medium"}</CardTitle>
+            <CardTitle>
+              {locale === "fr" ? "Source / Médium" : "Source / Medium"}
+            </CardTitle>
             <CardDescription>
               {locale === "fr"
                 ? "Analyse détaillée des sources de trafic"
@@ -122,7 +145,9 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{locale === "fr" ? "Source / Médium" : "Source / Medium"}</TableHead>
+                <TableHead>
+                  {locale === "fr" ? "Source / Médium" : "Source / Medium"}
+                </TableHead>
                 <TableHead className="text-right">
                   {locale === "fr" ? "Utilisateurs" : "Users"}
                 </TableHead>
@@ -148,7 +173,9 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
                       <ExternalLink className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">{row.source}</span>
                       <span className="text-muted-foreground">/</span>
-                      <span className="text-muted-foreground">{row.medium}</span>
+                      <span className="text-muted-foreground">
+                        {row.medium}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell className="text-right font-mono">
@@ -170,7 +197,10 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
               ))}
               {data.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                  <TableCell
+                    colSpan={6}
+                    className="text-center text-muted-foreground py-8"
+                  >
                     {locale === "fr" ? "Aucune donnée" : "No data"}
                   </TableCell>
                 </TableRow>
@@ -183,7 +213,9 @@ export function SourceMediumTable({ projectId, dateRange }: SourceMediumTablePro
         {totalPages > 1 && (
           <div className="flex items-center justify-between mt-4">
             <p className="text-sm text-muted-foreground">
-              {locale === "fr" ? `Page ${page} sur ${totalPages}` : `Page ${page} of ${totalPages}`}
+              {locale === "fr"
+                ? `Page ${page} sur ${totalPages}`
+                : `Page ${page} of ${totalPages}`}
             </p>
             <div className="flex gap-2">
               <Button

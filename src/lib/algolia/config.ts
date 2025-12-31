@@ -10,10 +10,19 @@
 
 export const algoliaConfig = {
   // Support both Heroku addon naming and standard naming
-  appId: process.env.ALGOLIASEARCH_APPLICATION_ID || process.env.ALGOLIA_APP_ID || "",
-  adminApiKey: process.env.ALGOLIASEARCH_API_KEY || process.env.ALGOLIA_ADMIN_API_KEY || "",
+  appId:
+    process.env.ALGOLIASEARCH_APPLICATION_ID ||
+    process.env.ALGOLIA_APP_ID ||
+    "",
+  adminApiKey:
+    process.env.ALGOLIASEARCH_API_KEY ||
+    process.env.ALGOLIA_ADMIN_API_KEY ||
+    "",
   // For server-side search via actions, we use the admin key
-  searchApiKey: process.env.ALGOLIASEARCH_API_KEY || process.env.ALGOLIA_ADMIN_API_KEY || "",
+  searchApiKey:
+    process.env.ALGOLIASEARCH_API_KEY ||
+    process.env.ALGOLIA_ADMIN_API_KEY ||
+    "",
 
   // Index names with environment prefix
   indices: {

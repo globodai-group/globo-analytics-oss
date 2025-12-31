@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Code, CheckCircle2, Globe, Smartphone } from "lucide-react";
 import { TrackingCodeCopy } from "@/components/websites/tracking-code-copy";
@@ -15,7 +21,8 @@ interface TrackingCodePageProps {
 }
 
 function generateProjectTrackingCode(trackingId: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://globoanalytics.io";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL || "https://globoanalytics.io";
 
   return `<!-- GloboAnalytics Analytics -->
 <script async src="${baseUrl}/js/tracker.js" data-tid="${trackingId}"></script>
@@ -50,7 +57,9 @@ GloboAnalytics.trackPageview("/home")
 GloboAnalytics.trackEvent("button_click", mapOf("button" to "signup"))`;
 }
 
-export default async function ProjectTrackingCodePage({ params }: TrackingCodePageProps) {
+export default async function ProjectTrackingCodePage({
+  params,
+}: TrackingCodePageProps) {
   const { id } = await params;
   const session = await auth();
   const t = await getTranslations();
@@ -83,10 +92,14 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
   }
 
   const webTrackingCode = generateProjectTrackingCode(project.trackingId);
-  const mobileTrackingCode = generateMobileSDKCode(project.trackingId, project.platform);
+  const mobileTrackingCode = generateMobileSDKCode(
+    project.trackingId,
+    project.platform,
+  );
 
   const showWeb = project.platform === "web" || project.platform === "both";
-  const showMobile = project.platform === "mobile" || project.platform === "both";
+  const showMobile =
+    project.platform === "mobile" || project.platform === "both";
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -109,7 +122,9 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
           <CheckCircle2 className="h-6 w-6 text-green-600 mt-0.5" />
           <div>
             <p className="font-medium text-green-900 dark:text-green-100">
-              {locale === "fr" ? "Projet créé avec succès !" : "Project created successfully!"}
+              {locale === "fr"
+                ? "Projet créé avec succès !"
+                : "Project created successfully!"}
             </p>
             <p className="text-sm text-green-800 dark:text-green-200">
               {locale === "fr"
@@ -160,7 +175,9 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
                   <Code className="h-5 w-5" />
                   {t("projects.trackingCode")} - Web
                 </CardTitle>
-                <CardDescription>{t("projects.trackingCodeDescription")}</CardDescription>
+                <CardDescription>
+                  {t("projects.trackingCodeDescription")}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <TrackingCodeCopy code={webTrackingCode} />
@@ -193,7 +210,9 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
               <Code className="h-5 w-5" />
               {t("projects.trackingCode")}
             </CardTitle>
-            <CardDescription>{t("projects.trackingCodeDescription")}</CardDescription>
+            <CardDescription>
+              {t("projects.trackingCodeDescription")}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <TrackingCodeCopy code={webTrackingCode} />
@@ -222,7 +241,9 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
       <Card>
         <CardHeader>
           <CardTitle>
-            {locale === "fr" ? "Instructions d'installation" : "Installation Instructions"}
+            {locale === "fr"
+              ? "Instructions d'installation"
+              : "Installation Instructions"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -260,7 +281,9 @@ export default async function ProjectTrackingCodePage({ params }: TrackingCodePa
 
           <div className="space-y-2">
             <h3 className="font-medium">
-              {locale === "fr" ? "3. Vérifiez l'installation" : "3. Verify installation"}
+              {locale === "fr"
+                ? "3. Vérifiez l'installation"
+                : "3. Verify installation"}
             </h3>
             <p className="text-sm text-muted-foreground">
               {locale === "fr"

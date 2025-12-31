@@ -51,7 +51,7 @@ export function PasswordForm({ locale }: PasswordFormProps) {
           currentPassword: data.currentPassword,
           newPassword: data.newPassword,
         },
-        locale
+        locale,
       );
 
       if (result.success) {
@@ -78,15 +78,24 @@ export function PasswordForm({ locale }: PasswordFormProps) {
           disabled={isLoading}
         />
         {errors.currentPassword && (
-          <p className="text-sm text-destructive">{errors.currentPassword.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.currentPassword.message}
+          </p>
         )}
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="newPassword">{t("newPassword")}</Label>
-        <Input id="newPassword" type="password" {...register("newPassword")} disabled={isLoading} />
+        <Input
+          id="newPassword"
+          type="password"
+          {...register("newPassword")}
+          disabled={isLoading}
+        />
         {errors.newPassword && (
-          <p className="text-sm text-destructive">{errors.newPassword.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.newPassword.message}
+          </p>
         )}
       </div>
 
@@ -101,7 +110,9 @@ export function PasswordForm({ locale }: PasswordFormProps) {
           disabled={isLoading}
         />
         {errors.confirmPassword && (
-          <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+          <p className="text-sm text-destructive">
+            {errors.confirmPassword.message}
+          </p>
         )}
       </div>
 

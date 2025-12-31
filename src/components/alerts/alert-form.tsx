@@ -108,7 +108,7 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
         webhookUrl: data.webhookUrl || undefined,
         slackWebhook: data.slackWebhook || undefined,
       },
-      locale
+      locale,
     );
 
     if (result.success) {
@@ -128,16 +128,23 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
         <Label htmlFor="name">{t("name")}</Label>
         <Input
           id="name"
-          placeholder={locale === "fr" ? "ex: Alerte visiteurs" : "e.g., Visitors alert"}
+          placeholder={
+            locale === "fr" ? "ex: Alerte visiteurs" : "e.g., Visitors alert"
+          }
           {...register("name")}
         />
-        {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-sm text-destructive">{errors.name.message}</p>
+        )}
       </div>
 
       {/* Metric */}
       <div className="space-y-2">
         <Label>{t("metric")}</Label>
-        <Select value={metric} onValueChange={(value) => setValue("metric", value as AlertMetric)}>
+        <Select
+          value={metric}
+          onValueChange={(value) => setValue("metric", value as AlertMetric)}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -156,7 +163,9 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
         <Label>{t("condition")}</Label>
         <Select
           value={condition}
-          onValueChange={(value) => setValue("condition", value as AlertCondition)}
+          onValueChange={(value) =>
+            setValue("condition", value as AlertCondition)
+          }
         >
           <SelectTrigger>
             <SelectValue />
@@ -180,7 +189,9 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
           step="0.01"
           {...register("threshold", { valueAsNumber: true })}
         />
-        {errors.threshold && <p className="text-sm text-destructive">{errors.threshold.message}</p>}
+        {errors.threshold && (
+          <p className="text-sm text-destructive">{errors.threshold.message}</p>
+        )}
       </div>
 
       {/* Compare Type */}
@@ -188,7 +199,9 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
         <Label>{t("compareType")}</Label>
         <Select
           value={compareType}
-          onValueChange={(value) => setValue("compareType", value as CompareType)}
+          onValueChange={(value) =>
+            setValue("compareType", value as CompareType)
+          }
         >
           <SelectTrigger>
             <SelectValue />
@@ -214,7 +227,9 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
           <div>
             <Label htmlFor="emailEnabled">{t("emailEnabled")}</Label>
             <p className="text-sm text-muted-foreground">
-              {locale === "fr" ? "Recevoir les alertes par email" : "Receive alerts by email"}
+              {locale === "fr"
+                ? "Recevoir les alertes par email"
+                : "Receive alerts by email"}
             </p>
           </div>
           <Switch
@@ -227,7 +242,12 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
         {/* Webhook */}
         <div className="space-y-2">
           <Label htmlFor="webhookUrl">{t("webhookUrl")}</Label>
-          <Input id="webhookUrl" type="url" placeholder="https://..." {...register("webhookUrl")} />
+          <Input
+            id="webhookUrl"
+            type="url"
+            placeholder="https://..."
+            {...register("webhookUrl")}
+          />
         </div>
 
         {/* Slack */}
@@ -244,7 +264,12 @@ export function AlertForm({ projectId, locale }: AlertFormProps) {
 
       {/* Submit */}
       <div className="flex justify-end gap-4 pt-4">
-        <Button type="button" variant="outline" onClick={() => router.back()} disabled={isLoading}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          disabled={isLoading}
+        >
           {tCommon("cancel")}
         </Button>
         <Button type="submit" disabled={isLoading}>

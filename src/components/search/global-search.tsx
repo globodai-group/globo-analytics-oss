@@ -53,7 +53,11 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchProps) {
+export function GlobalSearch({
+  userId,
+  projectId,
+  projectName,
+}: GlobalSearchProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GroupedSearchResults | null>(null);
@@ -114,7 +118,7 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
       setOpen(false);
       router.push(href);
     },
-    [router]
+    [router],
   );
 
   // Quick actions for empty state
@@ -223,7 +227,9 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
           </>
         )}
 
-        {!isPending && query && !hasResults && <CommandEmpty>{t("noResults")}</CommandEmpty>}
+        {!isPending && query && !hasResults && (
+          <CommandEmpty>{t("noResults")}</CommandEmpty>
+        )}
 
         {!isPending && hasResults && results && (
           <>
@@ -234,26 +240,33 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                   <CommandItem
                     key={hit.objectID}
                     onSelect={() =>
-                      handleSelect(`/projects/${hit.objectID.replace("project_", "")}/stats`)
+                      handleSelect(
+                        `/projects/${hit.objectID.replace("project_", "")}/stats`,
+                      )
                     }
                     className="cursor-pointer"
                   >
                     <FolderKanban className="h-4 w-4 text-blue-500" />
                     <div className="flex flex-col flex-1 min-w-0">
                       <span className="truncate font-medium">{hit.name}</span>
-                      <span className="text-xs text-muted-foreground truncate">{hit.domain}</span>
+                      <span className="text-xs text-muted-foreground truncate">
+                        {hit.domain}
+                      </span>
                     </div>
-                    {hit.totalPageviews !== undefined && hit.totalPageviews > 0 && (
-                      <Badge variant="outline" className="text-xs ml-2">
-                        {hit.totalPageviews.toLocaleString()} views
-                      </Badge>
-                    )}
+                    {hit.totalPageviews !== undefined &&
+                      hit.totalPageviews > 0 && (
+                        <Badge variant="outline" className="text-xs ml-2">
+                          {hit.totalPageviews.toLocaleString()} views
+                        </Badge>
+                      )}
                   </CommandItem>
                 ))}
               </CommandGroup>
             )}
 
-            {results.projects.length > 0 && results.pages.length > 0 && <CommandSeparator />}
+            {results.projects.length > 0 && results.pages.length > 0 && (
+              <CommandSeparator />
+            )}
 
             {/* Pages */}
             {results.pages.length > 0 && (
@@ -263,7 +276,7 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                     key={hit.objectID}
                     onSelect={() =>
                       handleSelect(
-                        `/projects/${hit.projectId}/pages?url=${encodeURIComponent(hit.url)}`
+                        `/projects/${hit.projectId}/pages?url=${encodeURIComponent(hit.url)}`,
                       )
                     }
                     className="cursor-pointer"
@@ -271,7 +284,9 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                     <FileText className="h-4 w-4 text-green-500" />
                     <div className="flex flex-col flex-1 min-w-0">
                       <span className="truncate font-medium">{hit.title}</span>
-                      <span className="text-xs text-muted-foreground truncate">{hit.url}</span>
+                      <span className="text-xs text-muted-foreground truncate">
+                        {hit.url}
+                      </span>
                     </div>
                     <Badge variant="outline" className="text-xs ml-2">
                       {hit.pageviews.toLocaleString()}
@@ -292,16 +307,20 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                     key={hit.objectID}
                     onSelect={() =>
                       handleSelect(
-                        `/projects/${hit.projectId}/stats?event=${encodeURIComponent(hit.eventName)}`
+                        `/projects/${hit.projectId}/stats?event=${encodeURIComponent(hit.eventName)}`,
                       )
                     }
                     className="cursor-pointer"
                   >
                     <Zap className="h-4 w-4 text-yellow-500" />
                     <div className="flex flex-col flex-1 min-w-0">
-                      <span className="truncate font-medium">{hit.eventName}</span>
+                      <span className="truncate font-medium">
+                        {hit.eventName}
+                      </span>
                       {hit.eventCategory && (
-                        <span className="text-xs text-muted-foreground">{hit.eventCategory}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {hit.eventCategory}
+                        </span>
                       )}
                     </div>
                     <Badge variant="outline" className="text-xs ml-2">
@@ -322,7 +341,7 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                       key={hit.objectID}
                       onSelect={() =>
                         handleSelect(
-                          `/projects/${hit.projectId}/segments/${hit.objectID.replace("segment_", "")}`
+                          `/projects/${hit.projectId}/segments/${hit.objectID.replace("segment_", "")}`,
                         )
                       }
                       className="cursor-pointer"
@@ -352,7 +371,7 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                       key={hit.objectID}
                       onSelect={() =>
                         handleSelect(
-                          `/projects/${hit.projectId}/goals/${hit.objectID.replace("goal_", "")}`
+                          `/projects/${hit.projectId}/goals/${hit.objectID.replace("goal_", "")}`,
                         )
                       }
                       className="cursor-pointer"
@@ -360,7 +379,9 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                       <Target className="h-4 w-4 text-red-500" />
                       <div className="flex flex-col flex-1 min-w-0">
                         <span className="truncate font-medium">{hit.name}</span>
-                        <span className="text-xs text-muted-foreground">{hit.goalType}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {hit.goalType}
+                        </span>
                       </div>
                       {hit.conversionRate !== undefined && (
                         <Badge variant="outline" className="text-xs ml-2">
@@ -383,7 +404,7 @@ export function GlobalSearch({ userId, projectId, projectName }: GlobalSearchPro
                       key={hit.objectID}
                       onSelect={() =>
                         handleSelect(
-                          `/projects/${hit.projectId}/funnels/${hit.objectID.replace("funnel_", "")}`
+                          `/projects/${hit.projectId}/funnels/${hit.objectID.replace("funnel_", "")}`,
                         )
                       }
                       className="cursor-pointer"

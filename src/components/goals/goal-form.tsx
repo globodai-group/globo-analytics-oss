@@ -27,7 +27,14 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Target, MousePointerClick, Clock, FileText, ShoppingCart } from "lucide-react";
+import {
+  Loader2,
+  Target,
+  MousePointerClick,
+  Clock,
+  FileText,
+  ShoppingCart,
+} from "lucide-react";
 import { createGoalAction, updateGoalAction } from "@/lib/actions/goals";
 import { toast } from "sonner";
 import { GoalType, UrlMatchType, Goal } from "@prisma/client";
@@ -115,7 +122,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
         toast.error(result.error);
       }
     } catch {
-      toast.error(locale === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        locale === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +151,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                   <FormControl>
                     <Input
                       placeholder={
-                        locale === "fr" ? "Ex: Inscription newsletter" : "E.g.: Newsletter signup"
+                        locale === "fr"
+                          ? "Ex: Inscription newsletter"
+                          : "E.g.: Newsletter signup"
                       }
                       {...field}
                     />
@@ -161,7 +172,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                   <FormControl>
                     <Textarea
                       placeholder={
-                        locale === "fr" ? "Description optionnelle..." : "Optional description..."
+                        locale === "fr"
+                          ? "Description optionnelle..."
+                          : "Optional description..."
                       }
                       {...field}
                     />
@@ -185,7 +198,10 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                     </FormDescription>
                   </div>
                   <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -212,12 +228,16 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                           type="button"
                           onClick={() => field.onChange(type)}
                           className={`flex flex-col items-start gap-2 rounded-lg border p-4 text-left transition-colors hover:bg-muted/50 ${
-                            field.value === type ? "border-primary bg-muted/50" : ""
+                            field.value === type
+                              ? "border-primary bg-muted/50"
+                              : ""
                           }`}
                         >
                           <div className="flex items-center gap-2">
                             {goalTypeIcons[type]}
-                            <span className="font-medium">{t(`typeOptions.${type}`)}</span>
+                            <span className="font-medium">
+                              {t(`typeOptions.${type}`)}
+                            </span>
                           </div>
                           <span className="text-sm text-muted-foreground">
                             {t(`typeDescriptions.${type}`)}
@@ -237,7 +257,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
         {watchType === "URL" && (
           <Card>
             <CardHeader>
-              <CardTitle>{locale === "fr" ? "Configuration URL" : "URL Configuration"}</CardTitle>
+              <CardTitle>
+                {locale === "fr" ? "Configuration URL" : "URL Configuration"}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <FormField
@@ -246,18 +268,23 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("urlMatchType")}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder={t("urlMatchType")} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {(Object.keys(UrlMatchType) as UrlMatchType[]).map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {t(`urlMatchTypes.${type}`)}
-                          </SelectItem>
-                        ))}
+                        {(Object.keys(UrlMatchType) as UrlMatchType[]).map(
+                          (type) => (
+                            <SelectItem key={type} value={type}>
+                              {t(`urlMatchTypes.${type}`)}
+                            </SelectItem>
+                          ),
+                        )}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -291,7 +318,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
           <Card>
             <CardHeader>
               <CardTitle>
-                {locale === "fr" ? "Configuration événement" : "Event Configuration"}
+                {locale === "fr"
+                  ? "Configuration événement"
+                  : "Event Configuration"}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -366,7 +395,11 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                           placeholder="0"
                           {...field}
                           onChange={(e) =>
-                            field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)
+                            field.onChange(
+                              e.target.value
+                                ? parseFloat(e.target.value)
+                                : undefined,
+                            )
                           }
                         />
                       </FormControl>
@@ -383,7 +416,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
           <Card>
             <CardHeader>
               <CardTitle>
-                {locale === "fr" ? "Configuration durée" : "Duration Configuration"}
+                {locale === "fr"
+                  ? "Configuration durée"
+                  : "Duration Configuration"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -400,7 +435,11 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                         placeholder="60"
                         {...field}
                         onChange={(e) =>
-                          field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                          field.onChange(
+                            e.target.value
+                              ? parseInt(e.target.value)
+                              : undefined,
+                          )
                         }
                       />
                     </FormControl>
@@ -421,7 +460,9 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
           <Card>
             <CardHeader>
               <CardTitle>
-                {locale === "fr" ? "Configuration pages" : "Pages Configuration"}
+                {locale === "fr"
+                  ? "Configuration pages"
+                  : "Pages Configuration"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -438,7 +479,11 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                         placeholder="3"
                         {...field}
                         onChange={(e) =>
-                          field.onChange(e.target.value ? parseInt(e.target.value) : undefined)
+                          field.onChange(
+                            e.target.value
+                              ? parseInt(e.target.value)
+                              : undefined,
+                          )
                         }
                       />
                     </FormControl>
@@ -467,11 +512,18 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
               render={({ field }) => (
                 <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                   <div className="space-y-0.5">
-                    <FormLabel className="text-base">{t("revenueTracking")}</FormLabel>
-                    <FormDescription>{t("revenueTrackingDescription")}</FormDescription>
+                    <FormLabel className="text-base">
+                      {t("revenueTracking")}
+                    </FormLabel>
+                    <FormDescription>
+                      {t("revenueTrackingDescription")}
+                    </FormDescription>
                   </div>
                   <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -492,7 +544,11 @@ export function GoalForm({ projectId, locale, goal }: GoalFormProps) {
                         placeholder="0.00"
                         {...field}
                         onChange={(e) =>
-                          field.onChange(e.target.value ? parseFloat(e.target.value) : undefined)
+                          field.onChange(
+                            e.target.value
+                              ? parseFloat(e.target.value)
+                              : undefined,
+                          )
                         }
                       />
                     </FormControl>

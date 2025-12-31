@@ -3,7 +3,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Globe,
@@ -43,9 +49,21 @@ export default async function WebsitesPage() {
   });
 
   const privacyLabels = {
-    0: { label: t("websites.privacyOptions.public"), icon: Unlock, variant: "secondary" as const },
-    1: { label: t("websites.privacyOptions.private"), icon: Lock, variant: "default" as const },
-    2: { label: t("websites.privacyOptions.password"), icon: Lock, variant: "outline" as const },
+    0: {
+      label: t("websites.privacyOptions.public"),
+      icon: Unlock,
+      variant: "secondary" as const,
+    },
+    1: {
+      label: t("websites.privacyOptions.private"),
+      icon: Lock,
+      variant: "default" as const,
+    },
+    2: {
+      label: t("websites.privacyOptions.password"),
+      icon: Lock,
+      variant: "outline" as const,
+    },
   };
 
   return (
@@ -73,7 +91,9 @@ export default async function WebsitesPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <Globe className="h-16 w-16 text-muted-foreground/50 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">{t("stats.noDataYet")}</h2>
+            <h2 className="text-xl font-semibold mb-2">
+              {t("stats.noDataYet")}
+            </h2>
             <p className="text-muted-foreground text-center mb-6 max-w-md">
               {t("stats.startTracking")}
             </p>
@@ -88,7 +108,8 @@ export default async function WebsitesPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {websites.map((website) => {
-            const privacy = privacyLabels[website.privacy as keyof typeof privacyLabels];
+            const privacy =
+              privacyLabels[website.privacy as keyof typeof privacyLabels];
             const PrivacyIcon = privacy.icon;
 
             return (
@@ -100,8 +121,12 @@ export default async function WebsitesPage() {
                         <Globe className="h-5 w-5 text-primary" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <CardTitle className="text-base truncate">{website.domain}</CardTitle>
-                        <CardDescription className="truncate">{website.url}</CardDescription>
+                        <CardTitle className="text-base truncate">
+                          {website.domain}
+                        </CardTitle>
+                        <CardDescription className="truncate">
+                          {website.url}
+                        </CardDescription>
                       </div>
                     </div>
                     <div className="flex items-center gap-1">
@@ -111,7 +136,11 @@ export default async function WebsitesPage() {
                       />
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -123,7 +152,11 @@ export default async function WebsitesPage() {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuItem asChild>
-                            <a href={website.url} target="_blank" rel="noopener noreferrer">
+                            <a
+                              href={website.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
                               <ExternalLink className="h-4 w-4 mr-2" />
                               {t("common.viewAll")}
                             </a>
@@ -168,7 +201,9 @@ export default async function WebsitesPage() {
                       <p className="text-sm font-medium">
                         {website.pageviewsMonth.toLocaleString()}
                       </p>
-                      <p className="text-xs text-muted-foreground">{t("stats.pageviews")}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("stats.pageviews")}
+                      </p>
                     </div>
                   </div>
                 </CardContent>

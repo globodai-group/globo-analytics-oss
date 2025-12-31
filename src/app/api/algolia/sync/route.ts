@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   if (!validation.valid) {
     return NextResponse.json(
       { error: "Algolia not configured", missing: validation.missing },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     logger.error(`Failed to sync user data to Algolia: ${error}`);
     return NextResponse.json(
       { error: "Failed to sync data", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

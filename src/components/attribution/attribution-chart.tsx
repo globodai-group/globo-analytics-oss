@@ -52,11 +52,15 @@ export function AttributionChart({ channels, locale }: AttributionChartProps) {
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: getChannelColor(channel.channel) }}
                 />
-                <span className="font-medium capitalize">{channel.channel}</span>
+                <span className="font-medium capitalize">
+                  {channel.channel}
+                </span>
               </div>
               <div className="flex items-center gap-4 text-sm">
                 <span className="text-muted-foreground">
-                  {channel.conversions.toLocaleString(locale, { maximumFractionDigits: 2 })}{" "}
+                  {channel.conversions.toLocaleString(locale, {
+                    maximumFractionDigits: 2,
+                  })}{" "}
                   {t("conversions").toLowerCase()}
                 </span>
                 <span className="font-medium">{channel.percentage}%</span>

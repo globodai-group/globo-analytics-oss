@@ -47,7 +47,7 @@ export const OAUTH_SCOPES = [
 
 // Get user's OAuth clients
 export async function getOAuthClientsAction(
-  locale: string
+  locale: string,
 ): Promise<ActionResult<OAuthClientData[]>> {
   try {
     const session = await auth();
@@ -86,7 +86,7 @@ export async function getOAuthClientsAction(
 // Create OAuth client
 export async function createOAuthClientAction(
   input: OAuthClientInput,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ clientId: string; clientSecret: string }>> {
   try {
     const session = await auth();
@@ -154,7 +154,7 @@ export async function createOAuthClientAction(
 export async function updateOAuthClientAction(
   clientId: number,
   input: Partial<OAuthClientInput>,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -224,7 +224,7 @@ export async function updateOAuthClientAction(
 // Delete OAuth client
 export async function deleteOAuthClientAction(
   clientId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult> {
   try {
     const session = await auth();
@@ -271,7 +271,7 @@ export async function deleteOAuthClientAction(
 // Regenerate client secret
 export async function regenerateClientSecretAction(
   clientId: number,
-  locale: string
+  locale: string,
 ): Promise<ActionResult<{ clientSecret: string }>> {
   try {
     const session = await auth();
@@ -333,7 +333,7 @@ export async function regenerateClientSecretAction(
 // Get client's active tokens
 export async function getClientTokensAction(
   clientId: number,
-  locale: string
+  locale: string,
 ): Promise<
   ActionResult<
     {
@@ -392,7 +392,10 @@ export async function getClientTokensAction(
 }
 
 // Revoke a specific token
-export async function revokeTokenAction(tokenId: number, locale: string): Promise<ActionResult> {
+export async function revokeTokenAction(
+  tokenId: number,
+  locale: string,
+): Promise<ActionResult> {
   try {
     const session = await auth();
     if (!session?.user?.id) {

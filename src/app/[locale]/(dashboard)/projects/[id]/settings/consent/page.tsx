@@ -4,7 +4,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Shield, Users, PieChart } from "lucide-react";
 import { ConsentConfigForm } from "@/components/consent/consent-config-form";
 import { ConsentBannerPreview } from "@/components/consent/consent-banner-preview";
@@ -13,7 +19,9 @@ interface ConsentSettingsPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function ConsentSettingsPage({ params }: ConsentSettingsPageProps) {
+export default async function ConsentSettingsPage({
+  params,
+}: ConsentSettingsPageProps) {
   const { id } = await params;
   const session = await auth();
   const locale = await getLocale();
@@ -43,31 +51,35 @@ export default async function ConsentSettingsPage({ params }: ConsentSettingsPag
   });
 
   // Get consent stats
-  const [totalVisitors, consentedVisitors, analyticsConsent, marketingConsent] = await Promise.all([
-    prisma.visitorConsent.count({
-      where: { projectId },
-    }),
-    prisma.visitorConsent.count({
-      where: {
-        projectId,
-        consentedAt: { not: null },
-      },
-    }),
-    prisma.visitorConsent.count({
-      where: {
-        projectId,
-        analytics: true,
-      },
-    }),
-    prisma.visitorConsent.count({
-      where: {
-        projectId,
-        marketing: true,
-      },
-    }),
-  ]);
+  const [totalVisitors, consentedVisitors, analyticsConsent, marketingConsent] =
+    await Promise.all([
+      prisma.visitorConsent.count({
+        where: { projectId },
+      }),
+      prisma.visitorConsent.count({
+        where: {
+          projectId,
+          consentedAt: { not: null },
+        },
+      }),
+      prisma.visitorConsent.count({
+        where: {
+          projectId,
+          analytics: true,
+        },
+      }),
+      prisma.visitorConsent.count({
+        where: {
+          projectId,
+          marketing: true,
+        },
+      }),
+    ]);
 
-  const consentRate = totalVisitors > 0 ? Math.round((consentedVisitors / totalVisitors) * 100) : 0;
+  const consentRate =
+    totalVisitors > 0
+      ? Math.round((consentedVisitors / totalVisitors) * 100)
+      : 0;
 
   return (
     <div className="space-y-6">
@@ -113,7 +125,8 @@ export default async function ConsentSettingsPage({ params }: ConsentSettingsPag
           <CardContent>
             <div className="text-2xl font-bold">{consentRate}%</div>
             <p className="text-xs text-muted-foreground">
-              {consentedVisitors} {locale === "fr" ? "ont consenti" : "consented"}
+              {consentedVisitors}{" "}
+              {locale === "fr" ? "ont consenti" : "consented"}
             </p>
           </CardContent>
         </Card>
@@ -153,7 +166,9 @@ export default async function ConsentSettingsPage({ params }: ConsentSettingsPag
         {/* Configuration Form */}
         <Card>
           <CardHeader>
-            <CardTitle>{locale === "fr" ? "Configuration" : "Configuration"}</CardTitle>
+            <CardTitle>
+              {locale === "fr" ? "Configuration" : "Configuration"}
+            </CardTitle>
             <CardDescription>
               {locale === "fr"
                 ? "Configurez la bannière de consentement GDPR/CCPA."
@@ -170,7 +185,9 @@ export default async function ConsentSettingsPage({ params }: ConsentSettingsPag
                       requireConsent: config.requireConsent,
                       consentMode: config.consentMode,
                       // SECURITY: Validate bannerPosition from DB, fallback to "bottom"
-                      bannerPosition: (["top", "bottom", "center"].includes(config.bannerPosition)
+                      bannerPosition: (["top", "bottom", "center"].includes(
+                        config.bannerPosition,
+                      )
                         ? config.bannerPosition
                         : "bottom") as "top" | "bottom" | "center",
                       bannerText: config.bannerText || "",
@@ -211,7 +228,9 @@ export default async function ConsentSettingsPage({ params }: ConsentSettingsPag
 
           <Card>
             <CardHeader>
-              <CardTitle>{locale === "fr" ? "Code d'intégration" : "Integration Code"}</CardTitle>
+              <CardTitle>
+                {locale === "fr" ? "Code d'intégration" : "Integration Code"}
+              </CardTitle>
               <CardDescription>
                 {locale === "fr"
                   ? "Ajoutez ce code avant le script de tracking."

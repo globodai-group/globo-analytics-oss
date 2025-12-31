@@ -19,7 +19,11 @@ interface KPIBarProps {
   onSelectMetric?: (id: string) => void;
 }
 
-export function KPIBar({ metrics, selectedMetric, onSelectMetric }: KPIBarProps) {
+export function KPIBar({
+  metrics,
+  selectedMetric,
+  onSelectMetric,
+}: KPIBarProps) {
   const locale = useLocale();
 
   const formatValue = (value: number | string, format?: string) => {
@@ -53,7 +57,11 @@ export function KPIBar({ metrics, selectedMetric, onSelectMetric }: KPIBarProps)
     }
   };
 
-  const getChange = (current: number | string, previous?: number, inverted?: boolean) => {
+  const getChange = (
+    current: number | string,
+    previous?: number,
+    inverted?: boolean,
+  ) => {
     if (typeof current !== "number" || !previous || previous === 0) {
       return null;
     }
@@ -65,7 +73,11 @@ export function KPIBar({ metrics, selectedMetric, onSelectMetric }: KPIBarProps)
   return (
     <div className="flex items-stretch border rounded-lg bg-card divide-x overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
       {metrics.map((metric) => {
-        const change = getChange(metric.value, metric.previousValue, metric.inverted);
+        const change = getChange(
+          metric.value,
+          metric.previousValue,
+          metric.inverted,
+        );
         const isSelected = selectedMetric === metric.id;
 
         return (
@@ -75,7 +87,7 @@ export function KPIBar({ metrics, selectedMetric, onSelectMetric }: KPIBarProps)
             className={cn(
               "flex-1 min-w-[100px] sm:min-w-[120px] px-2.5 sm:px-4 py-2.5 sm:py-3 text-left transition-colors hover:bg-muted/50",
               isSelected && "bg-primary/5 border-b-2 border-b-primary",
-              onSelectMetric && "cursor-pointer"
+              onSelectMetric && "cursor-pointer",
             )}
           >
             <p className="text-[10px] sm:text-xs font-medium text-muted-foreground truncate">
@@ -91,7 +103,7 @@ export function KPIBar({ metrics, selectedMetric, onSelectMetric }: KPIBarProps)
                     "hidden sm:flex items-center text-xs font-medium",
                     change.isPositive
                       ? "text-green-600 dark:text-green-500"
-                      : "text-red-600 dark:text-red-500"
+                      : "text-red-600 dark:text-red-500",
                   )}
                 >
                   {change.value >= 0 ? (

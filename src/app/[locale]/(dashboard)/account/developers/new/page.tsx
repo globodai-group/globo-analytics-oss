@@ -3,7 +3,13 @@ import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { OAuthClientForm } from "@/components/developers/oauth-client-form";
 
@@ -40,7 +46,9 @@ export default async function NewDeveloperAppPage() {
       <Card>
         <CardHeader>
           <CardTitle>
-            {locale === "fr" ? "Informations de l'application" : "Application Details"}
+            {locale === "fr"
+              ? "Informations de l'application"
+              : "Application Details"}
           </CardTitle>
           <CardDescription>
             {locale === "fr"

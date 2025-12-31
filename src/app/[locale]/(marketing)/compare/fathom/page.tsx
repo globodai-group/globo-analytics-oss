@@ -165,19 +165,22 @@ const keyDifferences = [
   {
     icon: GitBranch,
     title: "Funnel Analysis",
-    globo: "Visual funnel builder with drop-off analysis and A/B testing integration",
+    globo:
+      "Visual funnel builder with drop-off analysis and A/B testing integration",
     fathom: "Not available - you can't track multi-step conversion paths",
   },
   {
     icon: Users,
     title: "Audience Segments",
-    globo: "Create and save unlimited segments based on any combination of attributes",
+    globo:
+      "Create and save unlimited segments based on any combination of attributes",
     fathom: "Not available - can only filter in real-time, can't save segments",
   },
   {
     icon: Bot,
     title: "Bot Detection",
-    globo: "AI-powered detection using behavioral analysis, not just user-agent strings",
+    globo:
+      "AI-powered detection using behavioral analysis, not just user-agent strings",
     fathom: "Basic bot filtering using standard bot lists",
   },
   {
@@ -240,7 +243,13 @@ const advantages = [
   },
 ];
 
-function ComparisonValue({ value, note }: { value: boolean | string; note: string }) {
+function ComparisonValue({
+  value,
+  note,
+}: {
+  value: boolean | string;
+  note: string;
+}) {
   if (value === true) {
     return (
       <div className="flex items-center gap-2">
@@ -286,12 +295,14 @@ export default function FathomComparisonPage() {
             </Badge>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
-              GloboAnalytics vs <span className="text-muted-foreground">Fathom</span>
+              GloboAnalytics vs{" "}
+              <span className="text-muted-foreground">Fathom</span>
             </h1>
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Fathom nails the basics. GloboAnalytics gives you funnels, segments, and advanced
-              analytics without compromising on privacy or simplicity.
+              Fathom nails the basics. GloboAnalytics gives you funnels,
+              segments, and advanced analytics without compromising on privacy
+              or simplicity.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -302,7 +313,11 @@ export default function FathomComparisonPage() {
                 </Button>
               </Link>
               <Link href="/pricing">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   View Pricing
                 </Button>
               </Link>
@@ -316,10 +331,12 @@ export default function FathomComparisonPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="text-center md:text-left">
-              <h3 className="text-xl font-bold mb-2">Fathom is great when...</h3>
+              <h3 className="text-xl font-bold mb-2">
+                Fathom is great when...
+              </h3>
               <p className="text-muted-foreground">
-                You just need pageviews, referrers, and basic event tracking. Simple dashboard,
-                quick setup.
+                You just need pageviews, referrers, and basic event tracking.
+                Simple dashboard, quick setup.
               </p>
             </div>
             <div className="text-center md:text-left">
@@ -327,8 +344,8 @@ export default function FathomComparisonPage() {
                 GloboAnalytics is better when...
               </h3>
               <p className="text-muted-foreground">
-                You need to understand <em>why</em> visitors convert or leave. Funnels, segments,
-                and user flows reveal the full story.
+                You need to understand <em>why</em> visitors convert or leave.
+                Funnels, segments, and user flows reveal the full story.
               </p>
             </div>
           </div>
@@ -339,7 +356,9 @@ export default function FathomComparisonPage() {
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Differences</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Key Differences
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Side-by-side comparison of what matters most
             </p>
@@ -361,8 +380,12 @@ export default function FathomComparisonPage() {
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
                     <div>
-                      <div className="font-medium text-primary text-sm mb-1">GloboAnalytics</div>
-                      <p className="text-sm text-muted-foreground">{diff.globo}</p>
+                      <div className="font-medium text-primary text-sm mb-1">
+                        GloboAnalytics
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {diff.globo}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -370,8 +393,12 @@ export default function FathomComparisonPage() {
                   <div className="flex items-start gap-2">
                     <XCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
                     <div>
-                      <div className="font-medium text-muted-foreground text-sm mb-1">Fathom</div>
-                      <p className="text-sm text-muted-foreground">{diff.fathom}</p>
+                      <div className="font-medium text-muted-foreground text-sm mb-1">
+                        Fathom
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {diff.fathom}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -385,7 +412,9 @@ export default function FathomComparisonPage() {
       <section className="py-16 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Full Feature Comparison</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Full Feature Comparison
+            </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Every feature, compared side by side
             </p>
@@ -393,7 +422,10 @@ export default function FathomComparisonPage() {
 
           <div className="max-w-4xl mx-auto space-y-8">
             {comparisonFeatures.map((category) => (
-              <div key={category.category} className="rounded-xl border bg-card overflow-hidden">
+              <div
+                key={category.category}
+                className="rounded-xl border bg-card overflow-hidden"
+              >
                 <div className="bg-muted/50 px-6 py-4 border-b">
                   <h3 className="font-semibold text-lg">{category.category}</h3>
                 </div>
@@ -405,14 +437,25 @@ export default function FathomComparisonPage() {
                       <Globe className="h-4 w-4" />
                       GloboAnalytics
                     </div>
-                    <div className="font-medium text-muted-foreground">Fathom</div>
+                    <div className="font-medium text-muted-foreground">
+                      Fathom
+                    </div>
                   </div>
 
                   {category.features.map((feature) => (
-                    <div key={feature.name} className="grid grid-cols-3 gap-4 px-6 py-4">
+                    <div
+                      key={feature.name}
+                      className="grid grid-cols-3 gap-4 px-6 py-4"
+                    >
                       <div className="font-medium">{feature.name}</div>
-                      <ComparisonValue value={feature.globo.value} note={feature.globo.note} />
-                      <ComparisonValue value={feature.fathom.value} note={feature.fathom.note} />
+                      <ComparisonValue
+                        value={feature.globo.value}
+                        note={feature.globo.note}
+                      />
+                      <ComparisonValue
+                        value={feature.fathom.value}
+                        note={feature.fathom.note}
+                      />
                     </div>
                   ))}
                 </div>
@@ -430,17 +473,23 @@ export default function FathomComparisonPage() {
               Why Choose GloboAnalytics Over Fathom
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              All the privacy benefits, plus the features growing businesses need
+              All the privacy benefits, plus the features growing businesses
+              need
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {advantages.map((advantage) => (
-              <div key={advantage.title} className="p-6 rounded-xl border bg-card">
+              <div
+                key={advantage.title}
+                className="p-6 rounded-xl border bg-card"
+              >
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <advantage.icon className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{advantage.title}</h3>
+                <h3 className="text-xl font-semibold mb-2">
+                  {advantage.title}
+                </h3>
                 <p className="text-muted-foreground">{advantage.description}</p>
               </div>
             ))}
@@ -458,36 +507,46 @@ export default function FathomComparisonPage() {
 
             <div className="space-y-6">
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Is GloboAnalytics harder to use than Fathom?</h3>
+                <h3 className="font-semibold mb-2">
+                  Is GloboAnalytics harder to use than Fathom?
+                </h3>
                 <p className="text-muted-foreground">
-                  No! Our default dashboard is just as clean and simple. Advanced features like
-                  funnels and segments are optional - they&apos;re there when you need them but
-                  don&apos;t clutter your daily view.
+                  No! Our default dashboard is just as clean and simple.
+                  Advanced features like funnels and segments are optional -
+                  they&apos;re there when you need them but don&apos;t clutter
+                  your daily view.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Why should I pay more for GloboAnalytics?</h3>
+                <h3 className="font-semibold mb-2">
+                  Why should I pay more for GloboAnalytics?
+                </h3>
                 <p className="text-muted-foreground">
-                  Fathom starts at $14/mo for 100K pageviews. GloboAnalytics starts at $29/mo for
-                  the same tier BUT includes funnels, segments, bot detection, and self-hosting
-                  option. Features that would cost $100+/mo elsewhere.
+                  Fathom starts at $14/mo for 100K pageviews. GloboAnalytics
+                  starts at $29/mo for the same tier BUT includes funnels,
+                  segments, bot detection, and self-hosting option. Features
+                  that would cost $100+/mo elsewhere.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
                 <h3 className="font-semibold mb-2">Can I try before buying?</h3>
                 <p className="text-muted-foreground">
-                  Yes! Unlike Fathom&apos;s 7-day trial, we offer a free tier (1K pageviews/mo) that
-                  never expires. Test everything before you upgrade.
+                  Yes! Unlike Fathom&apos;s 7-day trial, we offer a free tier
+                  (1K pageviews/mo) that never expires. Test everything before
+                  you upgrade.
                 </p>
               </div>
 
               <div className="p-6 rounded-xl border bg-card">
-                <h3 className="font-semibold mb-2">Do you support Fathom&apos;s UTM bypass?</h3>
+                <h3 className="font-semibold mb-2">
+                  Do you support Fathom&apos;s UTM bypass?
+                </h3>
                 <p className="text-muted-foreground">
-                  Yes, we support both standard UTM tracking and our own bypass parameter for cases
-                  where UTMs get stripped. Full campaign attribution either way.
+                  Yes, we support both standard UTM tracking and our own bypass
+                  parameter for cases where UTMs get stripped. Full campaign
+                  attribution either way.
                 </p>
               </div>
             </div>
@@ -503,12 +562,16 @@ export default function FathomComparisonPage() {
               Ready for Analytics That Does More?
             </h2>
             <p className="text-xl opacity-90 mb-8">
-              Start free and get funnels, segments, and advanced features from day one. No credit
-              card required.
+              Start free and get funnels, segments, and advanced features from
+              day one. No credit card required.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
+                >
                   Start Free Forever
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

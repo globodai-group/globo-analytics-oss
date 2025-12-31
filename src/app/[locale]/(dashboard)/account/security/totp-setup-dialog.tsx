@@ -26,7 +26,12 @@ interface TotpSetupDialogProps {
 
 type Step = "loading" | "scan" | "verify";
 
-export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: TotpSetupDialogProps) {
+export function TotpSetupDialog({
+  open,
+  onOpenChange,
+  onComplete,
+  locale,
+}: TotpSetupDialogProps) {
   const [step, setStep] = useState<Step>("loading");
   const [qrCode, setQrCode] = useState<string>("");
   const [secret, setSecret] = useState<string>("");
@@ -37,7 +42,10 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
   const [copiedSecret, setCopiedSecret] = useState(false);
 
   const t = {
-    title: locale === "fr" ? "Configurer l'authentification TOTP" : "Set up TOTP Authentication",
+    title:
+      locale === "fr"
+        ? "Configurer l'authentification TOTP"
+        : "Set up TOTP Authentication",
     description:
       locale === "fr"
         ? "Scannez ce QR code avec votre application d'authentification"
@@ -60,7 +68,8 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
         : "Can't scan? Enter this key manually:",
     copySecret: locale === "fr" ? "Copier la clé" : "Copy key",
     copied: locale === "fr" ? "Copié !" : "Copied!",
-    verificationCode: locale === "fr" ? "Code de vérification" : "Verification code",
+    verificationCode:
+      locale === "fr" ? "Code de vérification" : "Verification code",
     verificationCodePlaceholder: "000000",
     verify: locale === "fr" ? "Vérifier" : "Verify",
     cancel: locale === "fr" ? "Annuler" : "Cancel",
@@ -92,7 +101,11 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
 
   async function handleVerify() {
     if (code.length !== 6) {
-      setError(locale === "fr" ? "Le code doit contenir 6 chiffres" : "Code must be 6 digits");
+      setError(
+        locale === "fr"
+          ? "Le code doit contenir 6 chiffres"
+          : "Code must be 6 digits",
+      );
       return;
     }
 
@@ -105,7 +118,9 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
 
     if (result.success) {
       toast.success(
-        locale === "fr" ? "Authentification TOTP activée !" : "TOTP authentication enabled!"
+        locale === "fr"
+          ? "Authentification TOTP activée !"
+          : "TOTP authentication enabled!",
       );
       onComplete(recoveryCodes);
     } else {
@@ -145,7 +160,13 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
             {/* QR Code */}
             <div className="flex justify-center py-4">
               {qrCode && (
-                <Image src={qrCode} alt="QR Code" width={200} height={200} className="rounded-lg" />
+                <Image
+                  src={qrCode}
+                  alt="QR Code"
+                  width={200}
+                  height={200}
+                  className="rounded-lg"
+                />
               )}
             </div>
 
@@ -157,7 +178,11 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
                   {secret}
                 </code>
                 <Button variant="outline" size="sm" onClick={copySecret}>
-                  {copiedSecret ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  {copiedSecret ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
             </div>
@@ -189,8 +214,13 @@ export function TotpSetupDialog({ open, onOpenChange, onComplete, locale }: Totp
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 {t.cancel}
               </Button>
-              <Button onClick={handleVerify} disabled={isVerifying || code.length !== 6}>
-                {isVerifying && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              <Button
+                onClick={handleVerify}
+                disabled={isVerifying || code.length !== 6}
+              >
+                {isVerifying && (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                )}
                 {t.verify}
               </Button>
             </div>

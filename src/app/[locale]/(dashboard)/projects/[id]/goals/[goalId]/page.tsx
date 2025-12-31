@@ -15,7 +15,10 @@ interface GoalDetailPageProps {
   searchParams: Promise<{ from?: string; to?: string }>;
 }
 
-export default async function GoalDetailPage({ params, searchParams }: GoalDetailPageProps) {
+export default async function GoalDetailPage({
+  params,
+  searchParams,
+}: GoalDetailPageProps) {
   const { id, goalId } = await params;
   const { from, to } = await searchParams;
   const session = await auth();
@@ -60,37 +63,38 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
   const startDate = from ? new Date(from) : subDays(endDate, 30);
 
   // Fetch stats
-  const [conversionsCount, revenueAgg, uniqueVisitorsResult, _dailyData] = await Promise.all([
-    prisma.goalConversion.count({
-      where: {
-        goalId: goalIdNum,
-        createdAt: { gte: startDate, lte: endDate },
-      },
-    }),
-    prisma.goalConversion.aggregate({
-      where: {
-        goalId: goalIdNum,
-        createdAt: { gte: startDate, lte: endDate },
-      },
-      _sum: { revenue: true },
-    }),
-    prisma.goalConversion.groupBy({
-      by: ["visitorId"],
-      where: {
-        goalId: goalIdNum,
-        createdAt: { gte: startDate, lte: endDate },
-      },
-    }),
-    prisma.goalConversion.groupBy({
-      by: ["createdAt"],
-      where: {
-        goalId: goalIdNum,
-        createdAt: { gte: startDate, lte: endDate },
-      },
-      _count: true,
-      _sum: { revenue: true },
-    }),
-  ]);
+  const [conversionsCount, revenueAgg, uniqueVisitorsResult, _dailyData] =
+    await Promise.all([
+      prisma.goalConversion.count({
+        where: {
+          goalId: goalIdNum,
+          createdAt: { gte: startDate, lte: endDate },
+        },
+      }),
+      prisma.goalConversion.aggregate({
+        where: {
+          goalId: goalIdNum,
+          createdAt: { gte: startDate, lte: endDate },
+        },
+        _sum: { revenue: true },
+      }),
+      prisma.goalConversion.groupBy({
+        by: ["visitorId"],
+        where: {
+          goalId: goalIdNum,
+          createdAt: { gte: startDate, lte: endDate },
+        },
+      }),
+      prisma.goalConversion.groupBy({
+        by: ["createdAt"],
+        where: {
+          goalId: goalIdNum,
+          createdAt: { gte: startDate, lte: endDate },
+        },
+        _count: true,
+        _sum: { revenue: true },
+      }),
+    ]);
 
   const totalRevenue = revenueAgg._sum.revenue || 0;
   const uniqueVisitors = uniqueVisitorsResult.length;
@@ -104,7 +108,9 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
   });
 
   const conversionRate =
-    totalProjectVisitors > 0 ? (uniqueVisitors / totalProjectVisitors) * 100 : 0;
+    totalProjectVisitors > 0
+      ? (uniqueVisitors / totalProjectVisitors) * 100
+      : 0;
 
   return (
     <div className="space-y-6">
@@ -128,11 +134,15 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("conversions")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("conversions")}
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{conversionsCount.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {conversionsCount.toLocaleString()}
+            </div>
             <p className="text-xs text-muted-foreground">
               {format(startDate, "d MMM", { locale: dateLocale })} -{" "}
               {format(endDate, "d MMM yyyy", { locale: dateLocale })}
@@ -142,24 +152,34 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("uniqueVisitors")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("uniqueVisitors")}
+            </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{uniqueVisitors.toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              {uniqueVisitors.toLocaleString()}
+            </div>
             <p className="text-xs text-muted-foreground">
-              {locale === "fr" ? "Visiteurs ayant converti" : "Visitors who converted"}
+              {locale === "fr"
+                ? "Visiteurs ayant converti"
+                : "Visitors who converted"}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("conversionRate")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("conversionRate")}
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{conversionRate.toFixed(2)}%</div>
+            <div className="text-2xl font-bold">
+              {conversionRate.toFixed(2)}%
+            </div>
             <p className="text-xs text-muted-foreground">
               {uniqueVisitors} / {totalProjectVisitors.toLocaleString()}{" "}
               {locale === "fr" ? "visiteurs" : "visitors"}
@@ -170,7 +190,9 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
         {goal.revenueTracking && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">{t("revenue")}</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {t("revenue")}
+              </CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -185,7 +207,9 @@ export default async function GoalDetailPage({ params, searchParams }: GoalDetai
                 {new Intl.NumberFormat(locale, {
                   style: "currency",
                   currency: "EUR",
-                }).format(conversionsCount > 0 ? totalRevenue / conversionsCount : 0)}
+                }).format(
+                  conversionsCount > 0 ? totalRevenue / conversionsCount : 0,
+                )}
               </p>
             </CardContent>
           </Card>

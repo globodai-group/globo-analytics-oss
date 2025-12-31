@@ -30,7 +30,10 @@ export async function POST(request: NextRequest) {
 
     // Check admin role (only admins can activate licenses)
     if (session.user.role !== "ADMIN") {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+      return NextResponse.json(
+        { error: "Admin access required" },
+        { status: 403 },
+      );
     }
 
     // Parse and validate request body
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.issues[0]?.message || "Invalid license key" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -59,7 +62,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         { error: result.error || "License activation failed" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -94,6 +97,9 @@ export async function POST(request: NextRequest) {
       error: error instanceof Error ? error.message : "Unknown error",
     });
 
-    return NextResponse.json({ error: "Failed to activate license" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to activate license" },
+      { status: 500 },
+    );
   }
 }

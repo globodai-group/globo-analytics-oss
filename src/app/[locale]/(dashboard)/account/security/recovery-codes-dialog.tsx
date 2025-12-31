@@ -96,15 +96,23 @@ Each code can only be used once.
           <DialogDescription>{t.description}</DialogDescription>
         </DialogHeader>
 
-        <Alert variant="destructive" className="bg-yellow-50 border-yellow-200 text-yellow-800">
+        <Alert
+          variant="destructive"
+          className="bg-yellow-50 border-yellow-200 text-yellow-800"
+        >
           <AlertTriangle className="h-4 w-4 text-yellow-600" />
-          <AlertDescription className="text-yellow-800">{t.warning}</AlertDescription>
+          <AlertDescription className="text-yellow-800">
+            {t.warning}
+          </AlertDescription>
         </Alert>
 
         {/* Recovery Codes Grid */}
         <div className="grid grid-cols-2 gap-2 py-4">
           {codes.map((code, index) => (
-            <div key={index} className="font-mono text-sm bg-muted px-3 py-2 rounded text-center">
+            <div
+              key={index}
+              className="font-mono text-sm bg-muted px-3 py-2 rounded text-center"
+            >
               {code}
             </div>
           ))}
@@ -112,8 +120,16 @@ Each code can only be used once.
 
         {/* Actions */}
         <div className="flex gap-2">
-          <Button variant="outline" className="flex-1" onClick={copyToClipboard}>
-            {copied ? <Check className="h-4 w-4 mr-2" /> : <Copy className="h-4 w-4 mr-2" />}
+          <Button
+            variant="outline"
+            className="flex-1"
+            onClick={copyToClipboard}
+          >
+            {copied ? (
+              <Check className="h-4 w-4 mr-2" />
+            ) : (
+              <Copy className="h-4 w-4 mr-2" />
+            )}
             {copied ? t.copied : t.copy}
           </Button>
           <Button variant="outline" className="flex-1" onClick={downloadCodes}>
@@ -132,7 +148,11 @@ Each code can only be used once.
             />
             <span className="text-sm">{t.confirm}</span>
           </label>
-          <Button onClick={() => onOpenChange(false)} disabled={!confirmed} className="w-full">
+          <Button
+            onClick={() => onOpenChange(false)}
+            disabled={!confirmed}
+            className="w-full"
+          >
             {t.done}
           </Button>
         </DialogFooter>

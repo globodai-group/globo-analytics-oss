@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useLocale } from "next-intl";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -41,7 +47,10 @@ const CATEGORY_COLORS: Record<string, string> = {
   unknown_bot: "#9ca3af",
 };
 
-export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCategoryBreakdownProps) {
+export function TrafficCategoryBreakdown({
+  projectId,
+  dateRange,
+}: TrafficCategoryBreakdownProps) {
   const locale = useLocale();
   const [data, setData] = useState<{
     categories: { category: string; count: number; percentage: number }[];
@@ -101,7 +110,9 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Analyse détaillée" : "Detailed Breakdown"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Analyse détaillée" : "Detailed Breakdown"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-96 flex items-center justify-center text-muted-foreground">
@@ -116,7 +127,9 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
     return (
       <Card>
         <CardHeader>
-          <CardTitle>{locale === "fr" ? "Analyse détaillée" : "Detailed Breakdown"}</CardTitle>
+          <CardTitle>
+            {locale === "fr" ? "Analyse détaillée" : "Detailed Breakdown"}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-96 flex items-center justify-center text-red-500">
@@ -136,7 +149,10 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
 
   // Format trend data for chart
   const trendData = data.trend.map((item) => ({
-    date: new Date(item.date).toLocaleDateString(locale, { month: "short", day: "numeric" }),
+    date: new Date(item.date).toLocaleDateString(locale, {
+      month: "short",
+      day: "numeric",
+    }),
     [locale === "fr" ? "Humain" : "Human"]: item.human,
     [locale === "fr" ? "Bots" : "Bots"]: item.bots,
     [locale === "fr" ? "Agents IA" : "AI Agents"]: item.ai_agents,
@@ -207,7 +223,10 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
                 className="text-xs"
                 tick={{ fill: "hsl(var(--muted-foreground))" }}
               />
-              <YAxis className="text-xs" tick={{ fill: "hsl(var(--muted-foreground))" }} />
+              <YAxis
+                className="text-xs"
+                tick={{ fill: "hsl(var(--muted-foreground))" }}
+              />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "hsl(var(--card))",
@@ -248,7 +267,9 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{locale === "fr" ? "Catégorie" : "Category"}</TableHead>
+                <TableHead>
+                  {locale === "fr" ? "Catégorie" : "Category"}
+                </TableHead>
                 <TableHead className="text-right">
                   {locale === "fr" ? "Visites" : "Visits"}
                 </TableHead>
@@ -264,12 +285,19 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
                     <div className="flex items-center gap-2">
                       <div
                         className="h-3 w-3 rounded-full"
-                        style={{ backgroundColor: CATEGORY_COLORS[cat.category] || "#9ca3af" }}
+                        style={{
+                          backgroundColor:
+                            CATEGORY_COLORS[cat.category] || "#9ca3af",
+                        }}
                       />
-                      <span className="font-medium">{getCategoryLabel(cat.category)}</span>
+                      <span className="font-medium">
+                        {getCategoryLabel(cat.category)}
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right font-mono">{formatNumber(cat.count)}</TableCell>
+                  <TableCell className="text-right font-mono">
+                    {formatNumber(cat.count)}
+                  </TableCell>
                   <TableCell className="text-right font-mono">
                     {formatPercentage(cat.percentage)}
                   </TableCell>
@@ -277,7 +305,10 @@ export function TrafficCategoryBreakdown({ projectId, dateRange }: TrafficCatego
               ))}
               {filteredCategories.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center text-muted-foreground">
+                  <TableCell
+                    colSpan={3}
+                    className="text-center text-muted-foreground"
+                  >
                     {locale === "fr" ? "Aucune donnée" : "No data"}
                   </TableCell>
                 </TableRow>

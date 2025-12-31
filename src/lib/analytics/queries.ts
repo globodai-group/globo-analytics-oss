@@ -1,6 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { StatType } from "@prisma/client";
-import { subDays, startOfDay, endOfDay, eachDayOfInterval, format } from "date-fns";
+import {
+  subDays,
+  startOfDay,
+  endOfDay,
+  eachDayOfInterval,
+  format,
+} from "date-fns";
 
 export interface DateRange {
   from: Date;
@@ -54,7 +60,9 @@ export function getDefaultDateRange(): DateRange {
  * Get previous period for comparison
  */
 export function getPreviousPeriod(range: DateRange): DateRange {
-  const days = Math.ceil((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24));
+  const days = Math.ceil(
+    (range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24),
+  );
   return {
     from: subDays(range.from, days),
     to: subDays(range.to, days),
@@ -67,7 +75,7 @@ export function getPreviousPeriod(range: DateRange): DateRange {
 async function calculateBounceRate(
   websiteId: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): Promise<number> {
   const bounceStats = await prisma.stat.aggregate({
     where: {
@@ -101,7 +109,7 @@ async function calculateBounceRate(
 async function calculateAvgSessionDuration(
   websiteId: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
 ): Promise<string> {
   const durationStats = await prisma.stat.findMany({
     where: {
@@ -153,7 +161,7 @@ async function calculateAvgSessionDuration(
  */
 export async function getStatsOverview(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<StatsOverview> {
   const previousRange = getPreviousPeriod(dateRange);
   const startDate = startOfDay(dateRange.from);
@@ -162,48 +170,57 @@ export async function getStatsOverview(
   const prevEndDate = endOfDay(previousRange.to);
 
   // Fetch all stats in parallel
-  const [currentStats, previousStats, bounceRate, previousBounceRate, avgSessionDuration] =
-    await Promise.all([
-      // Current period stats
-      prisma.stat.groupBy({
-        by: ["name"],
-        where: {
-          websiteId,
-          name: { in: ["visitors", "pageviews", "unique_visitors"] },
-          date: { gte: startDate, lte: endDate },
-        },
-        _sum: { count: true },
-      }),
-      // Previous period stats for comparison
-      prisma.stat.groupBy({
-        by: ["name"],
-        where: {
-          websiteId,
-          name: { in: ["visitors", "pageviews", "unique_visitors"] },
-          date: { gte: prevStartDate, lte: prevEndDate },
-        },
-        _sum: { count: true },
-      }),
-      // Bounce rate
-      calculateBounceRate(websiteId, startDate, endDate),
-      calculateBounceRate(websiteId, prevStartDate, prevEndDate),
-      // Average session duration
-      calculateAvgSessionDuration(websiteId, startDate, endDate),
-    ]);
+  const [
+    currentStats,
+    previousStats,
+    bounceRate,
+    previousBounceRate,
+    avgSessionDuration,
+  ] = await Promise.all([
+    // Current period stats
+    prisma.stat.groupBy({
+      by: ["name"],
+      where: {
+        websiteId,
+        name: { in: ["visitors", "pageviews", "unique_visitors"] },
+        date: { gte: startDate, lte: endDate },
+      },
+      _sum: { count: true },
+    }),
+    // Previous period stats for comparison
+    prisma.stat.groupBy({
+      by: ["name"],
+      where: {
+        websiteId,
+        name: { in: ["visitors", "pageviews", "unique_visitors"] },
+        date: { gte: prevStartDate, lte: prevEndDate },
+      },
+      _sum: { count: true },
+    }),
+    // Bounce rate
+    calculateBounceRate(websiteId, startDate, endDate),
+    calculateBounceRate(websiteId, prevStartDate, prevEndDate),
+    // Average session duration
+    calculateAvgSessionDuration(websiteId, startDate, endDate),
+  ]);
 
-  const visitors = Number(currentStats.find((s) => s.name === "visitors")?._sum?.count || 0);
-  const pageviews = Number(currentStats.find((s) => s.name === "pageviews")?._sum?.count || 0);
+  const visitors = Number(
+    currentStats.find((s) => s.name === "visitors")?._sum?.count || 0,
+  );
+  const pageviews = Number(
+    currentStats.find((s) => s.name === "pageviews")?._sum?.count || 0,
+  );
   const uniqueVisitors = Number(
-    currentStats.find((s) => s.name === "unique_visitors")?._sum?.count || 0
+    currentStats.find((s) => s.name === "unique_visitors")?._sum?.count || 0,
   );
   const previousVisitors = Number(
-    previousStats.find((s) => s.name === "visitors")?._sum?.count || 0
+    previousStats.find((s) => s.name === "visitors")?._sum?.count || 0,
   );
   const previousPageviews = Number(
-    previousStats.find((s) => s.name === "pageviews")?._sum?.count || 0
+    previousStats.find((s) => s.name === "pageviews")?._sum?.count || 0,
   );
   const previousUniqueVisitors = Number(
-    previousStats.find((s) => s.name === "unique_visitors")?._sum?.count || 0
+    previousStats.find((s) => s.name === "unique_visitors")?._sum?.count || 0,
   );
 
   return {
@@ -224,51 +241,84 @@ export async function getStatsOverview(
  */
 export async function getEngagementMetrics(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<EngagementMetrics> {
   const startDate = startOfDay(dateRange.from);
   const endDate = endOfDay(dateRange.to);
 
-  const [bounceRate, avgSessionDuration, scrollDepthStats, timeOnPageStats, sessionStats] =
-    await Promise.all([
-      calculateBounceRate(websiteId, startDate, endDate),
-      calculateAvgSessionDuration(websiteId, startDate, endDate),
-      // Scroll depth distribution
-      prisma.stat.groupBy({
-        by: ["value"],
-        where: { websiteId, name: "scroll_depth", date: { gte: startDate, lte: endDate } },
-        _sum: { count: true },
-      }),
-      // Time on page distribution
-      prisma.stat.groupBy({
-        by: ["value"],
-        where: { websiteId, name: "time_on_page", date: { gte: startDate, lte: endDate } },
-        _sum: { count: true },
-      }),
-      // Session page depth (from AnalyticsSession)
-      prisma.analyticsSession.aggregate({
-        where: { websiteId, startedAt: { gte: startDate, lte: endDate } },
-        _avg: { pageviews: true },
-      }),
-    ]);
+  const [
+    bounceRate,
+    avgSessionDuration,
+    scrollDepthStats,
+    timeOnPageStats,
+    sessionStats,
+  ] = await Promise.all([
+    calculateBounceRate(websiteId, startDate, endDate),
+    calculateAvgSessionDuration(websiteId, startDate, endDate),
+    // Scroll depth distribution
+    prisma.stat.groupBy({
+      by: ["value"],
+      where: {
+        websiteId,
+        name: "scroll_depth",
+        date: { gte: startDate, lte: endDate },
+      },
+      _sum: { count: true },
+    }),
+    // Time on page distribution
+    prisma.stat.groupBy({
+      by: ["value"],
+      where: {
+        websiteId,
+        name: "time_on_page",
+        date: { gte: startDate, lte: endDate },
+      },
+      _sum: { count: true },
+    }),
+    // Session page depth (from AnalyticsSession)
+    prisma.analyticsSession.aggregate({
+      where: { websiteId, startedAt: { gte: startDate, lte: endDate } },
+      _avg: { pageviews: true },
+    }),
+  ]);
 
   // Calculate scroll depth distribution
-  const scrollTotal = scrollDepthStats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
-  const scrollDepthDistribution = ["0%", "25%", "50%", "75%", "100%"].map((bucket) => {
-    const stat = scrollDepthStats.find((s) => s.value === bucket);
-    const count = Number(stat?._sum?.count || 0);
-    return { bucket, percentage: scrollTotal > 0 ? Math.round((count / scrollTotal) * 100) : 0 };
-  });
+  const scrollTotal = scrollDepthStats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
+  const scrollDepthDistribution = ["0%", "25%", "50%", "75%", "100%"].map(
+    (bucket) => {
+      const stat = scrollDepthStats.find((s) => s.value === bucket);
+      const count = Number(stat?._sum?.count || 0);
+      return {
+        bucket,
+        percentage:
+          scrollTotal > 0 ? Math.round((count / scrollTotal) * 100) : 0,
+      };
+    },
+  );
 
   // Calculate time on page distribution
-  const timeTotal = timeOnPageStats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
-  const timeOnPageDistribution = ["0-10s", "10-30s", "30-60s", "1-3m", "3-10m", "10m+"].map(
-    (bucket) => {
-      const stat = timeOnPageStats.find((s) => s.value === bucket);
-      const count = Number(stat?._sum?.count || 0);
-      return { bucket, percentage: timeTotal > 0 ? Math.round((count / timeTotal) * 100) : 0 };
-    }
+  const timeTotal = timeOnPageStats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
   );
+  const timeOnPageDistribution = [
+    "0-10s",
+    "10-30s",
+    "30-60s",
+    "1-3m",
+    "3-10m",
+    "10m+",
+  ].map((bucket) => {
+    const stat = timeOnPageStats.find((s) => s.value === bucket);
+    const count = Number(stat?._sum?.count || 0);
+    return {
+      bucket,
+      percentage: timeTotal > 0 ? Math.round((count / timeTotal) * 100) : 0,
+    };
+  });
 
   return {
     bounceRate,
@@ -284,7 +334,7 @@ export async function getEngagementMetrics(
  */
 export async function getChartData(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<ChartDataPoint[]> {
   // Get all dates in the range
   const dates = eachDayOfInterval({
@@ -311,11 +361,18 @@ export async function getChartData(
   });
 
   // Group stats by date
-  const statsByDate = new Map<string, { visitors: number; pageviews: number; bounces: number }>();
+  const statsByDate = new Map<
+    string,
+    { visitors: number; pageviews: number; bounces: number }
+  >();
 
   for (const stat of stats) {
     const dateKey = format(stat.date, "yyyy-MM-dd");
-    const existing = statsByDate.get(dateKey) || { visitors: 0, pageviews: 0, bounces: 0 };
+    const existing = statsByDate.get(dateKey) || {
+      visitors: 0,
+      pageviews: 0,
+      bounces: 0,
+    };
 
     if (stat.name === "visitors") {
       existing.visitors += Number(stat.count);
@@ -331,9 +388,15 @@ export async function getChartData(
   // Build chart data with all dates
   return dates.map((date) => {
     const dateKey = format(date, "yyyy-MM-dd");
-    const dayStats = statsByDate.get(dateKey) || { visitors: 0, pageviews: 0, bounces: 0 };
+    const dayStats = statsByDate.get(dateKey) || {
+      visitors: 0,
+      pageviews: 0,
+      bounces: 0,
+    };
     const bounceRate =
-      dayStats.visitors > 0 ? Math.round((dayStats.bounces / dayStats.visitors) * 100) : 0;
+      dayStats.visitors > 0
+        ? Math.round((dayStats.bounces / dayStats.visitors) * 100)
+        : 0;
 
     return {
       date: dateKey,
@@ -352,7 +415,7 @@ export async function getStatsByType(
   statType: StatType,
   dateRange: DateRange,
   limit = 10,
-  offset = 0
+  offset = 0,
 ): Promise<{ data: StatRow[]; total: number }> {
   // Get total count
   const totalResult = await prisma.stat.groupBy({
@@ -393,7 +456,10 @@ export async function getStatsByType(
   });
 
   // Calculate total count for percentages
-  const totalCount = stats.reduce((sum, s) => sum + Number(s._sum?.count || 0), 0);
+  const totalCount = stats.reduce(
+    (sum, s) => sum + Number(s._sum?.count || 0),
+    0,
+  );
 
   // Transform to StatRow format
   const data: StatRow[] = stats.map((s) => {
@@ -413,7 +479,7 @@ export async function getStatsByType(
  */
 export async function getTrafficSources(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<{ source: string; visitors: number; percentage: number }[]> {
   const stats = await prisma.stat.groupBy({
     by: ["value"],
@@ -434,7 +500,8 @@ export async function getTrafficSources(
   return stats.map((s) => ({
     source: s.value,
     visitors: Number(s._sum?.count || 0),
-    percentage: total > 0 ? Math.round((Number(s._sum?.count || 0) / total) * 100) : 0,
+    percentage:
+      total > 0 ? Math.round((Number(s._sum?.count || 0) / total) * 100) : 0,
   }));
 }
 
@@ -443,7 +510,7 @@ export async function getTrafficSources(
  */
 export async function getUtmCampaigns(
   websiteId: number,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<
   {
     campaign: string;
@@ -544,9 +611,15 @@ export async function getRealtimeStats(websiteId: number): Promise<{
 export async function exportStatsToCsv(
   websiteId: number,
   statType: StatType,
-  dateRange: DateRange
+  dateRange: DateRange,
 ): Promise<{ name: string; count: string; percentage: string }[]> {
-  const { data } = await getStatsByType(websiteId, statType, dateRange, 1000, 0);
+  const { data } = await getStatsByType(
+    websiteId,
+    statType,
+    dateRange,
+    1000,
+    0,
+  );
 
   return data.map((row) => ({
     name: row.value,
@@ -561,7 +634,7 @@ export async function exportStatsToCsv(
 export async function getTopEntryPages(
   websiteId: number,
   dateRange: DateRange,
-  limit = 10
+  limit = 10,
 ): Promise<
   {
     page: string;
@@ -583,16 +656,23 @@ export async function getTopEntryPages(
   // Get bounce counts for entry pages
   const bounceSessions = await prisma.analyticsSession.groupBy({
     by: ["entryPage"],
-    where: { websiteId, startedAt: { gte: startDate, lte: endDate }, isBounce: true },
+    where: {
+      websiteId,
+      startedAt: { gte: startDate, lte: endDate },
+      isBounce: true,
+    },
     _count: { id: true },
   });
 
-  const bounceMap = new Map(bounceSessions.map((b) => [b.entryPage, b._count.id]));
+  const bounceMap = new Map(
+    bounceSessions.map((b) => [b.entryPage, b._count.id]),
+  );
 
   return sessions
     .map((s) => {
       const bounces = bounceMap.get(s.entryPage) || 0;
-      const bounceRate = s._count.id > 0 ? Math.round((bounces / s._count.id) * 100) : 0;
+      const bounceRate =
+        s._count.id > 0 ? Math.round((bounces / s._count.id) * 100) : 0;
 
       return {
         page: s.entryPage,
@@ -611,9 +691,15 @@ export async function getTopEntryPages(
 export async function getTopExitPages(
   websiteId: number,
   dateRange: DateRange,
-  limit = 10
+  limit = 10,
 ): Promise<{ page: string; exits: number; percentage: number }[]> {
-  const { data } = await getStatsByType(websiteId, "exit_page", dateRange, limit, 0);
+  const { data } = await getStatsByType(
+    websiteId,
+    "exit_page",
+    dateRange,
+    limit,
+    0,
+  );
 
   return data.map((d) => ({
     page: d.value,

@@ -9,7 +9,11 @@ interface GoalDeleteButtonProps {
   locale: string;
 }
 
-export function GoalDeleteButton({ goalId, goalName, locale }: GoalDeleteButtonProps) {
+export function GoalDeleteButton({
+  goalId,
+  goalName,
+  locale,
+}: GoalDeleteButtonProps) {
   return (
     <DeleteResourceDialog
       resourceId={goalId}

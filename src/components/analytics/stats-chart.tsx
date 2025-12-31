@@ -53,15 +53,34 @@ export function StatsChart({ data, className }: StatsChartProps) {
   return (
     <div className={className}>
       <ResponsiveContainer width="100%" height={350}>
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+        <AreaChart
+          data={data}
+          margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+        >
           <defs>
             <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+              <stop
+                offset="5%"
+                stopColor="hsl(var(--primary))"
+                stopOpacity={0.3}
+              />
+              <stop
+                offset="95%"
+                stopColor="hsl(var(--primary))"
+                stopOpacity={0}
+              />
             </linearGradient>
             <linearGradient id="colorPageviews" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(var(--secondary))" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="hsl(var(--secondary))" stopOpacity={0} />
+              <stop
+                offset="5%"
+                stopColor="hsl(var(--secondary))"
+                stopOpacity={0.3}
+              />
+              <stop
+                offset="95%"
+                stopColor="hsl(var(--secondary))"
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
@@ -90,12 +109,17 @@ export function StatsChart({ data, className }: StatsChartProps) {
                       {formatTooltipLabel(String(label ?? ""))}
                     </p>
                     {payload.map((entry, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm"
+                      >
                         <div
                           className="h-2 w-2 rounded-full"
                           style={{ backgroundColor: entry.color }}
                         />
-                        <span className="text-muted-foreground">{entry.name}:</span>
+                        <span className="text-muted-foreground">
+                          {entry.name}:
+                        </span>
                         <span className="font-medium">
                           {formatNumber(Number(entry.value) || 0)}
                         </span>

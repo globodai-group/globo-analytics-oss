@@ -11,7 +11,7 @@ function useIsMac() {
   return useSyncExternalStore(
     () => () => {}, // subscribe - no-op, platform doesn't change
     () => navigator.platform.toUpperCase().indexOf("MAC") >= 0, // client snapshot
-    () => false // server snapshot (default to non-Mac)
+    () => false, // server snapshot (default to non-Mac)
   );
 }
 
@@ -20,7 +20,10 @@ interface SearchTriggerProps {
   variant?: "default" | "compact";
 }
 
-export function SearchTrigger({ className, variant = "default" }: SearchTriggerProps) {
+export function SearchTrigger({
+  className,
+  variant = "default",
+}: SearchTriggerProps) {
   const t = useTranslations("search");
   const isMac = useIsMac();
 
@@ -54,7 +57,7 @@ export function SearchTrigger({ className, variant = "default" }: SearchTriggerP
       onClick={handleClick}
       className={cn(
         "relative h-9 w-full justify-start rounded-md bg-muted/50 text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64",
-        className
+        className,
       )}
     >
       <Search className="mr-2 h-4 w-4" />

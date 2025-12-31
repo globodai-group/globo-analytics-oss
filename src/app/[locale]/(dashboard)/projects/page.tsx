@@ -3,7 +3,13 @@ import { Link } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   FolderKanban,
@@ -59,9 +65,21 @@ export default async function ProjectsPage() {
   });
 
   const privacyLabels = {
-    0: { label: t("projects.privacyOptions.public"), icon: Unlock, variant: "secondary" as const },
-    1: { label: t("projects.privacyOptions.private"), icon: Lock, variant: "default" as const },
-    2: { label: t("projects.privacyOptions.password"), icon: Lock, variant: "outline" as const },
+    0: {
+      label: t("projects.privacyOptions.public"),
+      icon: Unlock,
+      variant: "secondary" as const,
+    },
+    1: {
+      label: t("projects.privacyOptions.private"),
+      icon: Lock,
+      variant: "default" as const,
+    },
+    2: {
+      label: t("projects.privacyOptions.password"),
+      icon: Lock,
+      variant: "outline" as const,
+    },
   };
 
   const platformIcons = {
@@ -75,7 +93,9 @@ export default async function ProjectsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">{t("projects.title")}</h1>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">
+            {t("projects.title")}
+          </h1>
           <p className="text-sm sm:text-base text-muted-foreground">
             {projects.length === 0
               ? t("projects.noProjects")
@@ -95,7 +115,9 @@ export default async function ProjectsPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-16">
             <FolderKanban className="h-16 w-16 text-muted-foreground/50 mb-4" />
-            <h2 className="text-xl font-semibold mb-2">{t("projects.noProjects")}</h2>
+            <h2 className="text-xl font-semibold mb-2">
+              {t("projects.noProjects")}
+            </h2>
             <p className="text-muted-foreground text-center mb-6 max-w-md">
               {t("projects.startTracking")}
             </p>
@@ -110,10 +132,12 @@ export default async function ProjectsPage() {
       ) : (
         <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => {
-            const privacy = privacyLabels[project.privacy as keyof typeof privacyLabels];
+            const privacy =
+              privacyLabels[project.privacy as keyof typeof privacyLabels];
             const PrivacyIcon = privacy.icon;
             const PlatformIcon =
-              platformIcons[project.platform as keyof typeof platformIcons] || Globe;
+              platformIcons[project.platform as keyof typeof platformIcons] ||
+              Globe;
             const primaryDomain = project.domains[0];
 
             return (
@@ -128,7 +152,9 @@ export default async function ProjectsPage() {
                         <FolderKanban className="h-5 w-5 text-primary" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <CardTitle className="text-base truncate">{project.name}</CardTitle>
+                        <CardTitle className="text-base truncate">
+                          {project.name}
+                        </CardTitle>
                         <CardDescription className="truncate">
                           {primaryDomain?.domain || t("projects.noDomains")}
                         </CardDescription>
@@ -141,7 +167,11 @@ export default async function ProjectsPage() {
                       />
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-9 w-9 touch-target">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-9 w-9 touch-target"
+                          >
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -178,7 +208,10 @@ export default async function ProjectsPage() {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <ProjectDeleteButton projectId={project.id} projectName={project.name} />
+                          <ProjectDeleteButton
+                            projectId={project.id}
+                            projectName={project.name}
+                          />
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
@@ -201,13 +234,15 @@ export default async function ProjectsPage() {
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-muted-foreground" />
                       <span>
-                        {project._count.visitors.toLocaleString()} {t("stats.visitors")}
+                        {project._count.visitors.toLocaleString()}{" "}
+                        {t("stats.visitors")}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Activity className="h-4 w-4 text-muted-foreground" />
                       <span>
-                        {project._count.projectSessions.toLocaleString()} {t("stats.sessions")}
+                        {project._count.projectSessions.toLocaleString()}{" "}
+                        {t("stats.sessions")}
                       </span>
                     </div>
                   </div>

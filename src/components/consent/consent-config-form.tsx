@@ -49,7 +49,11 @@ interface ConsentConfigFormProps {
   };
 }
 
-export function ConsentConfigForm({ projectId, locale, initialData }: ConsentConfigFormProps) {
+export function ConsentConfigForm({
+  projectId,
+  locale,
+  initialData,
+}: ConsentConfigFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -86,21 +90,25 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
         toast.error(result.error);
       }
     } catch {
-      toast.error(locale === "fr" ? "Une erreur est survenue" : "An error occurred");
+      toast.error(
+        locale === "fr" ? "Une erreur est survenue" : "An error occurred",
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const t = {
-    requireConsent: locale === "fr" ? "Exiger le consentement" : "Require Consent",
+    requireConsent:
+      locale === "fr" ? "Exiger le consentement" : "Require Consent",
     requireConsentDesc:
       locale === "fr"
         ? "Les visiteurs doivent donner leur consentement avant le tracking."
         : "Visitors must consent before tracking begins.",
     mode: locale === "fr" ? "Mode de consentement" : "Consent Mode",
     modeExplicit: locale === "fr" ? "Explicite (Opt-in)" : "Explicit (Opt-in)",
-    modeImplicit: locale === "fr" ? "Implicite (Opt-out)" : "Implicit (Opt-out)",
+    modeImplicit:
+      locale === "fr" ? "Implicite (Opt-out)" : "Implicit (Opt-out)",
     modeDisabled: locale === "fr" ? "Désactivé" : "Disabled",
     position: locale === "fr" ? "Position de la bannière" : "Banner Position",
     positionBottom: locale === "fr" ? "Bas" : "Bottom",
@@ -111,9 +119,15 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
       locale === "fr"
         ? "Nous utilisons des cookies pour améliorer votre expérience..."
         : "We use cookies to improve your experience...",
-    privacyUrl: locale === "fr" ? "URL de la politique de confidentialité" : "Privacy Policy URL",
+    privacyUrl:
+      locale === "fr"
+        ? "URL de la politique de confidentialité"
+        : "Privacy Policy URL",
     privacyUrlPlaceholder: "https://example.com/privacy",
-    duration: locale === "fr" ? "Durée du consentement (jours)" : "Consent Duration (days)",
+    duration:
+      locale === "fr"
+        ? "Durée du consentement (jours)"
+        : "Consent Duration (days)",
     save: locale === "fr" ? "Enregistrer" : "Save",
   };
 
@@ -123,7 +137,9 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
       <div className="flex items-center justify-between">
         <div className="space-y-0.5">
           <Label>{t.requireConsent}</Label>
-          <p className="text-sm text-muted-foreground">{t.requireConsentDesc}</p>
+          <p className="text-sm text-muted-foreground">
+            {t.requireConsentDesc}
+          </p>
         </div>
         <Switch
           checked={requireConsent}
@@ -138,7 +154,9 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
             <Label>{t.mode}</Label>
             <Select
               value={watch("consentMode")}
-              onValueChange={(value) => setValue("consentMode", value as ConsentMode)}
+              onValueChange={(value) =>
+                setValue("consentMode", value as ConsentMode)
+              }
             >
               <SelectTrigger>
                 <SelectValue />
@@ -157,7 +175,10 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
             <Select
               value={watch("bannerPosition")}
               onValueChange={(value) =>
-                setValue("bannerPosition", value as (typeof VALID_BANNER_POSITIONS)[number])
+                setValue(
+                  "bannerPosition",
+                  value as (typeof VALID_BANNER_POSITIONS)[number],
+                )
               }
             >
               <SelectTrigger>
@@ -192,7 +213,9 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
               {...register("privacyUrl")}
             />
             {errors.privacyUrl && (
-              <p className="text-sm text-destructive">{errors.privacyUrl.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.privacyUrl.message}
+              </p>
             )}
           </div>
 
@@ -207,7 +230,9 @@ export function ConsentConfigForm({ projectId, locale, initialData }: ConsentCon
               {...register("consentDuration", { valueAsNumber: true })}
             />
             {errors.consentDuration && (
-              <p className="text-sm text-destructive">{errors.consentDuration.message}</p>
+              <p className="text-sm text-destructive">
+                {errors.consentDuration.message}
+              </p>
             )}
           </div>
         </>

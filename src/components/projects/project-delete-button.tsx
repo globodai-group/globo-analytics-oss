@@ -9,7 +9,10 @@ interface ProjectDeleteButtonProps {
   projectName: string;
 }
 
-export function ProjectDeleteButton({ projectId, projectName }: ProjectDeleteButtonProps) {
+export function ProjectDeleteButton({
+  projectId,
+  projectName,
+}: ProjectDeleteButtonProps) {
   const locale = useLocale();
 
   return (
