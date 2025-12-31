@@ -1,0 +1,24 @@
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="globe-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#1D4ED8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="100" cy="100" r="90" fill="url(#globe-gradient)"/>
+  <g fill="none" stroke="white" stroke-width="2" opacity="0.6">
+    <ellipse cx="100" cy="100" rx="80" ry="80"/>
+    <ellipse cx="100" cy="100" rx="80" ry="40"/>
+    <ellipse cx="100" cy="100" rx="80" ry="20"/>
+    <ellipse cx="100" cy="100" rx="40" ry="80"/>
+    <line x1="20" y1="100" x2="180" y2="100"/>
+    <line x1="100" y1="20" x2="100" y2="180"/>
+  </g>
+  <g fill="white" opacity="0.9">
+    <circle cx="60" cy="70" r="8"/>
+    <circle cx="140" cy="90" r="6"/>
+    <circle cx="100" cy="130" r="10"/>
+    <circle cx="75" cy="110" r="5"/>
+    <circle cx="130" cy="60" r="7"/>
+  </g>
+</svg>
